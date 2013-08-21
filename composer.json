@@ -24,5 +24,6 @@
     },
     "scripts": {
         "post-create-project-cmd": ["Cyantree\\Grout\\Composer\\Commands::onModuleCreated"]
-    }
+    },
+    "target-dir": "../"
 }
