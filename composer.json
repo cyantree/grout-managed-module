@@ -18,12 +18,9 @@
     "require": {
         "php": ">=5.3.2",
         "cyantree/grout": "dev-master",
+        "cyantree/grout-module-installer": "dev-master",
         "zendframework/zend-i18n": "2.2.*",
         "zendframework/zend-cache": "2.2.*",
         "zendframework/zend-serializer": "2.2.*"
-    },
-    "scripts": {
-        "post-create-project-cmd": ["Cyantree\\Grout\\Composer\\Commands::onModuleCreated"]
-    },
-    "target-dir": "../"
+    }
 }
