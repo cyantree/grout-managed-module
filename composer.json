@@ -1,11 +1,10 @@
 {
     "name": "cyantree/grout-managed-module",
     "type": "grout-module",
-    "version": "0.0.1",
     "description": "module for backend functionality",
     "keywords": ["grout", "backend", "admin", "template"],
     "homepage": "https://github.com/cyantree/grout-managed-module",
-    "license": "LGPLv3",
+    "license": "LGPL-3.0",
     "authors": [
         {"name": "Christoph Schreiber", "email": "mail@cyantree.com"}
     ],
@@ -16,9 +15,8 @@
         }
     ],
     "require": {
-        "php": ">=5.3.2",
-        "cyantree/grout": "dev-master",
-        "cyantree/grout-module-installer": "dev-master",
+        "cyantree/grout": "0.0.*",
+        "cyantree/grout-module-installer": "0.0.*",
         "zendframework/zend-i18n": "2.2.*",
         "zendframework/zend-cache": "2.2.*",
         "zendframework/zend-serializer": "2.2.*"
