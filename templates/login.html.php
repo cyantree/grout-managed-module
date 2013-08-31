@@ -17,13 +17,16 @@ $q = $g->appQuick();
 echo $ui->status($f->status);
 ?>
 
-<?php if($f->status->success){?>
+<?php
+if($f->status->success){
+    ?>
     <script>
         $.ct.redirect("<?=$q->e($this->task->app->getUrl($this->task->request->url))?>", 3);
     </script>
-<?php }?>
-
-<?=$ui->formStart($this->task->request->url)?>
+    <?php
+}else{
+    ?>
+    <?=$ui->formStart($this->task->request->url)?>
     <div class="item"><label></label><div class="content"><h3><?=$q->t('Anmelden')?></h3></div></div>
     <div class="item">
         <label><?=$q->t('Benutzername')?>:</label>
@@ -43,4 +46,6 @@ echo $ui->status($f->status);
         <label></label>
         <input type="submit" name="next" value="<?=$q->t('Anmelden')?>" />
     </div>
-<?=$ui->formEnd()?>
+    <?=$ui->formEnd()?>
+    <?php
+}?>
