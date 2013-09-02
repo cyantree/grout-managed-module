@@ -20,19 +20,15 @@ $c = $f->appConfig();
     <title><?=$q->e($c->title)?></title>
     <base href="<?=$q->e($this->task->app->url)?>"/>
     <meta charset="utf-8"/>
-    <meta name="generator" content="cyantree web framework"/>
-    <script src="<?=$q->e($q->a('assets/js/lib.js'))?>"></script>
-    <script src="<?=$q->e($q->a('assets/js/app.js'))?>"></script>
-    <link rel="stylesheet" href="<?=$q->e($q->a('assets/css/admin.css'))?>"/>
+    <meta name="generator" content="cyantree grout"/>
+    <script src="<?=$q->e($q->a('js/lib.js'))?>"></script>
+    <script src="<?=$q->e($q->a('js/app.js'))?>"></script>
+    <link rel="stylesheet" href="<?=$q->e($q->a('css/admin.css'))?>"/>
 </head>
 <body>
 <script>
     $.service.url = "<?=$q->e($m->getRouteUrl('service'), 'js')?>";
     $.app.urlPrefix = "<?=$q->e($m->getPublicUrl('', false), 'js')?>";
-
-    initCallbacks.push(function () {
-
-    });
 </script>
 <div id="header">
     <h1><a href="<?= $q->e($m->getUrl()) ?>"><?=$q->e($c->title)?></a></h1>

@@ -67,6 +67,7 @@ class ManagedFactory extends GlobalFactory
         }
 
         $tool = new ManagedQuick($this->app);
+        $tool->publicAssetUrl = $this->app->publicUrl . $this->appConfig()->assetUrl;
         $tool->translationDomain = 'ManagedModule';
 
         $this->_setAppTool(__FUNCTION__, $tool);
