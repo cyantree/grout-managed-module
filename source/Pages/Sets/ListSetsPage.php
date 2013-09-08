@@ -2,7 +2,6 @@
 namespace Grout\ManagedModule\Pages\Sets;
 
 use Cyantree\Grout\App\Types\ResponseCode;
-use Cyantree\Grout\Filter\ArrayFilter;
 use Cyantree\Grout\Filter\ListFilter;
 use Cyantree\Grout\Filter\NumberFilter;
 use Cyantree\Grout\Filter\StringFilter;
@@ -10,9 +9,7 @@ use Cyantree\Grout\Set\DoctrineSet;
 use Cyantree\Grout\Set\Set;
 use Cyantree\Grout\Tools\StringTools;
 use Grout\ManagedModule\ManagedFactory;
-use Grout\ManagedModule\Forms\LoginForm;
 use Grout\ManagedModule\Pages\RestrictedPage;
-use Grout\ManagedModule\TestFactory;
 
 class ListSetsPage extends RestrictedPage
 {
@@ -31,10 +28,6 @@ class ListSetsPage extends RestrictedPage
     /** @var DoctrineSet */
     public $set;
     public $entityClass;
-
-    public $searchArg;
-    public $orderArg;
-    public $pageArg;
 
     public $entities;
 
@@ -67,19 +60,62 @@ class ListSetsPage extends RestrictedPage
         }
 
         $this->type = $type;
-        $this->initConfigurationWithArray($this->task->request->get->getData());
 
-        $this->setResult($this->managedFactory()->appTemplates()->load('sets/list.html'));
+        $this->task->vars->set('menu', $type.'-sets');
+
+        $this->init();
+        $this->_prepare();
+        $this->_loadEntities();
+        $data = $this->_render();
+
+        if ($data['content']) {
+            $this->setResult($data['content']);
+        } else {
+            $this->setResult($this->managedFactory()->appTemplates()->load($data['template'], $data));
+        }
+    }
+
+    public function getUrlArguments($context)
+    {
+        return array(
+            'orderBy' => $this->orderBy,
+            'orderDirection' => $this->orderByDirection == 'desc' ? null : 'desc',
+            'search' => $this->search,
+            'page' => $this->page > 1 ? $this->page : null
+        );
+    }
+
+    protected function getListQueryData()
+    {
+        return $this->set->getListQueryData();
+    }
+
+    protected function _render()
+    {
+        return array(
+            'scripts' => '',
+            'readyScripts' => '',
+            'belowHeader' => '',
+            'aboveList' => '',
+            'belowList' => '',
+            'footer' => '',
+            'navBar' => $this->renderSearchInput().$this->renderPagination().$this->renderAddButton(),
+            'template' => 'sets/list.html',
+            'content' => ''
+        );
+    }
+
+    protected function _prepare()
+    {
+        $f = $this->task->request->get;
+        $this->page = $f->get('page');
+        $this->search = $f->get('search');
+        $this->orderBy = $f->get('orderBy');
+        $this->orderByDirection = $f->get('orderDirection');
     }
 
     public function init()
     {
-        // Filter configurations
-        $this->page = NumberFilter::filter($this->page)->limit(1, 999999)->value;
-        $this->entitiesPerPage = NumberFilter::filter($this->entitiesPerPage, 0)->limit(0, 500)->value;
-        $this->search = StringFilter::filter($this->search)->asInput(64)->value;
-        $this->orderByDirection = ListFilter::filter($this->orderByDirection)->match(array('asc', 'desc'), 'desc')->value;
-
         $entityClass = $this->managedFactory()->appModule()->setTypeEntities->get($this->type);
 
         // Is no valid entity
@@ -96,17 +132,6 @@ class ListSetsPage extends RestrictedPage
 
         if(!$this->entitiesPerPage){
             $this->entitiesPerPage = $this->set->config->get('count', 10);
-        }
-
-        // Init args
-        if($this->page > 1){
-            $this->pageArg = '&page='.$this->page;
-        }
-        if($this->search != ''){
-            $this->searchArg = '&search='.$this->search;
-        }
-        if($this->orderBy != ''){
-            $this->orderArg = '&orderBy='.$this->orderBy.'&orderDirection='.$this->orderByDirection;
         }
 
         // Check whether search is available
@@ -126,8 +151,14 @@ class ListSetsPage extends RestrictedPage
         return true;
     }
 
-    public function loadEntities()
+    protected function _loadEntities()
     {
+        // Filter configurations
+        $this->page = NumberFilter::filter($this->page)->limit(1, 999999)->value;
+        $this->entitiesPerPage = NumberFilter::filter($this->entitiesPerPage, 0)->limit(0, 500)->value;
+        $this->search = StringFilter::filter($this->search)->asInput(64)->value;
+        $this->orderByDirection = ListFilter::filter($this->orderByDirection)->match(array('asc', 'desc'), 'desc')->value;
+
         $parameters = array();
 
         // Create search queries
@@ -144,34 +175,71 @@ class ListSetsPage extends RestrictedPage
 
         // Create query parts
         if($searchQueries){
-            $whereClause = ' WHERE ('.implode(' OR ', $searchQueries).')';
+            $filterClause = '('.implode(' OR ', $searchQueries).')';
         }else{
-            $whereClause = '';
+            $filterClause = '1 = 1';
         }
+
+        // Create queries
+        $data = $this->getListQueryData();
+
         $orderClause = '';
 
         // Check for ordering
         foreach($this->set->contents as $content){
             if($content->sortable && $content->name == $this->orderBy){
-                $orderClause = ' ORDER BY e.'.$content->name.' '.$this->orderByDirection;
+                $orderClause = 'e.'.$content->name.' '.$this->orderByDirection;
                 break;
             }
         }
 
+        if($orderClause === '') {
+            if ($data['select']['defaultOrder']) {
+                $orderClause = $data['select']['defaultOrder'];
+            } else {
+                $orderField = $this->set->config->get('order');
+                if ($orderField) {
+                    $orderClause = 'e.'.$orderField;
+                } else {
+                    $identifiers = $this->globalFactory()->appDoctrine()->getClassMetadata($this->entityClass)->getIdentifierFieldNames();
+                    $orderClause = 'e.'.$identifiers[0].' DESC';
+                }
+            }
+        }
+
+        $queryLookUps = array(
+            '{e}',
+            '{entity}',
+            '{filter}',
+            '{order}',
+        );
+        $queryReplaces = array(
+            'e',
+            $this->entityClass.' e',
+            $filterClause,
+            $orderClause
+        );
+
         // Get items
-        $query = $this->globalFactory()->appDoctrine()->createQuery('SELECT e FROM '.$this->entityClass.' e'.$whereClause.$orderClause);
+        $queryData = $data['select'];
+        $query = str_replace($queryLookUps, $queryReplaces, $queryData['query']);
+        $query = $this->globalFactory()->appDoctrine()->createQuery($query);
         $query->setFirstResult(($this->page - 1) * $this->entitiesPerPage);
         $query->setMaxResults($this->entitiesPerPage);
 
-        if($parameters){
-            $query->setParameters($parameters);
+        if ($parameters || $queryData['parameters']) {
+            $query->setParameters(array_merge($parameters, $queryData['parameters']));
         }
 
         $this->entities = $query->getResult();
 
-        $query = $this->globalFactory()->appDoctrine()->createQuery('SELECT COUNT(e) FROM '.$this->entityClass.' e'.$whereClause);
-        if($parameters){
-            $query->setParameters($parameters);
+        // Get count
+        $queryData = $data['count'];
+        $query = str_replace($queryLookUps, $queryReplaces, $queryData['query']);
+
+        $query = $this->globalFactory()->appDoctrine()->createQuery($query);
+        if ($parameters || $queryData['parameters']) {
+            $query->setParameters(array_merge($parameters, $queryData['parameters']));
         }
 
         $countEntities = $query->getSingleScalarResult();
@@ -179,15 +247,6 @@ class ListSetsPage extends RestrictedPage
         $this->countPages = ceil($countEntities / $this->entitiesPerPage);
 
         $this->set->onList($this->entities);
-    }
-
-    public function initConfigurationWithArray($getData)
-    {
-        $f = new ArrayFilter($getData);
-        $this->page = $f->get('page');
-        $this->search = $f->get('search');
-        $this->orderBy = $f->get('orderBy');
-        $this->orderByDirection = $f->get('orderDirection');
     }
 
     public function getEditUrl($id, $type = null)
@@ -229,13 +288,17 @@ class ListSetsPage extends RestrictedPage
             if($content->config->get('visible')){
                 $c = $q->e($content->config->get('label'));
                 if($content->sortable){
-                    $url = $this->pageUrl.$this->searchArg.'&orderBy='.$content->name;
+                    $arguments = $this->getUrlArguments('sort');
+                    $arguments['orderBy'] = $content->name;
 
                     if($this->orderBy == $content->name && $this->orderByDirection == 'desc'){
-                        $url .= '&orderDirection=asc';
+                        $arguments['orderDirection'] = 'asc';
                     }else{
-                        $url .= '&orderDirection=desc';
+                        $arguments['orderDirection'] = 'desc';
                     }
+
+                    $url = $this->pageUrl.$this->encodeArgs($arguments);
+
                     $c = '<a href="'.$q->e($url).'">'.$c.'</a>';
                 }
                 $table .= '<td>'.$c.'</td>';
@@ -279,21 +342,57 @@ class ListSetsPage extends RestrictedPage
         return $table;
     }
 
-    public function renderNavBar()
+    public function encodeArgs($args)
+    {
+        $s = '';
+
+        foreach ($args as $key => $value) {
+            if($value === null || $value === '') {
+                continue;
+            }
+
+            $s .= '&'.$key.'='.rawurlencode($value);
+        }
+
+        return $s;
+    }
+
+    public function renderNavBar($content)
+    {
+        return '<div class="container">'.$content.'</div>';
+    }
+
+    public function renderSearchInput()
+    {
+        $q = ManagedFactory::get($this->app)->appQuick();
+
+        return '<input type="text" placeholder="'.$q->e($q->t('Suche')).'" name="search" class="updateOnChange" value="'.$q->e($this->search).'" />';
+    }
+
+    public function renderPagination()
+    {
+        $u = $this->managedFactory()->appUi();
+
+        $pagerArgs = $this->getUrlArguments('pagination');
+        $pagerArgs['page'] = null;
+
+        return $u->pageSelector($u->calculatePageSelector($this->countPages, $this->page, 3, 3), $this->pageUrl.$this->encodeArgs($pagerArgs).'&page=%page%');
+    }
+
+    public function renderAddButton($alignRight = true)
     {
         $q = ManagedFactory::get($this->app)->appQuick();
         $u = $this->managedFactory()->appUi();
 
-        $c = '<div class="container">';
-        $c .= '<input type="text" placeholder="'.$q->e($q->t('Suche')).'" name="search" value="'.$q->e($this->search).'" />';
-        $c .= $u->pageSelector($u->calculatePageSelector($this->countPages, $this->page, 3, 3), $this->pageUrl.$this->searchArg.$this->orderArg.'&page=%page%');
-
         if($this->set->allowAdd){
-            $c .= $u->link($this->getAddUrl(), $q->t('Hinzufügen'), '_self', array('class' => 'button absoluteRight'));
+            $class = 'button';
+            if ($alignRight) {
+                $class .= ' absoluteRight';
+            }
+            return $u->link($this->getAddUrl(), $q->t('Hinzufügen'), '_self', array('class' => $class));
         }
-        $c .= '</div>';
 
-        return $c;
+        return '';
     }
 
     public function renderHeader()
@@ -311,17 +410,6 @@ class ListSetsPage extends RestrictedPage
 
     public function renderFooter()
     {
-        $escapedUrl = StringTools::escapeJs($this->pageUrl);
-        $c = <<<CNT
-        <script>
-          $('input[name="search"]').keydown(function(e){
-                  if(e.which == 13){
-                      window.location.href = '{$escapedUrl}&search=' + encodeURIComponent($(this).val());
-        }
-              });
-        </script>
-CNT;
-
-        return $c;
+        return '';
     }
 }

@@ -49,10 +49,6 @@ $c = $f->appConfig();
                 $menuLinks = $f->appModule()->menuLinks;
                 foreach ($menuLinks as $menuLink) {
                     $filter->setData($menuLink);
-                    $id = null;
-                    $url = null;
-                    $type = ArrayTools::get($menuLink, 'type', 'url');
-                    $active = false;
 
                     /** @var AccessRule $access */
                     $access = ArrayTools::get($menuLink, 'access');
@@ -60,28 +56,11 @@ $c = $f->appConfig();
                         continue;
                     }
 
-                    if($type == 'url'){
-                        $id = $filter->get('id');
-                        $url = $menuLink['url'];
-                    }elseif($type == 'list-sets'){
-                        $url = $this->task->module->getRouteUrl('list-sets', array('type' => $menuLink['setType']));
-                        $id = $menuLink['setType'].'-sets';
-                    }elseif($type == 'edit-set'){
-                        $url = $this->task->module->getRouteUrl('edit-set', array('type' => $menuLink['setType'], 'id' => $menuLink['setId']));
-                        $id = $menuLink['setType'].'-sets';
-                    }elseif($type == 'page'){
-                        /** @var Route $page */
-                        $page = $menuLink['page'];
-                        $url = $page->getUrl($filter->get('arguments'), false);
-                        $active = $this->task->route == $page;
-                        $id = $menuLink['id'];
-                    }
+                    $id = $filter->get('id');
+                    $url = $menuLink['url'];
+                    $active = ($id !== null && $id === $activeMenu) || $filter->get('route') == $this->task->route;
 
-                    $title = $menuLink['title'];
-                    $active = $active || ($id !== null && $activeMenu === $id);
-
-
-                    $c = '<li'.($active ? ' class="active"' : '').'><a href="'.$q->e($url).'">'.$q->e($title).'</a></li>';
+                    $c = '<li'.($active ? ' class="active"' : '').'><a href="'.$q->e($url).'">'.$q->e($filter->get('title')).'</a></li>';
 
                     echo $c;
                 }?>

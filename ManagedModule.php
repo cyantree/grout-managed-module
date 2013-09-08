@@ -25,10 +25,14 @@ class ManagedModule extends Module
     /** @var ArrayFilter */
     public $setTypeEntities = null;
 
+    /** @var ArrayFilter */
+    public $setTypeConfigs = null;
+
     public function init()
     {
         $this->setTypes = new ArrayFilter();
         $this->setTypeEntities = new ArrayFilter();
+        $this->setTypeConfigs = new ArrayFilter();
 
         $this->moduleConfig = $this->app->config->get($this->type, $this->id, new ManagedConfig());
 

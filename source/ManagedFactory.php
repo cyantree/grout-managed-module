@@ -8,6 +8,8 @@ use Cyantree\Grout\Mail\Mail;
 use Cyantree\Grout\Ui\Ui;
 use Grout\BootstrapModule\GlobalFactory;
 use Grout\Cyantree\TranslatorModule\TranslatorModule;
+use Grout\ManagedModule\Tools\MenuTools;
+use Grout\ManagedModule\Tools\SetTools;
 use Grout\ManagedModule\Types\AccessRule;
 use Grout\ManagedModule\Types\ManagedConfig;
 use Grout\ManagedModule\Types\ManagedQuick;
@@ -67,7 +69,7 @@ class ManagedFactory extends GlobalFactory
         }
 
         $tool = new ManagedQuick($this->app);
-        $tool->publicAssetUrl = $this->app->publicUrl . $this->appConfig()->assetUrl;
+        $tool->publicAssetUrl = $this->app->publicUrl.$this->appConfig()->assetUrl;
         $tool->translationDomain = 'ManagedModule';
 
         $this->_setAppTool(__FUNCTION__, $tool);
@@ -101,6 +103,32 @@ class ManagedFactory extends GlobalFactory
         }else{
             $tool = $this->app->getModuleByType('Cyantree\TranslatorModule');
         }
+
+        $this->_setAppTool(__FUNCTION__, $tool);
+        return $tool;
+    }
+
+    /** @return SetTools */
+    public function appSetTools()
+    {
+        if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
+            return $tool;
+        }
+
+        $tool = new SetTools($this);
+
+        $this->_setAppTool(__FUNCTION__, $tool);
+        return $tool;
+    }
+
+    /** @return MenuTools */
+    public function appMenuTools()
+    {
+        if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
+            return $tool;
+        }
+
+        $tool = new MenuTools($this);
 
         $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;
