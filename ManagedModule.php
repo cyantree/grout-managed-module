@@ -38,10 +38,6 @@ class ManagedModule extends Module
 
         $this->plugins = array();
 
-        foreach($this->moduleConfig->plugins as $plugin){
-            $p = $this->importPlugin($plugin['plugin'], $plugin);
-        }
-
         $this->defaultPageType = 'RestrictedPage';
         $this->addNamedRoute('index', '', null, array('template' => 'index.html'));
 
@@ -54,6 +50,10 @@ class ManagedModule extends Module
         $this->addNamedRoute('edit-set', 'edit-set/%%type%%/%%id%%/', 'Sets\EditSetPage');
         $this->addNamedRoute('delete-set', 'delete-set/%%type%%/%%id%%/', 'Sets\DeleteSetPage');
         $this->addNamedRoute('404', '%%any,.*%%', null, array('template' => '404.html', 'responseCode' => ResponseCode::CODE_404), -1);
+
+        foreach ($this->moduleConfig->plugins as $plugin) {
+            $this->importPlugin($plugin['plugin'], $plugin);
+        }
     }
 
     public function initTask($task)
