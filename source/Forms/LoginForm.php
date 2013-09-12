@@ -1,9 +1,9 @@
 <?php
-namespace Grout\ManagedModule\Forms;
+namespace Grout\Cyantree\ManagedModule\Forms;
 
 use Cyantree\Grout\App\Task;
 use Cyantree\Grout\Form\Form;
-use Grout\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
 
 class LoginForm extends Form
 {

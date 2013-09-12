@@ -1,9 +1,8 @@
 <?php
 use Cyantree\Grout\Set\Set;
-use Grout\ManagedModule\ManagedFactory;
-use Grout\ManagedModule\Pages\Sets\DeleteSetPage;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\Pages\Sets\DeleteSetPage;
 use Cyantree\Grout\App\Generators\Template\TemplateContext;
-use Grout\BootstrapModule\GlobalFactory;
 
 /** @var $this TemplateContext */
 

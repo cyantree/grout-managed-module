@@ -1,5 +1,5 @@
 <?php
-namespace Grout\ManagedModule\Pages;
+namespace Grout\Cyantree\ManagedModule\Pages;
 
 
 class LogoutPage extends RestrictedPage

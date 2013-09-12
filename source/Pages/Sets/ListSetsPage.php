@@ -1,5 +1,5 @@
 <?php
-namespace Grout\ManagedModule\Pages\Sets;
+namespace Grout\Cyantree\ManagedModule\Pages\Sets;
 
 use Cyantree\Grout\App\Types\ResponseCode;
 use Cyantree\Grout\Filter\ListFilter;
@@ -8,8 +8,8 @@ use Cyantree\Grout\Filter\StringFilter;
 use Cyantree\Grout\Set\DoctrineSet;
 use Cyantree\Grout\Set\Set;
 use Cyantree\Grout\Tools\StringTools;
-use Grout\ManagedModule\ManagedFactory;
-use Grout\ManagedModule\Pages\RestrictedPage;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\Pages\RestrictedPage;
 
 class ListSetsPage extends RestrictedPage
 {

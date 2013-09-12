@@ -1,8 +1,8 @@
 <?php
-namespace Grout\ManagedModule\Types;
+namespace Grout\Cyantree\ManagedModule\Types;
 
 use Cyantree\Grout\App\GroutQuick;
-use Grout\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
 
 class ManagedQuick extends GroutQuick
 {

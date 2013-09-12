@@ -1,8 +1,7 @@
 <?php
-use Grout\ManagedModule\ManagedFactory;
-use Grout\ManagedModule\Pages\Sets\EditSetPage;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\Pages\Sets\EditSetPage;
 use Cyantree\Grout\App\Generators\Template\TemplateContext;
-use Grout\BootstrapModule\GlobalFactory;
 
 /** @var $this TemplateContext */
 

@@ -1,20 +1,17 @@
 <?php
-namespace Grout\ManagedModule;
+namespace Grout\Cyantree\ManagedModule;
 
 use Cyantree\Grout\App\Generators\Template\TemplateGenerator;
 use Cyantree\Grout\App\GroutFactory;
-use Cyantree\Grout\Filter\ArrayFilter;
 use Cyantree\Grout\Mail\Mail;
 use Cyantree\Grout\Ui\Ui;
 use Grout\BootstrapModule\GlobalFactory;
 use Grout\Cyantree\TranslatorModule\TranslatorModule;
-use Grout\ManagedModule\Tools\MenuTools;
-use Grout\ManagedModule\Tools\SetTools;
-use Grout\ManagedModule\Types\AccessRule;
-use Grout\ManagedModule\Types\ManagedConfig;
-use Grout\ManagedModule\Types\ManagedQuick;
-use Zend\Cache\Storage\Adapter\Filesystem;
-use Zend\Cache\Storage\Adapter\FilesystemOptions;
+use Grout\Cyantree\ManagedModule\Tools\MenuTools;
+use Grout\Cyantree\ManagedModule\Tools\SetTools;
+use Grout\Cyantree\ManagedModule\Types\AccessRule;
+use Grout\Cyantree\ManagedModule\Types\ManagedConfig;
+use Grout\Cyantree\ManagedModule\Types\ManagedQuick;
 use Zend\I18n\Translator\Translator;
 
 class ManagedFactory extends GlobalFactory
@@ -42,7 +39,7 @@ class ManagedFactory extends GlobalFactory
 
         $tool = new TemplateGenerator();
         $tool->app = $this->app;
-        $tool->baseTemplate = 'ManagedModule::base.html';
+        $tool->baseTemplate = 'Cyantree\ManagedModule::base.html';
 
         $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;
@@ -55,7 +52,7 @@ class ManagedFactory extends GlobalFactory
         }
 
         /** @var ManagedModule $tool */
-        $tool = $this->app->getModuleByType('ManagedModule');
+        $tool = $this->app->getModuleByType('Cyantree\ManagedModule');
 
         $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;
@@ -70,7 +67,7 @@ class ManagedFactory extends GlobalFactory
 
         $tool = new ManagedQuick($this->app);
         $tool->publicAssetUrl = $this->app->publicUrl.$this->appConfig()->assetUrl;
-        $tool->translationDomain = 'ManagedModule';
+        $tool->translationDomain = 'Cyantree_ManagedModule';
 
         $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;
@@ -84,7 +81,7 @@ class ManagedFactory extends GlobalFactory
         }
 
         /** @var ManagedModule $module */
-        $module = $this->app->getModuleById('ManagedModule');
+        $module = $this->app->getModuleById('Cyantree\ManagedModule');
         $tool = $module->moduleConfig;
 
         $this->_setAppTool(__FUNCTION__, $tool);

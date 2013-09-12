@@ -1,9 +1,9 @@
 <?php
-namespace Grout\ManagedModule\Tools;
+namespace Grout\Cyantree\ManagedModule\Tools;
 
 use Cyantree\Grout\Filter\ArrayFilter;
-use Grout\ManagedModule\ManagedFactory;
-use Grout\ManagedModule\ManagedModule;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\ManagedModule;
 
 class SetTools {
     /** @var ManagedFactory */
@@ -21,7 +21,6 @@ class SetTools {
     public function register($id, $setClass, $entityClass, $config = array())
     {
         $config = new ArrayFilter($config);
-//        $config->set('ListPage', $config->get('ListPage', 'ListSetsPage'));
 
         $this->_module->setTypes->set($id, $setClass);
         $this->_module->setTypeEntities->set($id, $entityClass);

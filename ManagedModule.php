@@ -1,11 +1,11 @@
 <?php
-namespace Grout\ManagedModule;
+namespace Grout\Cyantree\ManagedModule;
 
 use Cyantree\Grout\App\Module;
 use Cyantree\Grout\App\Types\ResponseCode;
 use Cyantree\Grout\Filter\ArrayFilter;
-use Grout\ManagedModule\Types\ManagedConfig;
-use Grout\ManagedModule\Types\ManagedPlugin;
+use Grout\Cyantree\ManagedModule\Types\ManagedConfig;
+use Grout\Cyantree\ManagedModule\Types\ManagedPlugin;
 
 class ManagedModule extends Module
 {

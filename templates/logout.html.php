@@ -1,7 +1,7 @@
 <?php
 /** @var $this TemplateContext */
 
-use Grout\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
 use Cyantree\Grout\App\Generators\Template\TemplateContext;
 
 $f = ManagedFactory::get($this->app);

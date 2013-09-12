@@ -8,20 +8,11 @@
     "authors": [
         {"name": "Christoph Schreiber", "email": "mail@cyantree.com"}
     ],
-    "repositories": [
-        {
-            "type": "composer",
-            "url": "https://packages.zendframework.com/"
-        }
-    ],
     "require": {
-        "cyantree/grout": "0.0.*",
         "cyantree/grout-module-installer": "0.0.*",
-        "zendframework/zend-i18n": "2.2.*",
-        "zendframework/zend-cache": "2.2.*",
-        "zendframework/zend-serializer": "2.2.*"
+        "cyantree/grout-translator-module": "0.0.*"
     },
     "extra": {
-        "grout-module-name": "ManagedModule"
+        "grout-module-name": "Cyantree/ManagedModule"
     }
 }

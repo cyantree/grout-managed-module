@@ -1,11 +1,11 @@
 <?php
-namespace Grout\ManagedModule\Pages\Sets;
+namespace Grout\Cyantree\ManagedModule\Pages\Sets;
 
 use Cyantree\Grout\App\Types\ResponseCode;
 use Cyantree\Grout\Form\FormStatus;
 use Cyantree\Grout\Set\Set;
-use Grout\ManagedModule\ManagedFactory;
-use Grout\ManagedModule\Pages\RestrictedPage;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\Pages\RestrictedPage;
 
 class EditSetPage extends RestrictedPage
 {

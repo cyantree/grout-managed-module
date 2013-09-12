@@ -1,7 +1,7 @@
 <?php
 /** @var $this TemplateContext */
-use Grout\ManagedModule\ManagedFactory;
-use Grout\ManagedModule\Pages\Sets\ListSetsPage;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\Pages\Sets\ListSetsPage;
 use Cyantree\Grout\App\Generators\Template\TemplateContext;
 
 /** @var $page ListSetsPage */

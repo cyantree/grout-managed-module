@@ -1,5 +1,5 @@
 <?php
-namespace Grout\ManagedModule\Types;
+namespace Grout\Cyantree\ManagedModule\Types;
 
 class AccessRule
 {

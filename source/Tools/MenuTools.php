@@ -1,9 +1,9 @@
 <?php
-namespace Grout\ManagedModule\Tools;
+namespace Grout\Cyantree\ManagedModule\Tools;
 
 use Cyantree\Grout\App\Route;
-use Grout\ManagedModule\ManagedFactory;
-use Grout\ManagedModule\Types\AccessRule;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\Types\AccessRule;
 
 class MenuTools
 {

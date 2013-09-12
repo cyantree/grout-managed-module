@@ -1,9 +1,8 @@
 <?php
-namespace Grout\ManagedModule\Pages;
+namespace Grout\Cyantree\ManagedModule\Pages;
 
-use Grout\ManagedModule\ManagedFactory;
-use Grout\ManagedModule\Forms\LoginForm;
-use Grout\BootstrapModule\GlobalFactory;
+use Grout\Cyantree\ManagedModule\Forms\LoginForm;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
 
 class RestrictedPage extends ManagedPage
 {
@@ -38,6 +37,6 @@ class RestrictedPage extends ManagedPage
         $f->task = $this->task;
         $f->execute();
 
-        $this->setResult($this->managedFactory()->appTemplates()->load('ManagedModule:login.html', array('form' => $f)));
+        $this->setResult($this->managedFactory()->appTemplates()->load('Cyantree\ManagedModule:login.html', array('form' => $f)));
     }
 }

@@ -1,12 +1,10 @@
 <?php
 /** @var $this \Cyantree\Grout\App\Generators\Template\TemplateContext */
-use Cyantree\Grout\App\Route;
 use Cyantree\Grout\Filter\ArrayFilter;
 use Cyantree\Grout\Tools\ArrayTools;
-use Grout\ManagedModule\ManagedFactory;
-use Grout\ManagedModule\Types\AccessRule;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\Types\AccessRule;
 use Cyantree\Grout\App\Generators\Template\TemplateContext;
-use Grout\BootstrapModule\GlobalFactory;
 
 $f = ManagedFactory::get($this->app);
 $m = $f->appModule();

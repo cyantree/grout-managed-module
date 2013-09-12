@@ -1,10 +1,9 @@
 <?php
 /** @var $this \Cyantree\Grout\App\Generators\Template\TemplateContext */
 use Cyantree\Grout\AutoLoader;
-use Grout\ManagedModule\ManagedFactory;
-use Grout\ManagedModule\Forms\LoginForm;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\Forms\LoginForm;
 use Cyantree\Grout\App\Generators\Template\TemplateContext;
-use Grout\BootstrapModule\GlobalFactory;
 
 /** @var LoginForm $f */
 $f = $this->in->get('form');

@@ -1,9 +1,9 @@
 <?php
-namespace Grout\ManagedModule\Types;
+namespace Grout\Cyantree\ManagedModule\Types;
 
 class ManagedConfig
 {
-    public $title = 'Admin area';
+    public $title = 'Restricted area';
     public $username;
     public $password;
 

@@ -1,6 +1,6 @@
 <?php
 /** @var $this TemplateContext */
-use Grout\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
 use Cyantree\Grout\App\Generators\Template\TemplateContext;
 
 $q = ManagedFactory::get($this->app)->appQuick();
