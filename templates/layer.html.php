@@ -1,11 +1,10 @@
 <?php
-/** @var $this TemplateContext */
+/** @var $this AppTemplateContext */
 
-use Cyantree\Grout\App\Generators\Template\TemplateContext;
-use Grout\BootstrapModule\GlobalFactory;
+use Grout\AppModule\Types\AppTemplateContext;
 
 $m = $this->task->module;
-$q = GlobalFactory::get($this->app)->appQuick();
+$q = $this->factory()->appQuick();
 ?>
 <div class="title">
     <span class="title"><?=$q->e($this->in->get('title'))?></span>

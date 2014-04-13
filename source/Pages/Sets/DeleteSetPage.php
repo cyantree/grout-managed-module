@@ -23,7 +23,7 @@ class DeleteSetPage extends RestrictedPage
     protected function _onAccessible()
     {
         $type = $this->task->vars->get('type');
-        if(!$this->managedFactory()->appModule()->setTypes->has($type)){
+        if(!$this->factory()->module->setTypes->has($type)){
             $this->parseError(ResponseCode::CODE_404);
             return;
         }
@@ -44,20 +44,24 @@ class DeleteSetPage extends RestrictedPage
             $this->status = new FormStatus();
 
             if ($this->set->delete()) {
-                $this->status->postSuccess(null, $q->t('Der Inhalt wurde erfolgreich gelöscht.'));
+                if (!$this->set->status->hasSuccessMessage('success')) {
+                    $this->set->postSuccess('success', $q->t('Der Inhalt wurde erfolgreich gelöscht.'));
+                }
             } else {
-                $this->status->postError(null, $q->t('Der Inhalt konnte nicht gelöscht werden.'));
+                if (!$this->set->status->hasError('error')) {
+                    $this->status->postError('error', $q->t('Der Inhalt konnte nicht gelöscht werden.'));
+                }
             }
         }
 
-        $this->submitUrl = $this->managedFactory()->appModule()->getRouteUrl('delete-set', array('type' => $type, 'id' => $this->set->getId()));
+        $this->submitUrl = $this->factory()->module->getRouteUrl('delete-set', array('type' => $type, 'id' => $this->set->getId()));
 
-        $this->setResult($this->managedFactory()->appTemplates()->load('sets/delete.html'));
+        $this->setResult($this->factory()->appTemplates()->load('sets/delete.html'));
     }
 
     private function _loadSet()
     {
-        $class = $this->managedFactory()->appModule()->setTypes->get($this->type);
+        $class = $this->factory()->module->setTypes->get($this->type);
 
         if(!$class){
             return false;

@@ -19,7 +19,7 @@ class RestrictedPage extends ManagedPage
     {
         $f = ManagedFactory::get($this->app);
 
-        return !!$f->appSessionData()->get('userId');
+        return $f->appSessionData()->isLoggedIn();
     }
 
     protected function _onAccessible()
@@ -37,6 +37,6 @@ class RestrictedPage extends ManagedPage
         $f->task = $this->task;
         $f->execute();
 
-        $this->setResult($this->managedFactory()->appTemplates()->load('Cyantree\ManagedModule:login.html', array('form' => $f)));
+        $this->setResult($this->factory()->appTemplates()->load('CyantreeManagedModule::login.html', array('form' => $f)));
     }
 }

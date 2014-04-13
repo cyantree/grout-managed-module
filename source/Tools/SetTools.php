@@ -9,25 +9,32 @@ class SetTools {
     /** @var ManagedFactory */
     private $_factory;
 
-    /** @var  ManagedModule */
-    private $_module;
-
     public function __construct(ManagedFactory $factory)
     {
         $this->_factory = $factory;
-        $this->_module = $factory->appModule();
     }
 
-    public function register($id, $setClass, $entityClass, $config = array())
+    public function register($id, $setClass, $config = array())
     {
         $config = new ArrayFilter($config);
 
-        $this->_module->setTypes->set($id, $setClass);
-        $this->_module->setTypeEntities->set($id, $entityClass);
-        $this->_module->setTypeConfigs->set($id, $config);
+        $this->_factory->module->setTypes->set($id, $setClass);
+        $this->_factory->module->setTypeConfigs->set($id, $config);
 
-        if ($config->get('ListPage')) {
-            $this->_module->addRoute('list-sets/'.$id.'/', $config->get('ListPage'), array('type' => $id), 1);
+        if ($page = $config->get('ListPage')) {
+            $this->_factory->module->addRoute('list-sets/' . $id . '/', $page, array('type' => $id), 1);
+        }
+
+        if ($page = $config->get('EditPage')) {
+            $this->_factory->module->addRoute('edit-set/' . $id . '/%%id%%/', $page, array('type' => $id), 1);
+        }
+
+        if ($page = $config->get('AddPage')) {
+            $this->_factory->module->addRoute('add-set/' . $id . '/', $page, array('type' => $id), 1);
+        }
+
+        if ($page = $config->get('DeletePage')) {
+            $this->_factory->module->addRoute('delete-set/' . $id . '/%%id%%/', $page, array('type' => $id), 1);
         }
     }
 }

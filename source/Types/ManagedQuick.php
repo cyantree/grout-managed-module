@@ -2,18 +2,20 @@
 namespace Grout\Cyantree\ManagedModule\Types;
 
 use Cyantree\Grout\App\GroutQuick;
-use Grout\Cyantree\ManagedModule\ManagedFactory;
+use Grout\AppModule\Helpers\Translation\Translator;
 
 class ManagedQuick extends GroutQuick
 {
-    public $translationDomain = 'default';
+    /** @var Translator */
+    public $translator;
+    public $translatorDefaultTextDomain = 'default';
 
     public function t($message, $textDomain = null, $locale = null)
     {
-        if($textDomain === null){
-            $textDomain = $this->translationDomain;
+        if ($textDomain === null) {
+            $textDomain = $this->translatorDefaultTextDomain;
         }
 
-        return ManagedFactory::get($this->_app)->appTranslator()->translator->translate($message, $textDomain, $locale);
+        return $this->translator->translate($message, $textDomain, $locale);
     }
 }

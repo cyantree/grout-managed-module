@@ -55,8 +55,7 @@ class LoginForm extends Form
         $this->_finishForm();
 
         $data = ManagedFactory::get($this->task->app)->appSessionData();
-        $data->set('userId', $this->_loginEvent->data['userId']);
-        $data->set('userRole', $this->_loginEvent->data['userRole']);
+        $data->login($this->_loginEvent->data['userId'], $this->_loginEvent->data['userRole']);
 
         $this->status->postSuccess(null, $q->t('Sie wurden erfolgreich angemeldet.'));
     }

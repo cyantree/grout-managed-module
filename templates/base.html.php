@@ -7,7 +7,7 @@ use Grout\Cyantree\ManagedModule\Types\AccessRule;
 use Cyantree\Grout\App\Generators\Template\TemplateContext;
 
 $f = ManagedFactory::get($this->app);
-$m = $f->appModule();
+$m = $f->module;
 $q = $f->appQuick();
 $ui = $f->appUi();
 $c = $f->appConfig();
@@ -29,28 +29,28 @@ $c = $f->appConfig();
     $.app.urlPrefix = "<?=$q->e($m->getPublicUrl('', false), 'js')?>";
 </script>
 <div id="header">
-    <h1><a href="<?= $q->e($m->getUrl()) ?>"><?=$q->e($c->title)?></a></h1>
+    <p class="title"><a href="<?= $q->e($m->getUrl()) ?>"><?=$q->e($c->title)?></a></p>
 
     <div class="menu">
-        <?php if ($f->appSessionData()->get('userId')) { ?>
+        <?php if ($f->appSessionData()->isLoggedIn()) { ?>
             <a href="<?=$q->e($m->getRouteUrl('logout')) ?>"><?=$q->t('Abmelden')?></a>
         <?php } ?>
     </div>
 </div>
 <div id="page">
-    <?php if ($f->appSessionData()->get('userId')) { ?>
+    <?php if ($f->appSessionData()->isLoggedIn()) { ?>
         <div id="menu">
             <ul>
                 <?php
                 $activeMenu = $this->task->vars->get('menu');
                 $filter = new ArrayFilter();
-                $menuLinks = $f->appModule()->menuLinks;
+                $menuLinks = $m->menuLinks;
                 foreach ($menuLinks as $menuLink) {
                     $filter->setData($menuLink);
 
                     /** @var AccessRule $access */
                     $access = ArrayTools::get($menuLink, 'access');
-                    if($access && !$access->hasAccess($f->appSessionData()->get('userId'), $f->appSessionData()->get('userRole'))){
+                    if($access && !$f->hasAccess($access)){
                         continue;
                     }
 

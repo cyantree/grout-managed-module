@@ -1,3 +1,61 @@
-/*! cyantree grout ManagedModule - v0.0.0 - 2013-09-03 00:59:59
-* Copyright (c) 2013 cyantree - Christoph Schreiber */
-var initCallbacks=[];!function(a){a(document).ready(function(){for(var a in initCallbacks)initCallbacks[a]()}),a.extend({app:{urlPrefix:null},service:{url:null,call:function(b,c,d){a.ct.callService(a.service.url,b,c,d)}},initContainer:function(b){b.find(".CT_LayerLink").each(function(b,c){a(c).CT_LayerLink()}),b.find("form.CT_LayerForm").each(function(c,d){a(d).CT_LayerForm({layer:b.data("CT_Layer")})})}})}(jQuery);
+var initCallbacks = [];
+
+(function($){
+    $(document).ready(function(){
+        for(var i in initCallbacks){ initCallbacks[i](); }
+
+        $('._submit').click(function(e) {
+            var $t = $(this),
+                name = $t.data('submit-name'),
+                value = $t.data('submit-value');
+
+            if ($t.is('input')) {
+                if (!name) {
+                    name = $t.attr('name');
+                }
+
+                if (!value) {
+                    value = $t.val();
+                }
+            } else {
+                if (!value) {
+                    value = $t.text();
+                }
+            }
+
+            var $form = $(this).parents('form').first();
+
+            var $hidden = $form.find('input[name=' + name + '][type=hidden]');
+
+            if (!$hidden.length) {
+                $hidden = $('<input type="hidden" name="' + name + '" />').appendTo($form);
+            }
+
+            $hidden.val(value);
+
+            $form.submit();
+
+            e.preventDefault();
+        });
+    });
+
+    $.extend({
+        app: {
+            urlPrefix: null
+        },
+
+        service: {
+            url: null,
+            call: function(command, data, callback){
+                $.ct.callService($.service.url, command, data, callback);
+            }
+        },
+
+        initContainer: function($container){
+            $container.find('.CT_LayerLink').each(function(i, e){ $(e).CT_LayerLink(); });
+            $container.find('form.CT_LayerForm').each(function(i, e){
+                    $(e).CT_LayerForm({layer: $container.data('CT_Layer') });
+            });
+        }
+    });
+})(jQuery);

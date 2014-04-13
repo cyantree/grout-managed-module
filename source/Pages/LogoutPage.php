@@ -6,8 +6,10 @@ class LogoutPage extends RestrictedPage
 {
     protected function _onAccessible()
     {
-        $this->managedFactory()->appSessionData()->delete(array('userRole', 'userId'));
+        $this->module->events->trigger('logout');
 
-        $this->setResult($this->managedFactory()->appTemplates()->load('logout.html'));
+        $this->factory()->appSessionData()->reset();
+
+        $this->setResult($this->factory()->appTemplates()->load('logout.html'));
     }
 }

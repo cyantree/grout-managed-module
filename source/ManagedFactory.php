@@ -1,12 +1,14 @@
 <?php
 namespace Grout\Cyantree\ManagedModule;
 
+use Cyantree\Grout\App\App;
 use Cyantree\Grout\App\Generators\Template\TemplateGenerator;
 use Cyantree\Grout\App\GroutFactory;
 use Cyantree\Grout\Mail\Mail;
+use Cyantree\Grout\Translation\DummyTranslator;
 use Cyantree\Grout\Ui\Ui;
-use Grout\BootstrapModule\GlobalFactory;
-use Grout\Cyantree\TranslatorModule\TranslatorModule;
+use Grout\AppModule\AppFactory;
+use Grout\Cyantree\ManagedModule\Types\ManagedSessionData;
 use Grout\Cyantree\ManagedModule\Tools\MenuTools;
 use Grout\Cyantree\ManagedModule\Tools\SetTools;
 use Grout\Cyantree\ManagedModule\Types\AccessRule;
@@ -14,18 +16,21 @@ use Grout\Cyantree\ManagedModule\Types\ManagedConfig;
 use Grout\Cyantree\ManagedModule\Types\ManagedQuick;
 use Zend\I18n\Translator\Translator;
 
-class ManagedFactory extends GlobalFactory
+class ManagedFactory extends AppFactory
 {
+    /** @var ManagedModule */
+    public $module;
+
     public function __construct()
     {
         parent::__construct();
     }
 
     /** @return ManagedFactory */
-    public static function get($app)
+    public static function get(App $app = null, $moduleId = null)
     {
         /** @var ManagedFactory $factory */
-        $factory = GroutFactory::_getInstance($app, __CLASS__);
+        $factory = GroutFactory::_getInstance($app, __CLASS__, $moduleId, 'Cyantree\ManagedModule');
 
         return $factory;
     }
@@ -38,13 +43,14 @@ class ManagedFactory extends GlobalFactory
         }
 
         $tool = new TemplateGenerator();
+        $tool->defaultModule = $this->module;
         $tool->app = $this->app;
-        $tool->baseTemplate = 'Cyantree\ManagedModule::base.html';
 
         $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;
     }
 
+    /** @deprecated */
     public function appModule()
     {
         if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
@@ -52,7 +58,7 @@ class ManagedFactory extends GlobalFactory
         }
 
         /** @var ManagedModule $tool */
-        $tool = $this->app->getModuleByType('Cyantree\ManagedModule');
+        $tool = $this->module;
 
         $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;
@@ -66,8 +72,10 @@ class ManagedFactory extends GlobalFactory
         }
 
         $tool = new ManagedQuick($this->app);
-        $tool->publicAssetUrl = $this->app->publicUrl.$this->appConfig()->assetUrl;
-        $tool->translationDomain = 'Cyantree_ManagedModule';
+        $tool->publicAssetUrl = $this->app->publicUrl . $this->appConfig()->assetUrl;
+
+        $tool->translator = $this->appTranslator();
+        $tool->translatorDefaultTextDomain = $this->module->id;
 
         $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;
@@ -80,25 +88,27 @@ class ManagedFactory extends GlobalFactory
             return $tool;
         }
 
-        /** @var ManagedModule $module */
-        $module = $this->app->getModuleById('Cyantree\ManagedModule');
-        $tool = $module->moduleConfig;
+        /** @var ManagedConfig $tool */
+        $tool = $this->app->configs->getConfig($this->module->id);
 
         $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;
     }
 
-    /** @return TranslatorModule */
+    /** @return Translator */
     public function appTranslator()
     {
         if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
             return $tool;
         }
 
-        if(!$this->app->hasModule('Cyantree\TranslatorModule')){
-            $tool = $this->app->importModule('Cyantree\TranslatorModule');
-        }else{
-            $tool = $this->app->getModuleByType('Cyantree\TranslatorModule');
+        $event = $this->module->events->trigger('getTranslator');
+
+        if ($event->data) {
+            $tool = $event->data;
+
+        } else {
+            $tool = new DummyTranslator();
         }
 
         $this->_setAppTool(__FUNCTION__, $tool);
@@ -131,10 +141,26 @@ class ManagedFactory extends GlobalFactory
         return $tool;
     }
 
+    /** @return ManagedSessionData */
+    public function appSessionData()
+    {
+        $sessionData = parent::appSessionData();
+
+        $tool = $sessionData->get($this->module->id);
+
+        if ($tool === null) {
+            $tool = new ManagedSessionData();
+
+            $sessionData->set($this->module->id, $tool);
+        }
+
+        return $tool;
+    }
+
     /** @param $rule AccessRule */
     public function hasAccess($rule)
     {
         $d = $this->appSessionData();
-        return $rule->hasAccess($d->get('userId'), $d->get('userRole'));
+        return $rule->hasAccess($d->userId, $d->userRole);
     }
 }

@@ -1,5 +1,6 @@
 {
     "name": "cyantree/grout-managed-module",
+    "version": "1.0",
     "type": "grout-module",
     "description": "module for backend functionality",
     "keywords": ["grout", "backend", "admin", "template"],
@@ -8,9 +9,13 @@
     "authors": [
         {"name": "Christoph Schreiber", "email": "mail@cyantree.com"}
     ],
+    "autoload": {
+        "psr-4": {
+            "Grout\\Cyantree\\ManagedModule\\": ["", "source/"]
+        }
+    },
     "require": {
-        "cyantree/grout-module-installer": "0.0.*",
-        "cyantree/grout-translator-module": "0.0.*"
+        "cyantree/grout": "1.*"
     },
     "extra": {
         "grout-module-name": "Cyantree/ManagedModule"

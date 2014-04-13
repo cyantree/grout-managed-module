@@ -11,5 +11,5 @@ $q = $f->appQuick();
 echo $ui->statusSuccess($q->t('Sie wurden erfolgreich abgemeldet.'));
 ?>
 <script>
-    $.ct.redirect("<?=$q->e($f->appModule()->getUrl(), 'js')?>", 3);
+    $.ct.redirect("<?=$q->e($f->module->getUrl(), 'js')?>", 3);
 </script>

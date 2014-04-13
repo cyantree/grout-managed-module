@@ -26,13 +26,13 @@ class EditSetPage extends RestrictedPage
     protected function _onAccessible()
     {
         $type = $this->task->vars->get('type');
-        if(!$this->managedFactory()->appModule()->setTypes->has($type)){
+        if(!$this->factory()->module->setTypes->has($type)){
             $this->parseError(ResponseCode::CODE_404);
             return;
         }
 
         $this->type = $type;
-        $this->id = $this->task->request->post->get('id', $this->task->vars->get('id'));
+        $this->id = $this->task->request->post->get('set_id', $this->task->vars->get('id'));
 
         if(!$this->_loadSet()){
             $this->parseError(ResponseCode::CODE_404);
@@ -50,7 +50,9 @@ class EditSetPage extends RestrictedPage
             $this->set->check();
 
             if(!$this->set->status->error){
-                $this->set->postSuccess(null, $q->t('Der Inhalt wurde erfolgreich gespeichert.'));
+                if (!$this->set->status->hasSuccessMessage('success')) {
+                    $this->set->postSuccess('success', $q->t('Der Inhalt wurde erfolgreich gespeichert.'));
+                }
                 $this->set->save();
             }
         }else{
@@ -58,10 +60,10 @@ class EditSetPage extends RestrictedPage
         }
 
         if (!$this->set->getId()) {
-            $this->submitUrl = $this->managedFactory()->appModule()->getRouteUrl('add-set', array('type' => $type));
+            $this->submitUrl = $this->factory()->module->getRouteUrl('add-set', array('type' => $type));
         } else {
-            $this->submitUrl = $this->managedFactory()->appModule()->getRouteUrl('edit-set', array('type' => $type, 'id' => $this->set->getId()));
-            $this->deleteUrl = $this->managedFactory()->appModule()->getRouteUrl('delete-set', array('type' => $type, 'id' => $this->set->getId()));
+            $this->submitUrl = $this->factory()->module->getRouteUrl('edit-set', array('type' => $type, 'id' => $this->set->getId()));
+            $this->deleteUrl = $this->factory()->module->getRouteUrl('delete-set', array('type' => $type, 'id' => $this->set->getId()));
         }
 
         // >> Translate status
@@ -80,19 +82,19 @@ class EditSetPage extends RestrictedPage
             }
         }
         if($this->status->hasInfoMessages){
-            foreach($this->status->infoMessages as $code => $message){
+            foreach($this->status->infoMessages as $message){
                 if($message){
                     $message->message = $q->t($message->message);
                 }
             }
         }
 
-        $this->setResult($this->managedFactory()->appTemplates()->load('sets/edit.html'));
+        $this->setResult($this->factory()->appTemplates()->load('sets/edit.html'));
     }
 
     private function _loadSet()
     {
-        $class = $this->managedFactory()->appModule()->setTypes->get($this->type);
+        $class = $this->factory()->module->setTypes->get($this->type);
 
         if(!$class){
             return false;

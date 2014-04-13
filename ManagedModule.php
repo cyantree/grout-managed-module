@@ -23,32 +23,29 @@ class ManagedModule extends Module
     public $setTypes = null;
 
     /** @var ArrayFilter */
-    public $setTypeEntities = null;
-
-    /** @var ArrayFilter */
     public $setTypeConfigs = null;
 
     public function init()
     {
         $this->setTypes = new ArrayFilter();
-        $this->setTypeEntities = new ArrayFilter();
         $this->setTypeConfigs = new ArrayFilter();
 
-        $this->moduleConfig = $this->app->config->get($this->type, $this->id, new ManagedConfig());
+        $this->app->configs->setDefaultConfig($this->id, new ManagedConfig());
+        $this->moduleConfig = $this->app->configs->getConfig($this->id);
 
         $this->plugins = array();
 
-        $this->defaultPageType = 'RestrictedPage';
+        $this->defaultPageType = 'Pages\RestrictedPage';
         $this->addNamedRoute('index', '', null, array('template' => 'index.html'));
 
-        $this->addNamedRoute('service', 'service/', 'ServicePage');
-        $this->addNamedRoute('logout', 'logout/', 'LogoutPage');
+        $this->addNamedRoute('service', 'service/', 'Pages\ServicePage');
+        $this->addNamedRoute('logout', 'logout/', 'Pages\LogoutPage');
 
         // Entity pages
-        $this->addNamedRoute('list-sets', 'list-sets/%%type%%/', 'Sets\ListSetsPage');
-        $this->addNamedRoute('add-set', 'add-set/%%type%%/', 'Sets\EditSetPage');
-        $this->addNamedRoute('edit-set', 'edit-set/%%type%%/%%id%%/', 'Sets\EditSetPage');
-        $this->addNamedRoute('delete-set', 'delete-set/%%type%%/%%id%%/', 'Sets\DeleteSetPage');
+        $this->addNamedRoute('list-sets', 'list-sets/%%type%%/', 'Pages\Sets\ListSetsPage');
+        $this->addNamedRoute('add-set', 'add-set/%%type%%/', 'Pages\Sets\EditSetPage');
+        $this->addNamedRoute('edit-set', 'edit-set/%%type%%/%%id%%/', 'Pages\Sets\EditSetPage');
+        $this->addNamedRoute('delete-set', 'delete-set/%%type%%/%%id%%/', 'Pages\Sets\DeleteSetPage');
         $this->addNamedRoute('404', '%%any,.*%%', null, array('template' => '404.html', 'responseCode' => ResponseCode::CODE_404), -1);
 
         foreach ($this->moduleConfig->plugins as $plugin) {

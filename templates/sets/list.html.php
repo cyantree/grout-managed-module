@@ -1,8 +1,9 @@
 <?php
-/** @var $this TemplateContext */
+use Cyantree\Grout\App\Generators\Template\TemplateContext;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
 use Grout\Cyantree\ManagedModule\Pages\Sets\ListSetsPage;
-use Cyantree\Grout\App\Generators\Template\TemplateContext;
+
+/** @var $this TemplateContext */
 
 /** @var $page ListSetsPage */
 $page = $this->task->page;
@@ -10,48 +11,74 @@ $page = $this->task->page;
 $q = ManagedFactory::get($this->app)->appQuick();
 ?>
 
-<script>
-    var listArgs = <?=json_encode($page->getUrlArguments('javascript'))?>;
-    getListUrl = function(obj){
-        obj = $.extend(listArgs, obj);
+    <script>
+        var listArgs = <?=json_encode($page->getUrlArguments('filter'))?>;
+        getListUrl = function(obj){
+            var query = "";
+            $.each(obj, function(key, value){
+                if (value !== "" && value !== null) {
+                    if (query !== "") {
+                        query += "&";
+                    }
 
-        var query = "";
-        $.each(obj, function(key, value){
-            if (value !== "" && value !== null) {
-                query += "&" + key + "=" + encodeURIComponent(value);
-            }
-        });
-        return '<?=$q->e($page->pageUrl, 'js')?>' + query;
-    };
-
-    <?=$this->in->get('scripts')?>
-    $(document).ready(function(){
-        var updateWithChange = function($el) {
-            var o = {};
-            o[$el.prop('name')] = $el.val();
-
-            window.location.href = getListUrl(o);
+                    query += key + "=" + encodeURIComponent(value);
+                }
+            });
+            return '<?=$q->e($page->pageUrl, 'js')?>' + query;
         };
-        $('select.updateOnChange').change(function(){
-            updateWithChange($(this));
-        });
-        $('input.updateOnChange[type="text"]').keydown(function(e){
-            if(e.which == 13){
+
+        <?=$page->renderScripts()?>
+        $(document).ready(function(){
+            var updateWithChange = function($el) {
+                var o = {};
+                o[$el.prop('name')] = $el.val();
+
+                o = $.extend(listArgs, o);
+
+                var ignoreArgs = $el.data('update-on-change-ignore-args');
+                if (ignoreArgs) {
+                    ignoreArgs = ignoreArgs.split(",");
+
+                    $.each(ignoreArgs, function() {
+                        delete(o[this]);
+                    });
+                }
+
+                window.location.href = getListUrl(o);
+            };
+            $('select.updateOnChange').change(function(){
                 updateWithChange($(this));
+            });
+            $('input.updateOnChange[type="text"]').keydown(function(e){
+                if(e.which == 13){
+                    updateWithChange($(this));
+                }
+            });
+            <?=$page->renderReadyScripts()?>
+
+            if ($('div.CT_FormStatus_Success')) {
+                setTimeout(function() {
+                    $('div.CT_FormStatus_Success').fadeOut();
+                }, 5000);
             }
         });
-        <?=$this->in->get('readyScripts')?>
-    });
-</script>
+    </script>
+    <style>
+        .absoluteRight {
+            top: 0;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
 <?php
-echo $this->in->get('rightToSearch');
-
 echo $page->renderHeader();
-echo $this->in->get('belowHeader');
-echo $page->renderNavBar($this->in->get('navBar'));
-echo $this->in->get('aboveList');
+echo ManagedFactory::get($this->app)->appUi()->status($page->status);
+echo $page->renderFormStart();
+echo $page->renderNavigationBar();
+echo $page->renderAboveList();
 echo $page->renderTable();
-echo $this->in->get('belowList');
-echo $page->renderNavBar($this->in->get('navBar'));
-echo $this->in->get('footer');
+echo $page->renderBelowList();
+echo $page->renderNavigationBar();
+echo $page->renderFormEnd();
 echo $page->renderFooter();

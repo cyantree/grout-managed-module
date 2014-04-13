@@ -50,5 +50,5 @@ do {
         <?php } ?>
     </div>
 
-<?= $ui->hiddenInput('id', $set->getId()) ?>
+<?= $ui->hiddenInput('set_id', $set->getId()) ?>
 <?= $ui->formEnd() ?>

@@ -15,7 +15,7 @@ class MenuTools
     public function __construct(ManagedFactory $factory)
     {
         $this->_factory = $factory;
-        $this->_links = &$this->_factory->appModule()->menuLinks;
+        $this->_links = &$this->_factory->module->menuLinks;
     }
 
 
@@ -33,7 +33,7 @@ class MenuTools
     {
         $this->_links[] = array_merge(array(
             'type' => 'url',
-            'url' => $this->_factory->appModule()->getRouteUrl('list-sets', array('type' => $set)),
+            'url' => $this->_factory->module->getRouteUrl('list-sets', array('type' => $set)),
             'access' => $accessRule,
             'title' => $title,
             'id' => $set.'-sets'
@@ -44,7 +44,7 @@ class MenuTools
     {
         $this->_links[] = array_merge(array(
             'type' => 'url',
-            'url' => $this->_factory->appModule()->getRouteUrl('edit-set', array('type' => $set, 'id' => $id)),
+            'url' => $this->_factory->module->getRouteUrl('edit-set', array('type' => $set, 'id' => $id)),
             'access' => $accessRule,
             'title' => $title,
             'id' => $set.'-sets'
@@ -55,7 +55,7 @@ class MenuTools
     {
         $this->_links[] = array_merge(array(
                 'type' => 'url',
-                'url' => $this->_factory->appModule()->getRouteUrl('add-set', array('type' => $set)),
+                'url' => $this->_factory->module->getRouteUrl('add-set', array('type' => $set)),
                 'access' => $accessRule,
                 'title' => $title,
                 'id' => $set.'-sets'
@@ -66,7 +66,7 @@ class MenuTools
     {
         $this->_links[] = array_merge(array(
             'type' => 'url',
-            'url' => $this->_factory->appModule()->getRouteUrl('delete-set', array('type' => $set, 'id' => $id)),
+            'url' => $this->_factory->module->getRouteUrl('delete-set', array('type' => $set, 'id' => $id)),
             'access' => $accessRule,
             'title' => $title,
             'id' => $set.'-sets'
