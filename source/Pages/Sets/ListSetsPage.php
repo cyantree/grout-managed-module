@@ -2,9 +2,9 @@
 namespace Grout\Cyantree\ManagedModule\Pages\Sets;
 
 use Cyantree\Grout\App\Types\ResponseCode;
-use Cyantree\Grout\Form\FormStatus;
 use Cyantree\Grout\Set\Set;
 use Cyantree\Grout\Set\SetListResult;
+use Cyantree\Grout\StatusContainer;
 use Grout\Cyantree\ManagedModule\Pages\RestrictedPage;
 
 class ListSetsPage extends RestrictedPage
@@ -19,7 +19,7 @@ class ListSetsPage extends RestrictedPage
     public $sortBy;
     public $sortDirection;
 
-    /** @var FormStatus */
+    /** @var StatusContainer */
     public $status;
 
     public $pageUrl;
@@ -60,7 +60,7 @@ class ListSetsPage extends RestrictedPage
         }
 
         $this->type = $type;
-        $this->status = new FormStatus();
+        $this->status = new StatusContainer();
 
         $this->task->vars->set('menu', $type.'-sets');
 

@@ -3,7 +3,6 @@ namespace Grout\Cyantree\ManagedModule\Tools;
 
 use Cyantree\Grout\Filter\ArrayFilter;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
-use Grout\Cyantree\ManagedModule\ManagedModule;
 
 class SetTools {
     /** @var ManagedFactory */

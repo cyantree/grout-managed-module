@@ -2,7 +2,7 @@
 namespace Grout\Cyantree\ManagedModule\Types;
 
 use Cyantree\Grout\App\GroutQuick;
-use Grout\AppModule\Helpers\Translation\Translator;
+use Cyantree\Grout\Translation\Translator;
 
 class ManagedQuick extends GroutQuick
 {

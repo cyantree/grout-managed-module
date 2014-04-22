@@ -56,9 +56,9 @@ $q = ManagedFactory::get($this->app)->appQuick();
             });
             <?=$page->renderReadyScripts()?>
 
-            if ($('div.CT_FormStatus_Success')) {
+            if ($('div.GroutStatusBox .success')) {
                 setTimeout(function() {
-                    $('div.CT_FormStatus_Success').fadeOut();
+                    $('div.GroutStatusBox .success').fadeOut();
                 }, 5000);
             }
         });

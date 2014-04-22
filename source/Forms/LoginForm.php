@@ -38,12 +38,12 @@ class LoginForm extends Form
         $data = $this->_loginEvent->data;
         $success = $data['success'];
         if($success === false){
-            $this->status->postError('invalidCredentials', $q->t('Bitte prüfen Sie die Anmeldedaten.'));
+            $this->status->addError('invalidCredentials', $q->t('Bitte prüfen Sie die Anmeldedaten.'));
         }elseif($success === null){
             $this->_loginEvent->data['userId'] = $a->appConfig()->username;
             $this->_loginEvent->data['userRole'] = 'admin';
             if($this->data->username !== $a->appConfig()->username || $this->data->password !== $a->appConfig()->password){
-                $this->status->postError('invalidCredentials', $q->t('Bitte prüfen Sie die Anmeldedaten.'));
+                $this->status->addError('invalidCredentials', $q->t('Bitte prüfen Sie die Anmeldedaten.'));
             }
         }
     }
@@ -57,7 +57,7 @@ class LoginForm extends Form
         $data = ManagedFactory::get($this->task->app)->appSessionData();
         $data->login($this->_loginEvent->data['userId'], $this->_loginEvent->data['userRole']);
 
-        $this->status->postSuccess(null, $q->t('Sie wurden erfolgreich angemeldet.'));
+        $this->status->addSuccess(null, $q->t('Sie wurden erfolgreich angemeldet.'));
     }
 }
 

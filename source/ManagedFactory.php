@@ -6,6 +6,7 @@ use Cyantree\Grout\App\Generators\Template\TemplateGenerator;
 use Cyantree\Grout\App\GroutFactory;
 use Cyantree\Grout\Mail\Mail;
 use Cyantree\Grout\Translation\DummyTranslator;
+use Cyantree\Grout\Translation\Translator;
 use Cyantree\Grout\Ui\Ui;
 use Grout\AppModule\AppFactory;
 use Grout\Cyantree\ManagedModule\Types\ManagedSessionData;
@@ -14,7 +15,6 @@ use Grout\Cyantree\ManagedModule\Tools\SetTools;
 use Grout\Cyantree\ManagedModule\Types\AccessRule;
 use Grout\Cyantree\ManagedModule\Types\ManagedConfig;
 use Grout\Cyantree\ManagedModule\Types\ManagedQuick;
-use Zend\I18n\Translator\Translator;
 
 class ManagedFactory extends AppFactory
 {

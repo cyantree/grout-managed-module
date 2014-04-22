@@ -47,7 +47,7 @@ do {
         <label><?= $label != '' ? $q->e($label) . ':' : '' ?></label>
 
         <div class="content">
-            <?= $set->render(Set::MODE_DELETE, $content) ?>
+            <?= $set->render($content) ?>
         </div>
     </div>
 <?php

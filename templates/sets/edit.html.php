@@ -36,7 +36,7 @@ do {
         <label><?= $q->e($label != '' ? $label . ($content->required ? '*' : '') . ':' : '') ?></label>
 
         <div class="content">
-            <?= $set->render($page->mode, $content) ?>
+            <?= $set->render($content) ?>
         </div>
     </div>
 <?php

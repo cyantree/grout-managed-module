@@ -2,8 +2,8 @@
 namespace Grout\Cyantree\ManagedModule\Pages\Sets;
 
 use Cyantree\Grout\App\Types\ResponseCode;
-use Cyantree\Grout\Form\FormStatus;
 use Cyantree\Grout\Set\Set;
+use Cyantree\Grout\StatusContainer;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
 use Grout\Cyantree\ManagedModule\Pages\RestrictedPage;
 
@@ -14,7 +14,7 @@ class EditSetPage extends RestrictedPage
     /** @var Set */
     public $set;
 
-    /** @var FormStatus */
+    /** @var StatusContainer */
     public $status;
 
     public $id;
@@ -41,8 +41,6 @@ class EditSetPage extends RestrictedPage
 
         $q = ManagedFactory::get($this->app)->appQuick();
 
-        $this->set->prepareRendering($this->mode);
-
         if ($this->request()->post->get('save')) {
             $this->status = $this->set->status;
 
@@ -56,7 +54,7 @@ class EditSetPage extends RestrictedPage
                 $this->set->save();
             }
         }else{
-            $this->status = new FormStatus();
+            $this->status = new StatusContainer();
         }
 
         if (!$this->set->getId()) {
@@ -68,14 +66,14 @@ class EditSetPage extends RestrictedPage
 
         // >> Translate status
         if($this->status->hasSuccessMessages){
-            foreach($this->status->successMessages as $code => $message){
+            foreach($this->status->successMessages as $message){
                 if($message){
                     $message->message = $q->t($message->message);
                 }
             }
         }
         if($this->status->hasErrorMessages){
-            foreach($this->status->errors as $code => $message){
+            foreach($this->status->errors as $message){
                 if($message){
                     $message->message = $q->t($message->message);
                 }
@@ -103,21 +101,30 @@ class EditSetPage extends RestrictedPage
         /** @var $set Set */
         $class = $class::${'_CLASS_'};
         $set = new $class($this->task);
+
+        if ($this->id) {
+            $this->mode = Set::MODE_EDIT;
+
+            if (!$set->allowEdit) {
+                return false;
+            }
+
+        } else {
+            $this->mode = Set::MODE_ADD;
+
+            if (!$set->allowAdd) {
+                return false;
+            }
+        }
+
+        $set->prepareRendering($this->mode);
+
         if($this->id){
             $set->loadById($this->id);
 
             if(!$set->getId() || !$set->allowEdit){
                 return false;
             }
-        }elseif(!$set->allowAdd){
-            return false;
-        }
-
-        if($set->getId()){
-            $this->mode = Set::MODE_EDIT;
-        }else{
-            $set->createNew();
-            $this->mode = Set::MODE_ADD;
         }
 
         $this->set = $set;

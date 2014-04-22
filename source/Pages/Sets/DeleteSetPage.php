@@ -2,8 +2,8 @@
 namespace Grout\Cyantree\ManagedModule\Pages\Sets;
 
 use Cyantree\Grout\App\Types\ResponseCode;
-use Cyantree\Grout\Form\FormStatus;
 use Cyantree\Grout\Set\Set;
+use Cyantree\Grout\StatusContainer;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
 use Grout\Cyantree\ManagedModule\Pages\RestrictedPage;
 
@@ -13,7 +13,7 @@ class DeleteSetPage extends RestrictedPage
     /** @var Set */
     public $set;
 
-    /** @var FormStatus */
+    /** @var StatusContainer */
     public $status;
 
     public $id;
@@ -36,12 +36,10 @@ class DeleteSetPage extends RestrictedPage
             return;
         }
 
-        $this->set->prepareRendering(Set::MODE_DELETE);
-
         $q = ManagedFactory::get($this->app)->appQuick();
 
         if ($this->request()->post->get('delete')) {
-            $this->status = new FormStatus();
+            $this->status = new StatusContainer();
 
             if ($this->set->delete()) {
                 if (!$this->set->status->hasSuccessMessage('success')) {
@@ -49,7 +47,7 @@ class DeleteSetPage extends RestrictedPage
                 }
             } else {
                 if (!$this->set->status->hasError('error')) {
-                    $this->status->postError('error', $q->t('Der Inhalt konnte nicht gelöscht werden.'));
+                    $this->set->postError('error', $q->t('Der Inhalt konnte nicht gelöscht werden.'));
                 }
             }
         }
@@ -70,6 +68,13 @@ class DeleteSetPage extends RestrictedPage
         /** @var $set Set */
         $class = $class::${'_CLASS_'};
         $set = new $class($this->task);
+
+        $set->prepareRendering(Set::MODE_DELETE);
+
+        if (!$set->allowDelete) {
+            return false;
+        }
+
         $set->loadById($this->id);
         $this->set = $set;
 
