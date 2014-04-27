@@ -1,6 +1,6 @@
 {
     "name": "cyantree/grout-managed-module",
-    "version": "1.0",
+    "version": "2.0",
     "type": "grout-module",
     "description": "module for backend functionality",
     "keywords": ["grout", "backend", "admin", "template"],
@@ -15,7 +15,7 @@
         }
     },
     "require": {
-        "cyantree/grout": "1.*"
+        "cyantree/grout": "2.*"
     },
     "extra": {
         "grout-module-name": "Cyantree/ManagedModule"
