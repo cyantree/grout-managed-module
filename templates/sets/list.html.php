@@ -9,6 +9,7 @@ use Grout\Cyantree\ManagedModule\Pages\Sets\ListSetsPage;
 $page = $this->task->page;
 
 $q = ManagedFactory::get($this->app)->appQuick();
+$ui = ManagedFactory::get($this->app)->appUi();
 ?>
 
     <script>
@@ -73,7 +74,7 @@ $q = ManagedFactory::get($this->app)->appQuick();
     </style>
 <?php
 echo $page->renderHeader();
-echo ManagedFactory::get($this->app)->appUi()->status($page->status);
+echo $ui->status($page->status);
 echo $page->renderFormStart();
 echo $page->renderNavigationBar();
 echo $page->renderAboveList();

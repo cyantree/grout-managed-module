@@ -13,12 +13,11 @@ $ui = ManagedFactory::get($this->app)->appUi();
 $page = $this->task->page;
 $set = $page->set;
 
-if($page->status){
-    echo $ui->status($page->status);
+echo $ui->status($page->status);
+echo $ui->status($set->status);
 
-    if($page->status->success){
-        return;
-    }
+if ($page->deleted) {
+    return;
 }
 ?>
 
@@ -43,7 +42,7 @@ do {
 
     $label = $content->config->get('label');
     ?>
-    <div class="item">
+    <div class="item" id="content_<?= $q->e($content->name) ?>">
         <label><?= $label != '' ? $q->e($label) . ':' : '' ?></label>
 
         <div class="content">

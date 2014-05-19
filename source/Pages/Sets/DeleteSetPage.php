@@ -20,6 +20,8 @@ class DeleteSetPage extends RestrictedPage
 
     public $submitUrl;
 
+    public $deleted = false;
+
     protected function _onAccessible()
     {
         $type = $this->task->vars->get('type');
@@ -28,6 +30,7 @@ class DeleteSetPage extends RestrictedPage
             return;
         }
 
+        $this->status = new StatusContainer();
         $this->type = $type;
         $this->id = $this->task->request->post->get('id', $this->task->vars->get('id'));
 
@@ -39,9 +42,9 @@ class DeleteSetPage extends RestrictedPage
         $q = ManagedFactory::get($this->app)->appQuick();
 
         if ($this->request()->post->get('delete')) {
-            $this->status = new StatusContainer();
-
             if ($this->set->delete()) {
+                $this->deleted = true;
+
                 if (!$this->set->status->hasSuccessMessage('success')) {
                     $this->set->postSuccess('success', $q->t('Der Inhalt wurde erfolgreich gelöscht.'));
                 }

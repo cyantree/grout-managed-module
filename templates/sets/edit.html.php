@@ -12,9 +12,8 @@ $ui = ManagedFactory::get($this->app)->appUi();
 $page = $this->task->page;
 $set = $page->set;
 
-if($page->status){
-    echo $ui->status($page->status);
-}
+echo $ui->status($page->status);
+echo $ui->status($set->status);
 ?>
 
 <?= $ui->formStart($page->submitUrl, 'file') ?>
@@ -32,7 +31,7 @@ do {
     }
     $label = $content->config->get('label');
     ?>
-    <div class="item">
+    <div class="item" id="content_<?= $q->e($content->name) ?>">
         <label><?= $q->e($label != '' ? $label . ($content->required ? '*' : '') . ':' : '') ?></label>
 
         <div class="content">

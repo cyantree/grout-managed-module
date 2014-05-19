@@ -33,6 +33,7 @@ class EditSetPage extends RestrictedPage
 
         $this->type = $type;
         $this->id = $this->task->request->post->get('set_id', $this->task->vars->get('id'));
+        $this->status = new StatusContainer();
 
         if(!$this->_loadSet()){
             $this->parseError(ResponseCode::CODE_404);
@@ -42,8 +43,6 @@ class EditSetPage extends RestrictedPage
         $q = ManagedFactory::get($this->app)->appQuick();
 
         if ($this->request()->post->get('save')) {
-            $this->status = $this->set->status;
-
             $this->set->populate($this->request()->post->data);
             $this->set->check();
 
@@ -125,6 +124,9 @@ class EditSetPage extends RestrictedPage
             if(!$set->getId() || !$set->allowEdit){
                 return false;
             }
+
+        } else {
+            $this->set->createNew();
         }
 
         $this->set = $set;
