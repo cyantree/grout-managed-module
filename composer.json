@@ -1,6 +1,6 @@
 {
     "name": "cyantree/grout-managed-module",
-    "version": "2.0",
+    "version": "2.1",
     "type": "grout-module",
     "description": "module for backend functionality",
     "keywords": ["grout", "backend", "admin", "template"],
