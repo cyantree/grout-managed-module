@@ -19,7 +19,7 @@ class RestrictedPage extends ManagedPage
     {
         $f = ManagedFactory::get($this->app);
 
-        return $f->appSessionData()->isLoggedIn();
+        return $f->appManagedSessionData()->isLoggedIn();
     }
 
     protected function _onAccessible()

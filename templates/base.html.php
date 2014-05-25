@@ -32,13 +32,13 @@ $c = $f->appConfig();
     <p class="title"><a href="<?= $q->e($m->getUrl()) ?>"><?=$q->e($c->title)?></a></p>
 
     <div class="menu">
-        <?php if ($f->appSessionData()->isLoggedIn()) { ?>
+        <?php if ($f->appManagedSessionData()->isLoggedIn()) { ?>
             <a href="<?=$q->e($m->getRouteUrl('logout')) ?>"><?=$q->t('Abmelden')?></a>
         <?php } ?>
     </div>
 </div>
 <div id="page">
-    <?php if ($f->appSessionData()->isLoggedIn()) { ?>
+    <?php if ($f->appManagedSessionData()->isLoggedIn()) { ?>
         <div id="menu">
             <ul>
                 <?php

@@ -33,7 +33,7 @@ class LoginForm extends Form
 
         $this->_loginEvent = $this->task->module->events->trigger('login',
             array('task' => $this->task, 'username' => $this->data->username, 'password' => $this->data->password,
-            'success' => null, 'userId' => null, 'userRole' => null));
+                'success' => null, 'userId' => null, 'userRole' => null));
 
         $data = $this->_loginEvent->data;
         $success = $data['success'];
@@ -54,7 +54,7 @@ class LoginForm extends Form
 
         $this->_finishForm();
 
-        $data = ManagedFactory::get($this->task->app)->appSessionData();
+        $data = ManagedFactory::get($this->task->app)->appManagedSessionData();
         $data->login($this->_loginEvent->data['userId'], $this->_loginEvent->data['userRole']);
 
         $this->status->addSuccess(null, $q->t('Sie wurden erfolgreich angemeldet.'));

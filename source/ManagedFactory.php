@@ -142,9 +142,9 @@ class ManagedFactory extends AppFactory
     }
 
     /** @return ManagedSessionData */
-    public function appSessionData()
+    public function appManagedSessionData()
     {
-        $sessionData = parent::appSessionData();
+        $sessionData = $this->appSessionData();
 
         $tool = $sessionData->get($this->module->id);
 
@@ -160,7 +160,7 @@ class ManagedFactory extends AppFactory
     /** @param $rule AccessRule */
     public function hasAccess($rule)
     {
-        $d = $this->appSessionData();
+        $d = $this->appManagedSessionData();
         return $rule->hasAccess($d->userId, $d->userRole);
     }
 }

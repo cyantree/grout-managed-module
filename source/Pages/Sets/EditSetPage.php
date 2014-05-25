@@ -126,7 +126,7 @@ class EditSetPage extends RestrictedPage
             }
 
         } else {
-            $this->set->createNew();
+            $set->createNew();
         }
 
         $this->set = $set;
