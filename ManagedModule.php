@@ -30,7 +30,10 @@ class ManagedModule extends Module
         $this->setTypes = new ArrayFilter();
         $this->setTypeConfigs = new ArrayFilter();
 
-        $this->app->configs->setDefaultConfig($this->id, new ManagedConfig());
+        $config = new ManagedConfig();
+        $config->assetUrl = 'assets/' . $this->urlPrefix;
+
+        $this->app->configs->setDefaultConfig($this->id, $config);
         $this->moduleConfig = $this->app->configs->getConfig($this->id);
 
         $this->plugins = array();
