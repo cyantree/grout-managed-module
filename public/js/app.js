@@ -1,10 +1,8 @@
 var initCallbacks = [];
 
 (function($){
-    $(document).ready(function(){
-        for(var i in initCallbacks){ initCallbacks[i](); }
-
-        $('._submit').click(function(e) {
+    initCallbacks.push(function() {
+        $('body').on("click", "._submit", function(e) {
             var $t = $(this),
                 name = $t.data('submit-name'),
                 value = $t.data('submit-value');
@@ -37,6 +35,11 @@ var initCallbacks = [];
 
             e.preventDefault();
         });
+    });
+    
+    
+    $(document).ready(function(){
+        for(var i in initCallbacks){ initCallbacks[i](); }
     });
 
     $.extend({

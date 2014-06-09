@@ -101,7 +101,7 @@ class ListSetsPage extends RestrictedPage
 
     public function renderNavigationBarContent()
     {
-        return $this->renderSearchInput().$this->renderPagination().$this->renderNavigationBarRightContent($this->renderAddButton());
+        return $this->renderSearchInput().$this->renderPagination().$this->renderNavigationBarRightContent($this->renderExportButton().$this->renderAddButton());
     }
 
     protected function _prepare()
@@ -174,6 +174,15 @@ class ListSetsPage extends RestrictedPage
         }
 
         return $this->task->module->getRouteUrl('add-set', array('type' => $type));
+    }
+
+    public function getExportUrl($type = null, $parameters = null)
+    {
+        if(!$type){
+            $type = $this->type;
+        }
+
+        return $this->task->module->getRouteUrl('export-sets', array('type' => $type), true, $parameters);
     }
 
     public function getDeleteUrl($id, $type = null)
@@ -388,6 +397,19 @@ class ListSetsPage extends RestrictedPage
         if($this->set->allowAdd){
             $class = 'button';
             return $u->link($this->getAddUrl(), $q->t('Hinzufügen'), '_self', array('class' => $class));
+        }
+
+        return '';
+    }
+
+    public function renderExportButton()
+    {
+        $q = $this->factory()->appQuick();
+        $u = $this->factory()->appUi();
+
+        if($this->set->allowExport){
+            $class = 'button';
+            return $u->link($this->getExportUrl(), $q->t('Exportieren'), '_self', array('class' => $class));
         }
 
         return '';

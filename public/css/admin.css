@@ -396,8 +396,11 @@ a.plain {
 p {
   margin: 0 0 12px 0;
 }
+.absoluteRight {
+  top: 0;
+}
 .hidden {
-  display: none;
+  display: none !important;
 }
 #menu {
   display: table-cell;
@@ -503,6 +506,9 @@ form input[type=radio] {
 form textarea {
   height: 250px;
 }
+input[type="button"],
+button,
+span.button,
 input[type="submit"],
 a.button {
   display: inline-block;
@@ -510,10 +516,14 @@ a.button {
   color: white;
   border: none;
   padding: 10px 20px;
+  margin: 0 2px;
   font-size: 14px;
   line-height: 19px;
   cursor: pointer;
 }
+input[type="button"]:hover,
+button:hover,
+span.button:hover,
 input[type="submit"]:hover,
 a.button:hover {
   background: #941919;

@@ -64,14 +64,6 @@ $ui = ManagedFactory::get($this->app)->appUi();
             }
         });
     </script>
-    <style>
-        .absoluteRight {
-            top: 0;
-        }
-        .hidden {
-            display: none !important;
-        }
-    </style>
 <?php
 echo $page->renderHeader();
 echo $ui->status($page->status);
