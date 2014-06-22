@@ -1,21 +1,32 @@
 {
     "name": "cyantree/grout-managed-module",
-    "version": "3.0",
+    "version": "4.0",
     "type": "grout-module",
     "description": "module for backend functionality",
-    "keywords": ["grout", "backend", "admin", "template"],
+    "keywords": [
+        "grout",
+        "backend",
+        "admin",
+        "template"
+    ],
     "homepage": "https://github.com/cyantree/grout-managed-module",
     "license": "LGPL-3.0",
     "authors": [
-        {"name": "Christoph Schreiber", "email": "mail@cyantree.com"}
+        {
+            "name": "Christoph Schreiber",
+            "email": "mail@cyantree.com"
+        }
     ],
     "autoload": {
         "psr-4": {
-            "Grout\\Cyantree\\ManagedModule\\": ["", "source/"]
+            "Grout\\Cyantree\\ManagedModule\\": [
+                "",
+                "source/"
+            ]
         }
     },
     "require": {
-        "cyantree/grout": ">=2.0,<4.0"
+        "cyantree/grout": ">=4.0,<5.0"
     },
     "extra": {
         "grout-module-name": "Cyantree/ManagedModule"
