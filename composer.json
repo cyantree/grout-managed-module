@@ -1,6 +1,6 @@
 {
     "name": "cyantree/grout-managed-module",
-    "version": "4.0",
+    "version": "4.1",
     "type": "grout-module",
     "description": "module for backend functionality",
     "keywords": [
