@@ -71,6 +71,7 @@ class DeleteSetPage extends RestrictedPage
         /** @var $set Set */
         $class = $class::${'_CLASS_'};
         $set = new $class($this->task);
+        $set->init();
 
         $set->prepareRendering(Set::MODE_DELETE);
 

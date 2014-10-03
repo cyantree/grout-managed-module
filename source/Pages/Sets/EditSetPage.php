@@ -4,6 +4,7 @@ namespace Grout\Cyantree\ManagedModule\Pages\Sets;
 use Cyantree\Grout\App\Types\ResponseCode;
 use Cyantree\Grout\Set\Set;
 use Cyantree\Grout\StatusContainer;
+use Cyantree\Grout\Types\FileUpload;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
 use Grout\Cyantree\ManagedModule\Pages\RestrictedPage;
 
@@ -43,7 +44,7 @@ class EditSetPage extends RestrictedPage
         $q = ManagedFactory::get($this->app)->quick();
 
         if ($this->request()->post->get('save')) {
-            $this->set->populate($this->request()->post->data);
+            $this->set->populate($this->request()->post->data, FileUpload::fromMultiplePhpFileUploads($this->request()->files->data));
             $this->set->check();
 
             if(!$this->set->status->error){
@@ -100,6 +101,7 @@ class EditSetPage extends RestrictedPage
         /** @var $set Set */
         $class = $class::${'_CLASS_'};
         $set = new $class($this->task);
+        $set->init();
 
         if ($this->id) {
             $this->mode = Set::MODE_EDIT;

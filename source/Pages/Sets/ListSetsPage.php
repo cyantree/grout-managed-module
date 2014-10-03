@@ -56,6 +56,8 @@ class ListSetsPage extends RestrictedPage
 
         // Retrieve current set class
         $this->set = new $setClass();
+        $this->set->config->setAsFilter('ListPage', array('setsPerPage' => 20));
+        $this->set->init();
 
         if (!$this->set->allowList) {
             $this->parseError(ResponseCode::CODE_404);
@@ -138,7 +140,7 @@ class ListSetsPage extends RestrictedPage
         $this->set->prepareRendering($this->mode);
 
         if(!$this->entitiesPerPage){
-            $this->entitiesPerPage = $this->set->config->asFilter('ListPage')->get('setsPerPage', 10);
+            $this->entitiesPerPage = $this->set->config->asFilter('ListPage')->get('setsPerPage', 20);
         }
 
         // Check whether search is available
