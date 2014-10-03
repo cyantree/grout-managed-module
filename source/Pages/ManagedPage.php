@@ -24,9 +24,9 @@ class ManagedPage extends Page
     public function parseError($code, $data = null)
     {
         if($code == ResponseCode::CODE_404){
-            $this->setResult($this->factory()->appTemplates()->load('CyantreeManagedModule:404.html'), ContentType::TYPE_HTML_UTF8, ResponseCode::CODE_404);
+            $this->setResult($this->factory()->templates()->load('CyantreeManagedModule:404.html'), ContentType::TYPE_HTML_UTF8, ResponseCode::CODE_404);
         }else{
-            $this->setResult($this->factory()->appTemplates()->load('CyantreeManagedModule:500.html'), ContentType::TYPE_HTML_UTF8, ResponseCode::CODE_500);
+            $this->setResult($this->factory()->templates()->load('CyantreeManagedModule:500.html'), ContentType::TYPE_HTML_UTF8, ResponseCode::CODE_500);
         }
         parent::parseError($code, $data);
     }
@@ -34,7 +34,7 @@ class ManagedPage extends Page
     public function setResult($content, $contentType = null, $responseCode = null, $baseTemplate = null)
     {
         if ($baseTemplate !== false) {
-            $content = $this->factory()->appTemplates()->load($baseTemplate === null ? 'CyantreeManagedModule:base.html' : $baseTemplate, array('content' => $content), false)->content;
+            $content = $this->factory()->templates()->load($baseTemplate === null ? 'CyantreeManagedModule:base.html' : $baseTemplate, array('content' => $content), false)->content;
         }
 
         parent::setResult($content, $contentType, $responseCode);

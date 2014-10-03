@@ -1,12 +1,13 @@
 <?php
-use Grout\Cyantree\ManagedModule\ManagedFactory;
-use Grout\Cyantree\ManagedModule\Pages\Sets\DeleteSetPage;
-use Cyantree\Grout\App\Generators\Template\TemplateContext;
 
 /** @var $this TemplateContext */
 
-$q = ManagedFactory::get($this->app)->appQuick();
-$ui = ManagedFactory::get($this->app)->appUi();
+use Cyantree\Grout\App\Generators\Template\TemplateContext;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\Pages\Sets\DeleteSetPage;
+
+$q = ManagedFactory::get($this->app)->quick();
+$ui = ManagedFactory::get($this->app)->ui();
 
 /** @var DeleteSetPage $page */
 $page = $this->task->page;

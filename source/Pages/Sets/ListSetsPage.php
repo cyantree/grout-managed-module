@@ -75,7 +75,7 @@ class ListSetsPage extends RestrictedPage
         $this->_prepareRendering();
 
         if ($this->renderPage()) {
-            $this->setResult($this->factory()->appTemplates()->load($this->template));
+            $this->setResult($this->factory()->templates()->load($this->template));
         }
     }
 
@@ -260,8 +260,8 @@ class ListSetsPage extends RestrictedPage
 
     public function renderTable()
     {
-        $q = $this->factory()->appQuick();
-        $u = $this->factory()->appUi();
+        $q = $this->factory()->quick();
+        $u = $this->factory()->ui();
 
         $globalDelete = $this->set->allowDelete;
         $globalEdit = $this->set->allowEdit;
@@ -342,14 +342,14 @@ class ListSetsPage extends RestrictedPage
 
     public function renderFormStart()
     {
-        $u = $this->factory()->appUi();
+        $u = $this->factory()->ui();
 
         return $u->formStart($this->app->getUrl($this->task->request->url, true, $this->getUrlArguments('form')), 'post');
     }
 
     public function renderFormEnd()
     {
-        $u = $this->factory()->appUi();
+        $u = $this->factory()->ui();
 
         return $u->formEnd();
     }
@@ -370,7 +370,7 @@ class ListSetsPage extends RestrictedPage
             return '';
         }
 
-        $q = $this->factory()->appQuick();
+        $q = $this->factory()->quick();
 
         return '<input type="text" placeholder="'.$q->e($q->t('Suche')).'" name="search" class="updateOnChange" data-update-on-change-ignore-args="page" value="'.$q->e($this->search).'" />';
     }
@@ -381,7 +381,7 @@ class ListSetsPage extends RestrictedPage
             return '';
         }
 
-        $u = $this->factory()->appUi();
+        $u = $this->factory()->ui();
 
         $pagerArgs = $this->getUrlArguments('pagination');
         $pagerArgs['page'] = '__page__';
@@ -391,8 +391,8 @@ class ListSetsPage extends RestrictedPage
 
     public function renderAddButton()
     {
-        $q = $this->factory()->appQuick();
-        $u = $this->factory()->appUi();
+        $q = $this->factory()->quick();
+        $u = $this->factory()->ui();
 
         if($this->set->allowAdd){
             $class = 'button';
@@ -404,8 +404,8 @@ class ListSetsPage extends RestrictedPage
 
     public function renderExportButton()
     {
-        $q = $this->factory()->appQuick();
-        $u = $this->factory()->appUi();
+        $q = $this->factory()->quick();
+        $u = $this->factory()->ui();
 
         if($this->set->allowExport){
             $class = 'button';
@@ -417,7 +417,7 @@ class ListSetsPage extends RestrictedPage
 
     public function renderHeader()
     {
-        $q = $this->factory()->appQuick();
+        $q = $this->factory()->quick();
 
         $c = '<h2>'.$q->e($this->set->config->get('title')).'</h2>';
         if($description = $this->set->config->get('description')){

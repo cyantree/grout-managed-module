@@ -39,7 +39,7 @@ class DeleteSetPage extends RestrictedPage
             return;
         }
 
-        $q = ManagedFactory::get($this->app)->appQuick();
+        $q = ManagedFactory::get($this->app)->quick();
 
         if ($this->request()->post->get('delete')) {
             if ($this->set->delete()) {
@@ -57,7 +57,7 @@ class DeleteSetPage extends RestrictedPage
 
         $this->submitUrl = $this->factory()->module->getRouteUrl('delete-set', array('type' => $type, 'id' => $this->set->getId()));
 
-        $this->setResult($this->factory()->appTemplates()->load('sets/delete.html'));
+        $this->setResult($this->factory()->templates()->load('sets/delete.html'));
     }
 
     private function _loadSet()

@@ -8,8 +8,8 @@ class LogoutPage extends RestrictedPage
     {
         $this->module->events->trigger('logout');
 
-        $this->factory()->appManagedSessionData()->reset();
+        $this->factory()->managedSessionData()->reset();
 
-        $this->setResult($this->factory()->appTemplates()->load('logout.html'));
+        $this->setResult($this->factory()->templates()->load('logout.html'));
     }
 }

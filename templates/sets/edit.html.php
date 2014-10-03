@@ -5,8 +5,8 @@ use Cyantree\Grout\App\Generators\Template\TemplateContext;
 
 /** @var $this TemplateContext */
 
-$q = ManagedFactory::get($this->app)->appQuick();
-$ui = ManagedFactory::get($this->app)->appUi();
+$q = ManagedFactory::get($this->app)->quick();
+$ui = ManagedFactory::get($this->app)->ui();
 
 /** @var EditSetPage $page */
 $page = $this->task->page;

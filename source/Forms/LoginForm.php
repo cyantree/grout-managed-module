@@ -29,7 +29,7 @@ class LoginForm extends Form
     protected function _checkData()
     {
         $a = ManagedFactory::get($this->task->app);
-        $q = $a->appQuick();
+        $q = $a->quick();
 
         $this->_loginEvent = $this->task->module->events->trigger('login',
             array('task' => $this->task, 'username' => $this->data->username, 'password' => $this->data->password,
@@ -40,9 +40,9 @@ class LoginForm extends Form
         if($success === false){
             $this->status->addError('invalidCredentials', $q->t('Bitte prüfen Sie die Anmeldedaten.'));
         }elseif($success === null){
-            $this->_loginEvent->data['userId'] = $a->appConfig()->username;
+            $this->_loginEvent->data['userId'] = $a->config()->username;
             $this->_loginEvent->data['userRole'] = 'admin';
-            if($this->data->username !== $a->appConfig()->username || $this->data->password !== $a->appConfig()->password){
+            if($this->data->username !== $a->config()->username || $this->data->password !== $a->config()->password){
                 $this->status->addError('invalidCredentials', $q->t('Bitte prüfen Sie die Anmeldedaten.'));
             }
         }
@@ -50,11 +50,11 @@ class LoginForm extends Form
 
     protected function _submit()
     {
-        $q = ManagedFactory::get($this->task->app)->appQuick();
+        $q = ManagedFactory::get($this->task->app)->quick();
 
         $this->_finishForm();
 
-        $data = ManagedFactory::get($this->task->app)->appManagedSessionData();
+        $data = ManagedFactory::get($this->task->app)->managedSessionData();
         $data->login($this->_loginEvent->data['userId'], $this->_loginEvent->data['userRole']);
 
         $this->status->addSuccess(null, $q->t('Sie wurden erfolgreich angemeldet.'));

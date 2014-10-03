@@ -36,7 +36,7 @@ class ManagedFactory extends AppFactory
     }
 
     /** @return TemplateGenerator */
-    public function appTemplates()
+    public function templates()
     {
         if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
             return $tool;
@@ -51,7 +51,7 @@ class ManagedFactory extends AppFactory
     }
 
     /** @deprecated */
-    public function appModule()
+    public function module()
     {
         if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
             return $tool;
@@ -65,16 +65,16 @@ class ManagedFactory extends AppFactory
     }
 
     /** @return ManagedQuick */
-    public function appQuick()
+    public function quick()
     {
         if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
             return $tool;
         }
 
         $tool = new ManagedQuick($this->app);
-        $tool->publicAssetUrl = $this->app->publicUrl . $this->appConfig()->assetUrl;
+        $tool->publicAssetUrl = $this->app->publicUrl . $this->config()->assetUrl;
 
-        $tool->translator = $this->appTranslator();
+        $tool->translator = $this->translator();
         $tool->translatorDefaultTextDomain = $this->module->id;
 
         $this->_setAppTool(__FUNCTION__, $tool);
@@ -82,7 +82,7 @@ class ManagedFactory extends AppFactory
     }
 
     /** @return ManagedConfig */
-    public function appConfig()
+    public function config()
     {
         if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
             return $tool;
@@ -96,7 +96,7 @@ class ManagedFactory extends AppFactory
     }
 
     /** @return Translator */
-    public function appTranslator()
+    public function translator()
     {
         if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
             return $tool;
@@ -116,7 +116,7 @@ class ManagedFactory extends AppFactory
     }
 
     /** @return SetTools */
-    public function appSetTools()
+    public function setTools()
     {
         if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
             return $tool;
@@ -129,7 +129,7 @@ class ManagedFactory extends AppFactory
     }
 
     /** @return MenuTools */
-    public function appMenuTools()
+    public function menuTools()
     {
         if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
             return $tool;
@@ -142,9 +142,9 @@ class ManagedFactory extends AppFactory
     }
 
     /** @return ManagedSessionData */
-    public function appManagedSessionData()
+    public function managedSessionData()
     {
-        $sessionData = $this->appSessionData();
+        $sessionData = $this->sessionData();
 
         $tool = $sessionData->get($this->module->id);
 
@@ -160,7 +160,7 @@ class ManagedFactory extends AppFactory
     /** @param $rule AccessRule */
     public function hasAccess($rule)
     {
-        $d = $this->appManagedSessionData();
+        $d = $this->managedSessionData();
         return $rule->hasAccess($d->userId, $d->userRole);
     }
 }

@@ -10,8 +10,8 @@ $f = $this->in->get('form');
 
 $g = ManagedFactory::get($this->app);
 
-$ui = $g->appUi();
-$q = $g->appQuick();
+$ui = $g->ui();
+$q = $g->quick();
 
 echo $ui->status($f->status);
 ?>

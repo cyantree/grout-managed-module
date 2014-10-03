@@ -8,8 +8,8 @@ use Grout\Cyantree\ManagedModule\Pages\Sets\ListSetsPage;
 /** @var $page ListSetsPage */
 $page = $this->task->page;
 
-$q = ManagedFactory::get($this->app)->appQuick();
-$ui = ManagedFactory::get($this->app)->appUi();
+$q = ManagedFactory::get($this->app)->quick();
+$ui = ManagedFactory::get($this->app)->ui();
 ?>
 
     <script>

@@ -19,14 +19,14 @@ class RestrictedPage extends ManagedPage
     {
         $f = ManagedFactory::get($this->app);
 
-        return $f->appManagedSessionData()->isLoggedIn();
+        return $f->managedSessionData()->isLoggedIn();
     }
 
     protected function _onAccessible()
     {
         $template = $this->task->vars->get('template');
         if($template){
-            $this->setResult(ManagedFactory::get($this->app)->appTemplates()->load($template), $this->task->vars->get('contentType'), $this->task->vars->get('responseCode'));
+            $this->setResult(ManagedFactory::get($this->app)->templates()->load($template), $this->task->vars->get('contentType'), $this->task->vars->get('responseCode'));
         }
     }
 
@@ -37,6 +37,6 @@ class RestrictedPage extends ManagedPage
         $f->task = $this->task;
         $f->execute();
 
-        $this->setResult($this->factory()->appTemplates()->load('CyantreeManagedModule::login.html', array('form' => $f)));
+        $this->setResult($this->factory()->templates()->load('CyantreeManagedModule::login.html', array('form' => $f)));
     }
 }

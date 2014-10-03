@@ -40,7 +40,7 @@ class EditSetPage extends RestrictedPage
             return;
         }
 
-        $q = ManagedFactory::get($this->app)->appQuick();
+        $q = ManagedFactory::get($this->app)->quick();
 
         if ($this->request()->post->get('save')) {
             $this->set->populate($this->request()->post->data);
@@ -86,7 +86,7 @@ class EditSetPage extends RestrictedPage
             }
         }
 
-        $this->setResult($this->factory()->appTemplates()->load('sets/edit.html'));
+        $this->setResult($this->factory()->templates()->load('sets/edit.html'));
     }
 
     private function _loadSet()

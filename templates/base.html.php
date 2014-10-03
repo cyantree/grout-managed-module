@@ -8,9 +8,9 @@ use Cyantree\Grout\App\Generators\Template\TemplateContext;
 
 $f = ManagedFactory::get($this->app);
 $m = $f->module;
-$q = $f->appQuick();
-$ui = $f->appUi();
-$c = $f->appConfig();
+$q = $f->quick();
+$ui = $f->ui();
+$c = $f->config();
 ?>
 <!doctype html>
 <html lang="<?=$q->t('de')?>">
@@ -32,13 +32,13 @@ $c = $f->appConfig();
     <p class="title"><a href="<?= $q->e($m->getUrl()) ?>"><?=$q->e($c->title)?></a></p>
 
     <div class="menu">
-        <?php if ($f->appManagedSessionData()->isLoggedIn()) { ?>
+        <?php if ($f->managedSessionData()->isLoggedIn()) { ?>
             <a href="<?=$q->e($m->getRouteUrl('logout')) ?>"><?=$q->t('Abmelden')?></a>
         <?php } ?>
     </div>
 </div>
 <div id="page">
-    <?php if ($f->appManagedSessionData()->isLoggedIn()) { ?>
+    <?php if ($f->managedSessionData()->isLoggedIn()) { ?>
         <div id="menu">
             <ul>
                 <?php

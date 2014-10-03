@@ -4,7 +4,7 @@
 use Grout\AppModule\Types\AppTemplateContext;
 
 $m = $this->task->module;
-$q = $this->factory()->appQuick();
+$q = $this->factory()->quick();
 ?>
 <div class="title">
     <span class="title"><?=$q->e($this->in->get('title'))?></span>
