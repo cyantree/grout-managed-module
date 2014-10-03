@@ -2,6 +2,7 @@
 namespace Grout\Cyantree\ManagedModule\Pages\Sets;
 
 use Cyantree\Grout\App\Types\ResponseCode;
+use Cyantree\Grout\Csv\CsvWriter;
 use Cyantree\Grout\Set\Set;
 use Cyantree\Grout\Set\SetListResult;
 use Cyantree\Grout\StatusContainer;
@@ -34,6 +35,8 @@ class ListSetsPage extends RestrictedPage
 
     public $template = 'CyantreeManagedModule::sets/list.html';
 
+    public $mode;
+
     protected function _onAccessible()
     {
         $type = $this->task->vars->get('type');
@@ -64,8 +67,22 @@ class ListSetsPage extends RestrictedPage
 
         $this->task->vars->set('menu', $type.'-sets');
 
+        if ($this->task->vars->get('mode') == 'export') {
+            $this->mode = Set::MODE_EXPORT;
+
+        } else {
+            $this->mode = Set::MODE_LIST;
+        }
+
         $this->init();
         $this->_prepare();
+
+        if ($this->mode == Set::MODE_EXPORT) {
+            $this->entitiesPerPage = 0;
+            $this->_loadSets();
+            $this->_generateExport($this->task->vars->get('format'));
+            return;
+        }
 
         if ($this->task->request->method == 'POST') {
             $this->_onSubmit();
@@ -118,7 +135,7 @@ class ListSetsPage extends RestrictedPage
         $this->pageUrl = $this->task->module->getRouteUrl('list-sets', array('type' => $this->type)).'?';
 
         // Prepare rendering
-        $this->set->prepareRendering(Set::MODE_LIST);
+        $this->set->prepareRendering($this->mode);
 
         if(!$this->entitiesPerPage){
             $this->entitiesPerPage = $this->set->config->asFilter('ListPage')->get('setsPerPage', 10);
@@ -182,7 +199,14 @@ class ListSetsPage extends RestrictedPage
             $type = $this->type;
         }
 
-        return $this->task->module->getRouteUrl('export-sets', array('type' => $type), true, $parameters);
+        if ($parameters === null) {
+            $parameters = $this->getUrlArguments('export');
+
+        } else {
+            $parameters = array_merge($this->getUrlArguments('export'), $parameters);
+        }
+
+        return $this->task->module->getRouteUrl('export-sets', array('type' => $type, 'format' => 'csv'), true, $parameters);
     }
 
     public function getDeleteUrl($id, $type = null)
@@ -221,6 +245,57 @@ class ListSetsPage extends RestrictedPage
     protected function _onSubmit()
     {
 
+    }
+
+    protected function _getExportFilename($format)
+    {
+        return $this->type . '_' . date('Y-m-d_H-i-s') . '.' . $format;
+    }
+
+    protected function _generateExport($format)
+    {
+        if ($format != 'csv') {
+            $this->parseError(ResponseCode::CODE_404);
+            return;
+        }
+
+        $csv = new CsvWriter();
+        $csv->open();
+
+        $content = $this->set->firstContent;
+
+        $fields = array();
+        do {
+            if ($content->config->get('visible')) {
+                $fields[] = $content->config->get('label');
+            }
+
+        } while($content = $content->nextContent);
+
+        $csv->append($fields);
+
+        while ($set = $this->sets->getNext()) {
+            $fields = array();
+
+            $this->_onRenderTableSetChanged();
+
+            $content = $this->set->firstContent;
+
+            do{
+                if($content->config->get('visible')){
+                    $fields[] = $content->render(Set::MODE_EXPORT);
+                }
+            }while($content = $content->nextContent);
+
+            $csv->append($fields);
+        }
+
+        $data = chr(239) . chr(187) . chr(191) . $csv->getContents();
+        $csv->close();
+
+        $res = $this->response();
+        $res->asDownload($this->_getExportFilename($format));
+        $res->postContent($data);
     }
 
     public function renderPage()

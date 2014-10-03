@@ -22,6 +22,7 @@ class SetTools {
 
         if ($page = $config->get('ListPage')) {
             $this->_factory->module->addRoute('list-sets/' . $id . '/', $page, array('type' => $id), 1);
+            $this->_factory->module->addRoute('export-sets/' . $id . '/export.%%format%%', $page, array('mode' => 'export', 'type' => $id), 1);
         }
 
         if ($page = $config->get('EditPage')) {

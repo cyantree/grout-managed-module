@@ -46,7 +46,7 @@ class ManagedModule extends Module
 
         // Entity pages
         $this->addNamedRoute('list-sets', 'list-sets/%%type%%/', 'Pages\Sets\ListSetsPage');
-        $this->addNamedRoute('export-sets', 'export-sets/%%type%%/', 'Pages\Sets\ExportSetsPage');
+        $this->addNamedRoute('export-sets', 'export-sets/%%type%%/export.%%format%%', 'Pages\Sets\ListSetsPage', array('mode' => 'export'));
         $this->addNamedRoute('add-set', 'add-set/%%type%%/', 'Pages\Sets\EditSetPage');
         $this->addNamedRoute('edit-set', 'edit-set/%%type%%/%%id%%/', 'Pages\Sets\EditSetPage');
         $this->addNamedRoute('delete-set', 'delete-set/%%type%%/%%id%%/', 'Pages\Sets\DeleteSetPage');
