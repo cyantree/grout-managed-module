@@ -102,7 +102,7 @@ class ListSetsPage extends RestrictedPage
     {
         $data = array(
             'sortBy' => $this->sortBy != '' ? $this->sortBy : null,
-            'sortDirection' => $this->sortDirection == 'desc' ? null : 'desc',
+            'sortDirection' => $this->sortDirection,
             'search' => $this->search != '' ? $this->search : null
         );
 
