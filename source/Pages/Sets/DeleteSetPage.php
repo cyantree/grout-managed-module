@@ -5,9 +5,10 @@ use Cyantree\Grout\App\Types\ResponseCode;
 use Cyantree\Grout\Set\Set;
 use Cyantree\Grout\StatusContainer;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\Pages\ManagedPage;
 use Grout\Cyantree\ManagedModule\Pages\RestrictedPage;
 
-class DeleteSetPage extends RestrictedPage
+class DeleteSetPage extends ManagedPage
 {
     public $type;
     /** @var Set */
@@ -22,7 +23,7 @@ class DeleteSetPage extends RestrictedPage
 
     public $deleted = false;
 
-    protected function _onAccessible()
+    public function parseTask()
     {
         $type = $this->task->vars->get('type');
         if(!$this->factory()->module->setTypes->has($type)){

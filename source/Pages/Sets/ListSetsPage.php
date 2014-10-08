@@ -6,9 +6,10 @@ use Cyantree\Grout\Csv\CsvWriter;
 use Cyantree\Grout\Set\Set;
 use Cyantree\Grout\Set\SetListResult;
 use Cyantree\Grout\StatusContainer;
+use Grout\Cyantree\ManagedModule\Pages\ManagedPage;
 use Grout\Cyantree\ManagedModule\Pages\RestrictedPage;
 
-class ListSetsPage extends RestrictedPage
+class ListSetsPage extends ManagedPage
 {
     public $type;
 
@@ -37,7 +38,7 @@ class ListSetsPage extends RestrictedPage
 
     public $mode;
 
-    protected function _onAccessible()
+    public function parseTask()
     {
         $type = $this->task->vars->get('type');
 

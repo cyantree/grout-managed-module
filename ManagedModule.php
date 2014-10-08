@@ -38,11 +38,10 @@ class ManagedModule extends Module
 
         $this->plugins = array();
 
-        $this->defaultPageType = 'Pages\RestrictedPage';
+        $this->defaultPageType = 'Pages\ManagedPage';
         $this->addNamedRoute('index', '', null, array('template' => 'index.html'));
 
         $this->addNamedRoute('service', 'service/', 'Pages\ServicePage');
-        $this->addNamedRoute('logout', 'logout/', 'Pages\LogoutPage');
 
         // Entity pages
         $this->addNamedRoute('list-sets', 'list-sets/%%type%%/', 'Pages\Sets\ListSetsPage');

@@ -1,16 +1,17 @@
 <?php
 namespace Grout\Cyantree\ManagedModule\Pages;
 
+use Cyantree\Grout\App\Page;
 use Cyantree\Grout\App\Service\Drivers\JsonDriver;
 use Cyantree\Grout\App\Service\ServiceDriver;
 use Grout\Cyantree\ManagedModule\ManagedModule;
 
-class ServicePage extends RestrictedPage
+class ServicePage extends Page
 {
     /** @var ServiceDriver */
     private $_driver;
 
-    protected function _onAccessible()
+    public function parseTask()
     {
         $this->_driver = new JsonDriver();
         $this->_driver->commandNamespaces[] = $this->task->module->namespace.'Commands\\';
@@ -26,7 +27,7 @@ class ServicePage extends RestrictedPage
         $this->_driver->processTask($this->task);
     }
 
-    public function parseError($code, $data = null)
+public function parseError($code, $data = null)
     {
         if($this->_driver){
             $this->_driver->processError($this->task);

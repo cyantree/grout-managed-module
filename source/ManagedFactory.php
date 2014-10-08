@@ -102,14 +102,7 @@ class ManagedFactory extends AppFactory
             return $tool;
         }
 
-        $event = $this->module->events->trigger('getTranslator');
-
-        if ($event->data) {
-            $tool = $event->data;
-
-        } else {
-            $tool = new DummyTranslator();
-        }
+        $tool = new DummyTranslator();
 
         $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;

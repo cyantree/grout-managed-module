@@ -4,9 +4,10 @@ namespace Grout\Cyantree\ManagedModule\Pages;
 use Cyantree\Grout\App\Page;
 use Cyantree\Grout\App\Types\ContentType;
 use Cyantree\Grout\App\Types\ResponseCode;
+use Grout\AppModule\Pages\TemplatePage;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
 
-class ManagedPage extends Page
+class ManagedPage extends TemplatePage
 {
     /** @var ManagedFactory */
     private $_factory;

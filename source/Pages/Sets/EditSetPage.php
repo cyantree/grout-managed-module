@@ -6,9 +6,10 @@ use Cyantree\Grout\Set\Set;
 use Cyantree\Grout\StatusContainer;
 use Cyantree\Grout\Types\FileUpload;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
+use Grout\Cyantree\ManagedModule\Pages\ManagedPage;
 use Grout\Cyantree\ManagedModule\Pages\RestrictedPage;
 
-class EditSetPage extends RestrictedPage
+class EditSetPage extends ManagedPage
 {
     public $type;
 
@@ -24,7 +25,7 @@ class EditSetPage extends RestrictedPage
     public $submitUrl;
     public $deleteUrl;
 
-    protected function _onAccessible()
+    public function parseTask()
     {
         $type = $this->task->vars->get('type');
         if(!$this->factory()->module->setTypes->has($type)){

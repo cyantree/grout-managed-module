@@ -2,6 +2,7 @@
 /** @var $this \Cyantree\Grout\App\Generators\Template\TemplateContext */
 use Cyantree\Grout\Filter\ArrayFilter;
 use Cyantree\Grout\Tools\ArrayTools;
+use Grout\Cyantree\AclModule\AclModule;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
 use Grout\Cyantree\ManagedModule\Types\AccessRule;
 use Cyantree\Grout\App\Generators\Template\TemplateContext;
@@ -11,6 +12,14 @@ $m = $f->module;
 $q = $f->quick();
 $ui = $f->ui();
 $c = $f->config();
+
+$logoutUrl = null;
+
+$acl = $this->task->data->get('aclModule');
+if ($acl) {
+    /** @var $acl AclModule */
+    $logoutUrl = $acl->getLogoutUrl();
+}
 ?>
 <!doctype html>
 <html lang="<?=$q->t('de')?>">
@@ -31,40 +40,35 @@ $c = $f->config();
 <div id="header">
     <p class="title"><a href="<?= $q->e($m->getUrl()) ?>"><?=$q->e($c->title)?></a></p>
 
-    <div class="menu">
-        <?php if ($f->managedSessionData()->isLoggedIn()) { ?>
-            <a href="<?=$q->e($m->getRouteUrl('logout')) ?>"><?=$q->t('Abmelden')?></a>
-        <?php } ?>
-    </div>
+    <?php
+    if ($logoutUrl) {
+        ?><div class="menu">
+            <a href="<?= $q->e($logoutUrl) ?>"><?= $q->t('Abmelden') ?></a>
+        </div>
+    <?php
+    }
+    ?>
 </div>
 <div id="page">
-    <?php if ($f->managedSessionData()->isLoggedIn()) { ?>
-        <div id="menu">
-            <ul>
-                <?php
-                $activeMenu = $this->task->vars->get('menu');
-                $filter = new ArrayFilter();
-                $menuLinks = $m->menuLinks;
-                foreach ($menuLinks as $menuLink) {
-                    $filter->setData($menuLink);
+    <div id="menu">
+        <ul>
+            <?php
+            $activeMenu = $this->task->vars->get('menu');
+            $filter = new ArrayFilter();
+            $menuLinks = $m->menuLinks;
+            foreach ($menuLinks as $menuLink) {
+                $filter->setData($menuLink);
 
-                    /** @var AccessRule $access */
-                    $access = ArrayTools::get($menuLink, 'access');
-                    if($access && !$f->hasAccess($access)){
-                        continue;
-                    }
+                $id = $filter->get('id');
+                $url = $menuLink['url'];
+                $active = ($id !== null && $id === $activeMenu) || $filter->get('route') == $this->task->route;
 
-                    $id = $filter->get('id');
-                    $url = $menuLink['url'];
-                    $active = ($id !== null && $id === $activeMenu) || $filter->get('route') == $this->task->route;
+                $c = '<li'.($active ? ' class="active"' : '').'><a href="'.$q->e($url).'">'.$q->e($filter->get('title')).'</a></li>';
 
-                    $c = '<li'.($active ? ' class="active"' : '').'><a href="'.$q->e($url).'">'.$q->e($filter->get('title')).'</a></li>';
-
-                    echo $c;
-                }?>
-            </ul>
-        </div>
-    <?php } ?>
+                echo $c;
+            }?>
+        </ul>
+    </div>
     <div id="content">
         <?=$this->in->get('content')?>
     </div>
