@@ -30,7 +30,7 @@ class ManagedFactory extends AppFactory
     public static function get(App $app = null, $moduleId = null)
     {
         /** @var ManagedFactory $factory */
-        $factory = GroutFactory::_getInstance($app, __CLASS__, $moduleId, 'Cyantree\ManagedModule');
+        $factory = GroutFactory::getFactory($app, __CLASS__, $moduleId, 'Cyantree\ManagedModule');
 
         return $factory;
     }
