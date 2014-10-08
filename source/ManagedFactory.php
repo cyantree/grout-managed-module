@@ -126,27 +126,4 @@ class ManagedFactory extends AppFactory
 
         return $tool;
     }
-
-    /** @return ManagedSessionData */
-    public function managedSessionData()
-    {
-        $sessionData = $this->sessionData();
-
-        $tool = $sessionData->get($this->module->id);
-
-        if ($tool === null) {
-            $tool = new ManagedSessionData();
-
-            $sessionData->set($this->module->id, $tool);
-        }
-
-        return $tool;
-    }
-
-    /** @param $rule AccessRule */
-    public function hasAccess($rule)
-    {
-        $d = $this->managedSessionData();
-        return $rule->hasAccess($d->userId, $d->userRole);
-    }
 }
