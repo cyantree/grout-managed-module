@@ -38,99 +38,92 @@ class ManagedFactory extends AppFactory
     /** @return TemplateGenerator */
     public function templates()
     {
-        if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
-            return $tool;
+        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+            $tool = new TemplateGenerator();
+            $tool->defaultModule = $this->module;
+            $tool->app = $this->app;
+
+            $this->setTool(__FUNCTION__, $tool);
         }
 
-        $tool = new TemplateGenerator();
-        $tool->defaultModule = $this->module;
-        $tool->app = $this->app;
-
-        $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;
     }
 
     /** @deprecated */
     public function module()
     {
-        if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
-            return $tool;
+        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+            /** @var ManagedModule $tool */
+            $tool = $this->module;
+
+            $this->setTool(__FUNCTION__, $tool);
         }
 
-        /** @var ManagedModule $tool */
-        $tool = $this->module;
-
-        $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;
     }
 
     /** @return ManagedQuick */
     public function quick()
     {
-        if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
-            return $tool;
+        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+            $tool = new ManagedQuick($this->app);
+            $tool->publicAssetUrl = $this->app->publicUrl . $this->config()->assetUrl;
+
+            $tool->translator = $this->translator();
+            $tool->translatorDefaultTextDomain = $this->module->id;
+
+            $this->setTool(__FUNCTION__, $tool);
         }
 
-        $tool = new ManagedQuick($this->app);
-        $tool->publicAssetUrl = $this->app->publicUrl . $this->config()->assetUrl;
-
-        $tool->translator = $this->translator();
-        $tool->translatorDefaultTextDomain = $this->module->id;
-
-        $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;
     }
 
     /** @return ManagedConfig */
     public function config()
     {
-        if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
-            return $tool;
+        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+            /** @var ManagedConfig $tool */
+            $tool = $this->app->configs->getConfig($this->module->id);
+
+            $this->setTool(__FUNCTION__, $tool);
         }
 
-        /** @var ManagedConfig $tool */
-        $tool = $this->app->configs->getConfig($this->module->id);
-
-        $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;
     }
 
     /** @return Translator */
     public function translator()
     {
-        if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
-            return $tool;
+        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+            $tool = new DummyTranslator();
+
+            $this->setTool(__FUNCTION__, $tool);
         }
 
-        $tool = new DummyTranslator();
-
-        $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;
     }
 
     /** @return SetTools */
     public function setTools()
     {
-        if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
-            return $tool;
+        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+            $tool = new SetTools($this);
+
+            $this->setTool(__FUNCTION__, $tool);
         }
 
-        $tool = new SetTools($this);
-
-        $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;
     }
 
     /** @return MenuTools */
     public function menuTools()
     {
-        if($tool = $this->_getAppTool(__FUNCTION__, __CLASS__)){
-            return $tool;
+        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+            $tool = new MenuTools($this);
+
+            $this->setTool(__FUNCTION__, $tool);
         }
 
-        $tool = new MenuTools($this);
-
-        $this->_setAppTool(__FUNCTION__, $tool);
         return $tool;
     }
 
