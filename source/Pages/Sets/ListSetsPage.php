@@ -120,7 +120,9 @@ class ListSetsPage extends ManagedPage
 
     public function renderNavigationBarContent()
     {
-        return $this->renderSearchInput().$this->renderPagination().$this->renderNavigationBarRightContent($this->renderExportButton().$this->renderAddButton());
+        return $this->renderSearchInput()
+        . $this->renderPagination()
+        . $this->renderNavigationBarRightContent($this->renderExportButton() . $this->renderAddButton());
     }
 
     protected function _prepare()
@@ -449,7 +451,7 @@ class ListSetsPage extends ManagedPage
 
         $q = $this->factory()->quick();
 
-        return '<input type="text" placeholder="'.$q->e($q->t('Suche')).'" name="search" class="updateOnChange" data-update-on-change-ignore-args="page" value="'.$q->e($this->search).'" />';
+        return '<input type="text" placeholder="' . $q->e($q->t('Suche')) . '" name="search" class="updateOnChange" data-update-on-change-ignore-args="page" value="' . $q->e($this->search) . '" />';
     }
 
     public function renderPagination()
@@ -463,7 +465,7 @@ class ListSetsPage extends ManagedPage
         $pagerArgs = $this->getUrlArguments('pagination');
         $pagerArgs['page'] = '__page__';
 
-        return $u->pageSelector($u->calculatePageSelector($this->countPages, $this->page, 3, 3), $this->pageUrl.$this->encodeArgs($pagerArgs), array('pagePlaceholder' => '__page__'));
+        return $u->pageSelector($u->calculatePageSelector($this->countPages, $this->page, 3, 3), $this->pageUrl . $this->encodeArgs($pagerArgs), array('pagePlaceholder' => '__page__'));
     }
 
     public function renderAddButton()
