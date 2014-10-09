@@ -38,15 +38,19 @@ do {
             <?= $set->render($content) ?>
         </div>
     </div>
-<?php
+    <?php
 } while ($content = $content->nextContent);
 ?>
     <div class="item">
         <label></label>
         <input type="submit" name="save" value="<?=$q->t('Speichern')?>"/>
-        <?php if ($set->getId() && $set->allowDelete) { ?>
+        <?php
+        if ($set->getId() && $set->allowDelete) {
+            ?>
             <a href="<?= $q->e($page->deleteUrl) ?>" class="button"><?=$q->t('Löschen')?></a>
-        <?php } ?>
+            <?php
+        }
+        ?>
     </div>
 
 <?= $ui->hiddenInput('set_id', $set->getId()) ?>

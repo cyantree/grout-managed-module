@@ -7,7 +7,6 @@ use Cyantree\Grout\Set\Set;
 use Cyantree\Grout\Set\SetListResult;
 use Cyantree\Grout\StatusContainer;
 use Grout\Cyantree\ManagedModule\Pages\ManagedPage;
-use Grout\Cyantree\ManagedModule\Pages\RestrictedPage;
 
 class ListSetsPage extends ManagedPage
 {
@@ -50,7 +49,7 @@ class ListSetsPage extends ManagedPage
         $setClass = $this->factory()->module->setTypes->get($type);
 
         // Is no valid set type
-        if(!$setClass){
+        if (!$setClass) {
             $this->parseError(ResponseCode::CODE_404);
             return;
         }
@@ -68,7 +67,7 @@ class ListSetsPage extends ManagedPage
         $this->type = $type;
         $this->status = new StatusContainer();
 
-        $this->task->vars->set('menu', $type.'-sets');
+        $this->task->vars->set('menu', $type . '-sets');
 
         if ($this->task->vars->get('mode') == 'export') {
             $this->mode = Set::MODE_EXPORT;
@@ -135,25 +134,25 @@ class ListSetsPage extends ManagedPage
 
     public function init()
     {
-        $this->pageUrl = $this->task->module->getRouteUrl('list-sets', array('type' => $this->type)).'?';
+        $this->pageUrl = $this->task->module->getRouteUrl('list-sets', array('type' => $this->type)) . '?';
 
         // Prepare rendering
         $this->set->prepareRendering($this->mode);
 
-        if(!$this->entitiesPerPage){
+        if (!$this->entitiesPerPage) {
             $this->entitiesPerPage = $this->set->config->asFilter('ListPage')->get('setsPerPage', 20);
         }
 
         // Check whether search is available
-        if($this->set->getCapabilities()->search && $this->searchAvailable){
+        if ($this->set->getCapabilities()->search && $this->searchAvailable) {
             $searchable = false;
-            foreach($this->set->contents as $content){
-                if($content->searchable){
+            foreach ($this->set->contents as $content) {
+                if ($content->searchable) {
                     $searchable = true;
                     break;
                 }
             }
-            if($this->searchAvailable && !$searchable){
+            if ($this->searchAvailable && !$searchable) {
                 $this->searchAvailable = false;
             }
 
@@ -180,7 +179,7 @@ class ListSetsPage extends ManagedPage
 
     public function getEditUrl($id, $type = null)
     {
-        if(!$type){
+        if (!$type) {
             $type = $this->type;
         }
 
@@ -189,7 +188,7 @@ class ListSetsPage extends ManagedPage
 
     public function getAddUrl($type = null)
     {
-        if(!$type){
+        if (!$type) {
             $type = $this->type;
         }
 
@@ -198,7 +197,7 @@ class ListSetsPage extends ManagedPage
 
     public function getExportUrl($type = null, $parameters = null)
     {
-        if(!$type){
+        if (!$type) {
             $type = $this->type;
         }
 
@@ -214,7 +213,7 @@ class ListSetsPage extends ManagedPage
 
     public function getDeleteUrl($id, $type = null)
     {
-        if(!$type){
+        if (!$type) {
             $type = $this->type;
         }
 
@@ -231,7 +230,7 @@ class ListSetsPage extends ManagedPage
         $s = '';
 
         foreach ($args as $key => $value) {
-            if($value === null || $value === '') {
+            if ($value === null || $value === '') {
                 continue;
             }
 
@@ -273,7 +272,7 @@ class ListSetsPage extends ManagedPage
                 $fields[] = $content->config->get('label');
             }
 
-        } while($content = $content->nextContent);
+        } while ($content = $content->nextContent);
 
         $csv->append($fields);
 
@@ -284,11 +283,11 @@ class ListSetsPage extends ManagedPage
 
             $content = $this->set->firstContent;
 
-            do{
-                if($content->config->get('visible')){
+            do {
+                if ($content->config->get('visible')) {
                     $fields[] = $content->render(Set::MODE_EXPORT);
                 }
-            }while($content = $content->nextContent);
+            } while ($content = $content->nextContent);
 
             $csv->append($fields);
         }
@@ -349,35 +348,35 @@ class ListSetsPage extends ManagedPage
         $capabilities = $this->set->getCapabilities();
 
         $content = $this->set->firstContent;
-        do{
-            if($content->config->get('visible')){
+        do {
+            if ($content->config->get('visible')) {
                 $c = $content->config->get('label');
                 if ($content->config->get('escapeLabel', true)) {
                     $c = $q->e($c);
                 }
-                if($capabilities->sort && $content->sortable){
+                if ($capabilities->sort && $content->sortable) {
                     $arguments = $this->getUrlArguments('sort');
                     $arguments['sortBy'] = $content->name;
 
-                    if($this->sortBy == $content->name && $this->sortDirection == 'desc'){
+                    if ($this->sortBy == $content->name && $this->sortDirection == 'desc') {
                         $arguments['sortDirection'] = 'asc';
-                    }else{
+                    } else {
                         $arguments['sortDirection'] = 'desc';
                     }
 
-                    $url = $this->pageUrl.$this->encodeArgs($arguments);
+                    $url = $this->pageUrl . $this->encodeArgs($arguments);
 
-                    $c = '<a href="'.$q->e($url).'">'.$c.'</a>';
+                    $c = '<a href="' . $q->e($url) . '">' . $c . '</a>';
                 }
-                $table .= '<td>'.$c.'</td>';
+                $table .= '<td>' . $c . '</td>';
             }
-        }while($content = $content->nextContent);
+        } while ($content = $content->nextContent);
 
-        if($globalEdit){
-            $table .= '<td>'.$q->t('Bearbeiten').'</td>';
+        if ($globalEdit) {
+            $table .= '<td>' . $q->t('Bearbeiten') . '</td>';
         }
-        if($globalDelete){
-            $table .= '<td>'.$q->t('Löschen').'</td>';
+        if ($globalDelete) {
+            $table .= '<td>' . $q->t('Löschen') . '</td>';
         }
 
         $table .= '</tr></thead><tbody>';
@@ -388,15 +387,15 @@ class ListSetsPage extends ManagedPage
             $content = $this->set->firstContent;
 
             $table .= '<tr>';
-            do{
-                if($content->config->get('visible')){
-                    $table .= '<td>'.$content->render('list');
+            do {
+                if ($content->config->get('visible')) {
+                    $table .= '<td>' . $content->render('list');
                 }
-            }while($content = $content->nextContent);
+            } while ($content = $content->nextContent);
 
             if ($globalEdit) {
                 if ($this->set->allowEdit) {
-                    $table .= '<td>'.$u->link($this->getEditUrl($this->set->getId()), $q->t('Bearbeiten')).'</td>';
+                    $table .= '<td>' . $u->link($this->getEditUrl($this->set->getId()), $q->t('Bearbeiten')) . '</td>';
                 } else {
                     $table .= '<td></td>';
                 }
@@ -404,7 +403,7 @@ class ListSetsPage extends ManagedPage
 
             if ($globalDelete) {
                 if ($this->set->allowDelete) {
-                    $table .= '<td>'.$u->link($this->getDeleteUrl($this->set->getId()), $q->t('Löschen')).'</td>';
+                    $table .= '<td>' . $u->link($this->getDeleteUrl($this->set->getId()), $q->t('Löschen')) . '</td>';
                 } else {
                     $table .= '<td></td>';
                 }
@@ -434,7 +433,7 @@ class ListSetsPage extends ManagedPage
 
     public function renderNavigationBar()
     {
-        return '<div class="container">'.$this->renderNavigationBarContent().'</div>';
+        return '<div class="container">' . $this->renderNavigationBarContent() . '</div>';
     }
 
     public function renderNavigationBarRightContent($content)
@@ -472,7 +471,7 @@ class ListSetsPage extends ManagedPage
         $q = $this->factory()->quick();
         $u = $this->factory()->ui();
 
-        if($this->set->allowAdd){
+        if ($this->set->allowAdd) {
             $class = 'button';
             return $u->link($this->getAddUrl(), $q->t('Hinzufügen'), '_self', array('class' => $class));
         }
@@ -485,7 +484,7 @@ class ListSetsPage extends ManagedPage
         $q = $this->factory()->quick();
         $u = $this->factory()->ui();
 
-        if($this->set->allowExport){
+        if ($this->set->allowExport) {
             $class = 'button';
             return $u->link($this->getExportUrl(), $q->t('Exportieren'), '_self', array('class' => $class));
         }
@@ -497,9 +496,9 @@ class ListSetsPage extends ManagedPage
     {
         $q = $this->factory()->quick();
 
-        $c = '<h2>'.$q->e($this->set->config->get('title')).'</h2>';
-        if($description = $this->set->config->get('description')){
-            $c .= '<p>'.$q->e($description).'</p>';
+        $c = '<h2>' . $q->e($this->set->config->get('title')) . '</h2>';
+        if ($description = $this->set->config->get('description')) {
+            $c .= '<p>' . $q->e($description) . '</p>';
         }
         $c .= '<hr />';
 

@@ -10,25 +10,27 @@ use Grout\Cyantree\ManagedModule\ManagedFactory;
 class ManagedPage extends TemplatePage
 {
     /** @var ManagedFactory */
-    private $_factory;
+    private $factory;
 
     /** @return ManagedFactory */
     public function factory()
     {
-        if (!$this->_factory) {
-            $this->_factory = ManagedFactory::get($this->app, $this->task->module->id);
+        if (!$this->factory) {
+            $this->factory = ManagedFactory::get($this->app, $this->task->module->id);
         }
 
-        return $this->_factory;
+        return $this->factory;
     }
 
     public function parseError($code, $data = null)
     {
-        if($code == ResponseCode::CODE_404){
+        if ($code == ResponseCode::CODE_404) {
             $this->setResult($this->factory()->templates()->load('CyantreeManagedModule:404.html'), ContentType::TYPE_HTML_UTF8, ResponseCode::CODE_404);
-        }else{
+
+        } else {
             $this->setResult($this->factory()->templates()->load('CyantreeManagedModule:500.html'), ContentType::TYPE_HTML_UTF8, ResponseCode::CODE_500);
         }
+
         parent::parseError($code, $data);
     }
 

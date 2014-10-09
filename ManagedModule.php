@@ -58,7 +58,7 @@ class ManagedModule extends Module
 
     public function initTask($task)
     {
-        foreach($this->plugins as $plugin){
+        foreach ($this->plugins as $plugin) {
             $plugin->initTask($task);
         }
     }
@@ -66,14 +66,14 @@ class ManagedModule extends Module
 
     public function beforeParsing($task)
     {
-        if($task->plugin){
+        if ($task->plugin) {
             $task->plugin->beforeParsing($task);
         }
     }
 
     public function afterParsing($task)
     {
-        if($task->plugin){
+        if ($task->plugin) {
             $task->plugin->afterParsing($task);
         }
     }

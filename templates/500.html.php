@@ -6,4 +6,4 @@ use Cyantree\Grout\App\Generators\Template\TemplateContext;
 $q = ManagedFactory::get($this->app)->quick();
 ?>
 
-<?=$q->t('Fehler 500 - Es ist ein unbekannter Fehler aufgetreten.')?>
+<?= $q->t('Fehler 500 - Es ist ein unbekannter Fehler aufgetreten.') ?>

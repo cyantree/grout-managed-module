@@ -9,15 +9,15 @@ class ManagedPlugin extends Plugin
     public $extendsService = false;
 
     /** @var ManagedFactory */
-    private $_factory;
+    private $factory;
 
     /** @return ManagedFactory */
     public function factory()
     {
-        if (!$this->_factory) {
-            $this->_factory = ManagedFactory::get($this->app);
+        if (!$this->factory) {
+            $this->factory = ManagedFactory::get($this->app);
         }
 
-        return $this->_factory;
+        return $this->factory;
     }
 }

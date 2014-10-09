@@ -7,7 +7,6 @@ use Cyantree\Grout\StatusContainer;
 use Cyantree\Grout\Types\FileUpload;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
 use Grout\Cyantree\ManagedModule\Pages\ManagedPage;
-use Grout\Cyantree\ManagedModule\Pages\RestrictedPage;
 
 class EditSetPage extends ManagedPage
 {
@@ -28,7 +27,7 @@ class EditSetPage extends ManagedPage
     public function parseTask()
     {
         $type = $this->task->vars->get('type');
-        if(!$this->factory()->module->setTypes->has($type)){
+        if (!$this->factory()->module->setTypes->has($type)) {
             $this->parseError(ResponseCode::CODE_404);
             return;
         }
@@ -37,7 +36,7 @@ class EditSetPage extends ManagedPage
         $this->id = $this->task->request->post->get('set_id', $this->task->vars->get('id'));
         $this->status = new StatusContainer();
 
-        if(!$this->_loadSet()){
+        if (!$this->loadSet()) {
             $this->parseError(ResponseCode::CODE_404);
             return;
         }
@@ -48,41 +47,43 @@ class EditSetPage extends ManagedPage
             $this->set->populate($this->request()->post->data, FileUpload::fromMultiplePhpFileUploads($this->request()->files->data));
             $this->set->check();
 
-            if(!$this->set->status->error){
+            if (!$this->set->status->error) {
                 if (!$this->set->status->hasSuccessMessage('success')) {
                     $this->set->postSuccess('success', $q->t('Der Inhalt wurde erfolgreich gespeichert.'));
                 }
                 $this->set->save();
             }
-        }else{
+
+        } else {
             $this->status = new StatusContainer();
         }
 
         if (!$this->set->getId()) {
             $this->submitUrl = $this->factory()->module->getRouteUrl('add-set', array('type' => $type));
+
         } else {
             $this->submitUrl = $this->factory()->module->getRouteUrl('edit-set', array('type' => $type, 'id' => $this->set->getId()));
             $this->deleteUrl = $this->factory()->module->getRouteUrl('delete-set', array('type' => $type, 'id' => $this->set->getId()));
         }
 
         // >> Translate status
-        if($this->status->hasSuccessMessages){
-            foreach($this->status->successMessages as $message){
-                if($message){
+        if ($this->status->hasSuccessMessages) {
+            foreach ($this->status->successMessages as $message) {
+                if ($message) {
                     $message->message = $q->t($message->message);
                 }
             }
         }
-        if($this->status->hasErrorMessages){
-            foreach($this->status->errors as $message){
-                if($message){
+        if ($this->status->hasErrorMessages) {
+            foreach ($this->status->errors as $message) {
+                if ($message) {
                     $message->message = $q->t($message->message);
                 }
             }
         }
-        if($this->status->hasInfoMessages){
-            foreach($this->status->infoMessages as $message){
-                if($message){
+        if ($this->status->hasInfoMessages) {
+            foreach ($this->status->infoMessages as $message) {
+                if ($message) {
                     $message->message = $q->t($message->message);
                 }
             }
@@ -91,11 +92,11 @@ class EditSetPage extends ManagedPage
         $this->setResult($this->factory()->templates()->load('sets/edit.html'));
     }
 
-    private function _loadSet()
+    private function loadSet()
     {
         $class = $this->factory()->module->setTypes->get($this->type);
 
-        if(!$class){
+        if (!$class) {
             return false;
         }
 
@@ -121,10 +122,10 @@ class EditSetPage extends ManagedPage
 
         $set->prepareRendering($this->mode);
 
-        if($this->id){
+        if ($this->id) {
             $set->loadById($this->id);
 
-            if(!$set->getId() || !$set->allowEdit){
+            if (!$set->getId() || !$set->allowEdit) {
                 return false;
             }
 

@@ -49,7 +49,7 @@ do {
             <?= $set->render($content) ?>
         </div>
     </div>
-<?php
+    <?php
 } while ($content = $content->nextContent);
 ?>
     <div class="item">

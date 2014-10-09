@@ -8,20 +8,20 @@ use Grout\Cyantree\ManagedModule\Types\AccessRule;
 class MenuTools
 {
     /** @var ManagedFactory */
-    private $_factory;
+    private $factory;
 
-    private $_links;
+    private $links;
 
     public function __construct(ManagedFactory $factory)
     {
-        $this->_factory = $factory;
-        $this->_links = &$this->_factory->module->menuLinks;
+        $this->factory = $factory;
+        $this->links = &$this->factory->module->menuLinks;
     }
 
 
     public function addUrlLink($title, $url, AccessRule $accessRule = null, $config = array())
     {
-        $this->_links[] = array_merge(array(
+        $this->links[] = array_merge(array(
             'type' => 'url',
             'url' => $url,
             'title' => $title,
@@ -31,51 +31,51 @@ class MenuTools
 
     public function addListSetsLink($title, $set, AccessRule $accessRule = null, $config = array())
     {
-        $this->_links[] = array_merge(array(
+        $this->links[] = array_merge(array(
             'type' => 'url',
-            'url' => $this->_factory->module->getRouteUrl('list-sets', array('type' => $set)),
+            'url' => $this->factory->module->getRouteUrl('list-sets', array('type' => $set)),
             'access' => $accessRule,
             'title' => $title,
-            'id' => $set.'-sets'
+            'id' => $set . '-sets'
         ), $config);
     }
 
     public function addEditSetLink($title, $set, $id, AccessRule $accessRule = null, $config = array())
     {
-        $this->_links[] = array_merge(array(
+        $this->links[] = array_merge(array(
             'type' => 'url',
-            'url' => $this->_factory->module->getRouteUrl('edit-set', array('type' => $set, 'id' => $id)),
+            'url' => $this->factory->module->getRouteUrl('edit-set', array('type' => $set, 'id' => $id)),
             'access' => $accessRule,
             'title' => $title,
-            'id' => $set.'-sets'
+            'id' => $set . '-sets'
         ), $config);
     }
 
     public function addAddSetLink($title, $set, AccessRule $accessRule = null, $config = array())
     {
-        $this->_links[] = array_merge(array(
+        $this->links[] = array_merge(array(
                 'type' => 'url',
-                'url' => $this->_factory->module->getRouteUrl('add-set', array('type' => $set)),
+                'url' => $this->factory->module->getRouteUrl('add-set', array('type' => $set)),
                 'access' => $accessRule,
                 'title' => $title,
-                'id' => $set.'-sets'
+                'id' => $set . '-sets'
             ), $config);
     }
 
     public function addDeleteSetLink($title, $set, $id, AccessRule $accessRule = null, $config = array())
     {
-        $this->_links[] = array_merge(array(
+        $this->links[] = array_merge(array(
             'type' => 'url',
-            'url' => $this->_factory->module->getRouteUrl('delete-set', array('type' => $set, 'id' => $id)),
+            'url' => $this->factory->module->getRouteUrl('delete-set', array('type' => $set, 'id' => $id)),
             'access' => $accessRule,
             'title' => $title,
-            'id' => $set.'-sets'
+            'id' => $set . '-sets'
         ), $config);
     }
 
     public function addRouteLink($title, Route $route, $arguments = null, AccessRule $accessRule = null, $config = array())
     {
-        $this->_links[] = array_merge(array(
+        $this->links[] = array_merge(array(
             'type' => 'url',
             'route' => $route,
             'url' => $route->getUrl($arguments),

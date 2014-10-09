@@ -63,7 +63,7 @@ if ($acl) {
                 $url = $menuLink['url'];
                 $active = ($id !== null && $id === $activeMenu) || $filter->get('route') == $this->task->route;
 
-                $c = '<li'.($active ? ' class="active"' : '').'><a href="'.$q->e($url).'">'.$q->e($filter->get('title')).'</a></li>';
+                $c = '<li' . ($active ? ' class="active"' : '') . '><a href="' . $q->e($url) . '">' . $q->e($filter->get('title')) . '</a></li>';
 
                 echo $c;
             }?>

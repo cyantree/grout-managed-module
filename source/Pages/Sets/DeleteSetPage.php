@@ -26,7 +26,7 @@ class DeleteSetPage extends ManagedPage
     public function parseTask()
     {
         $type = $this->task->vars->get('type');
-        if(!$this->factory()->module->setTypes->has($type)){
+        if (!$this->factory()->module->setTypes->has($type)) {
             $this->parseError(ResponseCode::CODE_404);
             return;
         }
@@ -35,7 +35,7 @@ class DeleteSetPage extends ManagedPage
         $this->type = $type;
         $this->id = $this->task->request->post->get('id', $this->task->vars->get('id'));
 
-        if(!$this->_loadSet()){
+        if (!$this->loadSet()) {
             $this->parseError(ResponseCode::CODE_404);
             return;
         }
@@ -61,11 +61,11 @@ class DeleteSetPage extends ManagedPage
         $this->setResult($this->factory()->templates()->load('sets/delete.html'));
     }
 
-    private function _loadSet()
+    private function loadSet()
     {
         $class = $this->factory()->module->setTypes->get($this->type);
 
-        if(!$class){
+        if (!$class) {
             return false;
         }
 
@@ -83,7 +83,7 @@ class DeleteSetPage extends ManagedPage
         $set->loadById($this->id);
         $this->set = $set;
 
-        if(!$set->getId() || !$set->allowDelete){
+        if (!$set->getId() || !$set->allowDelete) {
             return false;
         }
 
