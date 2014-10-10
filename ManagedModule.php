@@ -9,7 +9,7 @@ use Grout\Cyantree\ManagedModule\Types\ManagedPlugin;
 
 class ManagedModule extends Module
 {
-    public static $_CLASS_ = __CLASS__;
+    public static $CLASS = __CLASS__;
 
     /** @var ManagedConfig */
     public $moduleConfig;
