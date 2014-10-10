@@ -77,21 +77,21 @@ class ListSetsPage extends ManagedPage
         }
 
         $this->init();
-        $this->_prepare();
+        $this->prepare();
 
         if ($this->mode == Set::MODE_EXPORT) {
             $this->entitiesPerPage = 0;
-            $this->_loadSets();
-            $this->_generateExport($this->task->vars->get('format'));
+            $this->loadSets();
+            $this->generateExport($this->task->vars->get('format'));
             return;
         }
 
         if ($this->task->request->method == 'POST') {
-            $this->_onSubmit();
+            $this->onSubmit();
         }
 
-        $this->_loadSets();
-        $this->_prepareRendering();
+        $this->loadSets();
+        $this->prepareRendering();
 
         if ($this->renderPage()) {
             $this->setResult($this->factory()->templates()->load($this->template));
@@ -113,7 +113,7 @@ class ListSetsPage extends ManagedPage
         return $data;
     }
 
-    protected function _prepareRendering()
+    protected function prepareRendering()
     {
 
     }
@@ -125,7 +125,7 @@ class ListSetsPage extends ManagedPage
         . $this->renderNavigationBarRightContent($this->renderExportButton() . $this->renderAddButton());
     }
 
-    protected function _prepare()
+    protected function prepare()
     {
         $f = $this->task->request->get;
         $this->page = $f->asInt('page')->limit(1, 999999)->value;
@@ -163,7 +163,7 @@ class ListSetsPage extends ManagedPage
         }
     }
 
-    protected function _prepareLoadSetsOptions()
+    protected function prepareLoadSetsOptions()
     {
         return array(
             'offset' => $this->entitiesPerPage ? ($this->page - 1) * $this->entitiesPerPage : 0,
@@ -173,9 +173,9 @@ class ListSetsPage extends ManagedPage
         );
     }
 
-    protected function _loadSets()
+    protected function loadSets()
     {
-        $this->sets = $this->set->listSets($this->_prepareLoadSetsOptions());
+        $this->sets = $this->set->listSets($this->prepareLoadSetsOptions());
         $this->countPages = $this->entitiesPerPage ? ceil($this->sets->countAll / $this->entitiesPerPage) : 1;
     }
 
@@ -222,7 +222,7 @@ class ListSetsPage extends ManagedPage
         return $this->task->module->getRouteUrl('delete-set', array('type' => $type, 'id' => $id));
     }
 
-    protected function _onRenderTableSetChanged()
+    protected function onRenderTableSetChanged()
     {
 
     }
@@ -246,17 +246,17 @@ class ListSetsPage extends ManagedPage
         return $s;
     }
 
-    protected function _onSubmit()
+    protected function onSubmit()
     {
 
     }
 
-    protected function _getExportFilename($format)
+    protected function getExportFilename($format)
     {
         return $this->type . '_' . date('Y-m-d_H-i-s') . '.' . $format;
     }
 
-    protected function _generateExport($format)
+    protected function generateExport($format)
     {
         if ($format != 'csv') {
             $this->parseError(ResponseCode::CODE_404);
@@ -281,7 +281,7 @@ class ListSetsPage extends ManagedPage
         while ($set = $this->sets->getNext()) {
             $fields = array();
 
-            $this->_onRenderTableSetChanged();
+            $this->onRenderTableSetChanged();
 
             $content = $this->set->firstContent;
 
@@ -298,7 +298,7 @@ class ListSetsPage extends ManagedPage
         $csv->close();
 
         $res = $this->response();
-        $res->asDownload($this->_getExportFilename($format));
+        $res->asDownload($this->getExportFilename($format));
         $res->postContent($data);
     }
 
@@ -384,7 +384,7 @@ class ListSetsPage extends ManagedPage
         $table .= '</tr></thead><tbody>';
 
         while ($set = $this->sets->getNext()) {
-            $this->_onRenderTableSetChanged();
+            $this->onRenderTableSetChanged();
 
             $content = $this->set->firstContent;
 
