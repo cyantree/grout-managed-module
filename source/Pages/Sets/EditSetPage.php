@@ -44,7 +44,10 @@ class EditSetPage extends ManagedPage
         $q = ManagedFactory::get($this->app)->quick();
 
         if ($this->request()->post->get('save')) {
-            $this->set->populate($this->request()->post->data, FileUpload::fromMultiplePhpFileUploads($this->request()->files->data));
+            $this->set->populate(
+                $this->request()->post->data,
+                FileUpload::fromMultiplePhpFileUploads($this->request()->files->data)
+            );
             $this->set->check();
 
             if (!$this->set->status->error) {
@@ -62,8 +65,14 @@ class EditSetPage extends ManagedPage
             $this->submitUrl = $this->factory()->module->getRouteUrl('add-set', array('type' => $type));
 
         } else {
-            $this->submitUrl = $this->factory()->module->getRouteUrl('edit-set', array('type' => $type, 'id' => $this->set->getId()));
-            $this->deleteUrl = $this->factory()->module->getRouteUrl('delete-set', array('type' => $type, 'id' => $this->set->getId()));
+            $this->submitUrl = $this->factory()->module->getRouteUrl(
+                'edit-set',
+                array('type' => $type, 'id' => $this->set->getId())
+            );
+            $this->deleteUrl = $this->factory()->module->getRouteUrl(
+                'delete-set',
+                array('type' => $type, 'id' => $this->set->getId())
+            );
         }
 
         // >> Translate status
