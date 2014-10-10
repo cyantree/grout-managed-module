@@ -110,7 +110,6 @@ class EditSetPage extends ManagedPage
         }
 
         /** @var $set Set */
-        $class = $class::${'_CLASS_'};
         $set = new $class($this->task);
         $set->init();
 
