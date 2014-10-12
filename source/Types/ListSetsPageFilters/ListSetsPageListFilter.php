@@ -9,7 +9,7 @@ class ListSetsPageListFilter extends ListSetsPageFilter
 
     public function readValue(ArrayFilter $data)
     {
-        $this->value = $data->asList($this->name)->match(array_keys($this->options), $this->defaultValue)->value;
+        $this->value = $data->asList($this->name)->match($this->options, $this->defaultValue, true)->value;
     }
 
     public function render()
