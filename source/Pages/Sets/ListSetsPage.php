@@ -125,7 +125,7 @@ class ListSetsPage extends ManagedPage
             'search' => $this->search != '' ? $this->search : null
         );
 
-        if ($context != 'filter') {
+        if ($context != 'filter' && $context != 'export') {
             $data['page'] = $this->page > 1 ? $this->page : null;
         }
 
