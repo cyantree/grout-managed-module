@@ -7,6 +7,7 @@ use Cyantree\Grout\Set\Set;
 use Cyantree\Grout\Set\SetListResult;
 use Cyantree\Grout\StatusContainer;
 use Grout\Cyantree\ManagedModule\Pages\ManagedPage;
+use Grout\Cyantree\ManagedModule\Types\ListSetsPageFilters\ListSetsPageListFilter;
 
 class ListSetsPage extends ManagedPage
 {
@@ -36,6 +37,9 @@ class ListSetsPage extends ManagedPage
     public $template = 'CyantreeManagedModule::sets/list.html';
 
     public $mode;
+
+    /** @var ListSetsPageListFilter[] */
+    private $filters = array();
 
     public function parseTask()
     {
@@ -107,6 +111,12 @@ class ListSetsPage extends ManagedPage
         }
     }
 
+    public function addFilter(ListSetsPageListFilter $filter)
+    {
+        $filter->init($this->factory());
+        $this->filters[] = $filter;
+    }
+
     public function getUrlArguments($context)
     {
         $data = array(
@@ -119,6 +129,10 @@ class ListSetsPage extends ManagedPage
             $data['page'] = $this->page > 1 ? $this->page : null;
         }
 
+        foreach ($this->filters as $filter) {
+            $data[$filter->name] = $filter->value;
+        }
+
         return $data;
     }
 
@@ -129,9 +143,16 @@ class ListSetsPage extends ManagedPage
 
     public function renderNavigationBarContent()
     {
-        return $this->renderSearchInput()
-        . $this->renderPagination()
-        . $this->renderNavigationBarRightContent($this->renderExportButton() . $this->renderAddButton());
+        $c = $this->renderSearchInput();
+
+        foreach ($this->filters as $filter) {
+            $c .= '&nbsp;' . $filter->render();
+        }
+
+        $c .= $this->renderPagination()
+                . $this->renderNavigationBarRightContent($this->renderExportButton() . $this->renderAddButton());
+
+        return $c;
     }
 
     protected function prepare()
@@ -141,6 +162,10 @@ class ListSetsPage extends ManagedPage
         $this->search = $f->asString('search')->asInput(64)->value;
         $this->sortBy = $f->asString('sortBy')->asInput(64)->value;
         $this->sortDirection = $f->asList('sortDirection')->match(array('asc', 'desc'), 'desc')->value;
+
+        foreach ($this->filters as $filter) {
+            $filter->readValue($this->task->request->get);
+        }
     }
 
     public function init()
@@ -174,12 +199,18 @@ class ListSetsPage extends ManagedPage
 
     protected function prepareLoadSetsOptions()
     {
-        return array(
+        $options = array(
             'offset' => $this->entitiesPerPage ? ($this->page - 1) * $this->entitiesPerPage : 0,
             'count' => $this->entitiesPerPage,
             'search' => $this->search,
             'sort' => array('field' => $this->sortBy, 'direction' => $this->sortDirection)
         );
+
+        foreach ($this->filters as $filter) {
+            $options[$filter->name] = $filter->value;
+        }
+
+        return $options;
     }
 
     protected function loadSets()
