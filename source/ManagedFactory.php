@@ -67,7 +67,6 @@ class ManagedFactory extends AppFactory
     {
         if (!($tool = $this->getTool(__FUNCTION__, false))) {
             $tool = new ManagedQuick($this->app);
-            $tool->publicAssetUrl = $this->app->publicUrl . $this->config()->assetUrl;
 
             $tool->translator = $this->translator();
             $tool->translatorDefaultTextDomain = $this->module->id;
