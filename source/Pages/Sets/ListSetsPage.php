@@ -57,6 +57,15 @@ class ListSetsPage extends ManagedPage
         // Retrieve current set class
         $this->set = new $setClass();
         $this->set->config->setAsFilter('ListPage', array('setsPerPage' => 20));
+        
+        $acl = $this->factory()->acl()->factory()->acl();
+        $setConfig = $this->factory()->setTools()->getConfig($type);
+        $this->set->allowAdd = $setConfig->addPageAccess ? $acl->satisfies($setConfig->addPageAccess) : true;
+        $this->set->allowEdit = $setConfig->editPageAccess ? $acl->satisfies($setConfig->editPageAccess) : true;
+        $this->set->allowDelete = $setConfig->deletePageAccess ? $acl->satisfies($setConfig->deletePageAccess) : true;
+        $this->set->allowExport = $setConfig->exportAccess ? $acl->satisfies($setConfig->exportAccess) : true;
+        $this->set->allowList = $setConfig->listPageAccess ? $acl->satisfies($setConfig->listPageAccess) : true;
+
         $this->set->init();
 
         if (!$this->set->allowList) {

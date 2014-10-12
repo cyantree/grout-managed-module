@@ -33,6 +33,10 @@ class MenuTools
 
     public function addListSetsLink($title, $set, AclRule $accessRule = null, $config = array())
     {
+        if (!$accessRule) {
+            $accessRule = $this->factory->setTools()->getConfig($set)->listPageAccess;
+        }
+
         $this->links[] = array_merge(array(
             'type' => 'url',
             'url' => $this->factory->module->getRouteUrl('list-sets', array('type' => $set)),
@@ -44,6 +48,10 @@ class MenuTools
 
     public function addEditSetLink($title, $set, $id, AclRule $accessRule = null, $config = array())
     {
+        if (!$accessRule) {
+            $accessRule = $this->factory->setTools()->getConfig($set)->editPageAccess;
+        }
+
         $this->links[] = array_merge(array(
             'type' => 'url',
             'url' => $this->factory->module->getRouteUrl('edit-set', array('type' => $set, 'id' => $id)),
@@ -55,6 +63,10 @@ class MenuTools
 
     public function addAddSetLink($title, $set, AclRule $accessRule = null, $config = array())
     {
+        if (!$accessRule) {
+            $accessRule = $this->factory->setTools()->getConfig($set)->addPageAccess;
+        }
+
         $this->links[] = array_merge(array(
                 'type' => 'url',
                 'url' => $this->factory->module->getRouteUrl('add-set', array('type' => $set)),
@@ -66,6 +78,10 @@ class MenuTools
 
     public function addDeleteSetLink($title, $set, $id, AclRule $accessRule = null, $config = array())
     {
+        if (!$accessRule) {
+            $accessRule = $this->factory->setTools()->getConfig($set)->deletePageAccess;
+        }
+
         $this->links[] = array_merge(array(
             'type' => 'url',
             'url' => $this->factory->module->getRouteUrl('delete-set', array('type' => $set, 'id' => $id)),
