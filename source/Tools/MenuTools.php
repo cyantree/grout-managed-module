@@ -2,6 +2,8 @@
 namespace Grout\Cyantree\ManagedModule\Tools;
 
 use Cyantree\Grout\App\Route;
+use Grout\Cyantree\AclModule\AclFactory;
+use Grout\Cyantree\AclModule\Types\AclRule;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
 use Grout\Cyantree\ManagedModule\Types\AccessRule;
 
@@ -19,7 +21,7 @@ class MenuTools
     }
 
 
-    public function addUrlLink($title, $url, AccessRule $accessRule = null, $config = array())
+    public function addUrlLink($title, $url, AclRule $accessRule = null, $config = array())
     {
         $this->links[] = array_merge(array(
             'type' => 'url',
@@ -29,7 +31,7 @@ class MenuTools
         ), $config);
     }
 
-    public function addListSetsLink($title, $set, AccessRule $accessRule = null, $config = array())
+    public function addListSetsLink($title, $set, AclRule $accessRule = null, $config = array())
     {
         $this->links[] = array_merge(array(
             'type' => 'url',
@@ -40,7 +42,7 @@ class MenuTools
         ), $config);
     }
 
-    public function addEditSetLink($title, $set, $id, AccessRule $accessRule = null, $config = array())
+    public function addEditSetLink($title, $set, $id, AclRule $accessRule = null, $config = array())
     {
         $this->links[] = array_merge(array(
             'type' => 'url',
@@ -51,7 +53,7 @@ class MenuTools
         ), $config);
     }
 
-    public function addAddSetLink($title, $set, AccessRule $accessRule = null, $config = array())
+    public function addAddSetLink($title, $set, AclRule $accessRule = null, $config = array())
     {
         $this->links[] = array_merge(array(
                 'type' => 'url',
@@ -62,7 +64,7 @@ class MenuTools
             ), $config);
     }
 
-    public function addDeleteSetLink($title, $set, $id, AccessRule $accessRule = null, $config = array())
+    public function addDeleteSetLink($title, $set, $id, AclRule $accessRule = null, $config = array())
     {
         $this->links[] = array_merge(array(
             'type' => 'url',
@@ -73,7 +75,7 @@ class MenuTools
         ), $config);
     }
 
-    public function addRouteLink($title, Route $route, $arguments = null, AccessRule $accessRule = null, $config = array())
+    public function addRouteLink($title, Route $route, $arguments = null, AclRule $accessRule = null, $config = array())
     {
         $this->links[] = array_merge(array(
             'type' => 'url',

@@ -9,6 +9,7 @@ use Cyantree\Grout\Translation\DummyTranslator;
 use Cyantree\Grout\Translation\Translator;
 use Cyantree\Grout\Ui\Ui;
 use Grout\AppModule\AppFactory;
+use Grout\Cyantree\AclModule\AclModule;
 use Grout\Cyantree\ManagedModule\Types\ManagedSessionData;
 use Grout\Cyantree\ManagedModule\Tools\MenuTools;
 use Grout\Cyantree\ManagedModule\Tools\SetTools;
@@ -119,6 +120,18 @@ class ManagedFactory extends AppFactory
     {
         if (!($tool = $this->getTool(__FUNCTION__, false))) {
             $tool = new MenuTools($this);
+
+            $this->setTool(__FUNCTION__, $tool);
+        }
+
+        return $tool;
+    }
+
+    /** @return AclModule */
+    public function acl()
+    {
+        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+            $tool = $this->app->getModuleById($this->config()->aclModuleId, true);
 
             $this->setTool(__FUNCTION__, $tool);
         }

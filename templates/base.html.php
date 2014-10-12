@@ -1,25 +1,17 @@
 <?php
 /** @var $this \Cyantree\Grout\App\Generators\Template\TemplateContext */
 use Cyantree\Grout\Filter\ArrayFilter;
-use Cyantree\Grout\Tools\ArrayTools;
+use Grout\Cyantree\AclModule\AclFactory;
 use Grout\Cyantree\AclModule\AclModule;
+use Grout\Cyantree\AclModule\Tools\AclTool;
+use Grout\Cyantree\AclModule\Types\AclRule;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
-use Grout\Cyantree\ManagedModule\Types\AccessRule;
-use Cyantree\Grout\App\Generators\Template\TemplateContext;
 
 $f = ManagedFactory::get($this->app);
 $m = $f->module;
 $q = $f->quick();
 $ui = $f->ui();
 $c = $f->config();
-
-$logoutUrl = null;
-
-$acl = $this->task->data->get('aclModule');
-if ($acl) {
-    /** @var $acl AclModule */
-    $logoutUrl = $acl->getLogoutUrl();
-}
 ?>
 <!doctype html>
 <html lang="<?=$q->t('de')?>">
@@ -41,9 +33,9 @@ if ($acl) {
     <p class="title"><a href="<?= $q->e($m->getUrl()) ?>"><?=$q->e($c->title)?></a></p>
 
     <?php
-    if ($logoutUrl) {
+    if (!$f->acl()->factory()->acl()->getAccount()->role->isGuest) {
         ?><div class="menu">
-            <a href="<?= $q->e($logoutUrl) ?>"><?= $q->t('Abmelden') ?></a>
+            <a href="<?= $q->er('logout') ?>"><?= $q->t('Abmelden') ?></a>
         </div>
     <?php
     }
@@ -53,11 +45,23 @@ if ($acl) {
     <div id="menu">
         <ul>
             <?php
+            /** @var AclTool $acl */
+            $acl = AclFactory::get()->acl();
+
             $activeMenu = $this->task->vars->get('menu');
             $filter = new ArrayFilter();
             $menuLinks = $m->menuLinks;
             foreach ($menuLinks as $menuLink) {
                 $filter->setData($menuLink);
+
+                /** @var AclRule $access */
+                $access = $filter->get('access');
+
+                if ($access) {
+                    if (!$acl->satisfies($access)) {
+                        continue;
+                    }
+                }
 
                 $id = $filter->get('id');
                 $url = $menuLink['url'];

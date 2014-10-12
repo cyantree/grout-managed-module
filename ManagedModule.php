@@ -25,6 +25,18 @@ class ManagedModule extends Module
     /** @var ArrayFilter */
     public $setTypeConfigs = null;
 
+    /** @var ManagedFactory */
+    private $factory;
+
+    public function factory()
+    {
+        if ($this->factory === null) {
+            $this->factory = ManagedFactory::get($this->app, $this->id);
+        }
+
+        return $this->factory;
+    }
+
     public function init()
     {
         $this->setTypes = new ArrayFilter();
@@ -49,6 +61,13 @@ class ManagedModule extends Module
         $this->addNamedRoute('edit-set', 'edit-set/%%type%%/%%id%%/', 'Pages\Sets\EditSetPage');
         $this->addNamedRoute('delete-set', 'delete-set/%%type%%/%%id%%/', 'Pages\Sets\DeleteSetPage');
         $this->addNamedRoute('404', '%%any,.*%%', null, array('template' => '404.html', 'responseCode' => ResponseCode::CODE_404), -1);
+
+        // Acl pages
+        $this->addNamedRoute('logout', 'logout/', 'Pages\Acl\LogoutPage');
+
+        if ($this->moduleConfig->aclRule) {
+            $this->factory()->acl()->secureUrlRecursive($this->urlPrefix, $this->moduleConfig->aclRule, $this->moduleConfig->title, $this->id . '::Pages\Acl\LoginPage');
+        }
 
         foreach ($this->moduleConfig->plugins as $plugin) {
             $this->importPlugin($plugin['plugin'], $plugin);
