@@ -79,7 +79,7 @@ class SetTools
         if ($config->editPage || $config->editPageAccess) {
             $page = $config->editPage ? $config->editPage : 'Pages\Sets\EditSetPage';
             $route = $this->factory->module->addRoute(
-                'edit-set/' . $id . '/',
+                'edit-set/' . $id . '/%%id%%/',
                 $page,
                 array('type' => $id),
                 1
@@ -123,14 +123,19 @@ class SetTools
         if ($config->deletePage || $config->deletePageAccess) {
             $page = $config->deletePage ? $config->deletePage : 'Pages\Sets\DeleteSetPage';
             $route = $this->factory->module->addRoute(
-                'delete-set/' . $id . '/',
+                'delete-set/' . $id . '/%%id%%/',
                 $page,
                 array('type' => $id),
                 1
             );
 
             if ($config->deletePageAccess) {
-                $this->factory->acl()->secureRoute($route, $config->deletePageAccess, $this->factory->config()->title);
+                $this->factory->acl()->secureRoute(
+                    $route,
+                    $config->deletePageAccess,
+                    $this->factory->config()->title,
+                    $this->factory->module->id . '::Pages\Acl\LoginPage'
+                );
             }
         }
     }
