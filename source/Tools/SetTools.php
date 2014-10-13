@@ -23,9 +23,16 @@ class SetTools
 
     public function register($id, $setClass, RegisterSetConfig $config = null)
     {
+        if (!$config) {
+            $config = new RegisterSetConfig();
+        }
+
         $this->factory->module->setTypes->set($id, $setClass);
         $this->factory->module->setTypeConfigs->set($id, $config);
 
+        if (!$config->listPageAccess) {
+            $config->listPageAccess = $this->factory->module->moduleConfig->aclRule;
+        }
         if ($config->listPage || $config->listPageAccess) {
             $page = $config->listPage ? $config->listPage : 'Pages\Sets\ListSetsPage';
             $route = $this->factory->module->addRoute(
@@ -39,6 +46,9 @@ class SetTools
             }
         }
 
+        if (!$config->exportAccess) {
+            $config->exportAccess = $this->factory->module->moduleConfig->aclRule;
+        }
         if ($config->listPage || $config->exportAccess) {
             $page = $config->listPage ? $config->listPage : 'Pages\Sets\ListSetsPage';
             $route = $this->factory->module->addRoute(
@@ -53,6 +63,9 @@ class SetTools
             }
         }
 
+        if (!$config->editPageAccess) {
+            $config->editPageAccess = $this->factory->module->moduleConfig->aclRule;
+        }
         if ($config->editPage || $config->editPageAccess) {
             $page = $config->editPage ? $config->editPage : 'Pages\Sets\EditSetsPage';
             $route = $this->factory->module->addRoute(
@@ -66,6 +79,9 @@ class SetTools
             }
         }
 
+        if (!$config->addPageAccess) {
+            $config->addPageAccess = $this->factory->module->moduleConfig->aclRule;
+        }
         if ($config->addPage || $config->addPageAccess) {
             $page = $config->addPage ? $config->addPage : 'Pages\Sets\AddSetsPage';
             $route = $this->factory->module->addRoute(
@@ -79,6 +95,9 @@ class SetTools
             }
         }
 
+        if (!$config->deletePageAccess) {
+            $config->deletePageAccess = $this->factory->module->moduleConfig->aclRule;
+        }
         if ($config->deletePage || $config->deletePageAccess) {
             $page = $config->deletePage ? $config->deletePage : 'Pages\Sets\DeleteSetsPage';
             $route = $this->factory->module->addRoute(
