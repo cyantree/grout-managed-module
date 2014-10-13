@@ -111,6 +111,15 @@ class EditSetPage extends ManagedPage
 
         /** @var $set Set */
         $set = new $class($this->task);
+
+        $acl = $this->factory()->acl()->factory()->acl();
+        $setConfig = $this->factory()->setTools()->getConfig($this->type);
+        $set->allowAdd = $setConfig->addPageAccess ? $acl->satisfies($setConfig->addPageAccess) : true;
+        $set->allowEdit = $setConfig->editPageAccess ? $acl->satisfies($setConfig->editPageAccess) : true;
+        $set->allowDelete = $setConfig->deletePageAccess ? $acl->satisfies($setConfig->deletePageAccess) : true;
+        $set->allowExport = $setConfig->exportAccess ? $acl->satisfies($setConfig->exportAccess) : true;
+        $set->allowList = $setConfig->listPageAccess ? $acl->satisfies($setConfig->listPageAccess) : true;
+
         $set->init();
 
         if ($this->id) {
