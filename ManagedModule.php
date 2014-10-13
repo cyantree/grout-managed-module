@@ -66,7 +66,12 @@ class ManagedModule extends Module
         $this->addNamedRoute('logout', 'logout/', 'Pages\Acl\LogoutPage');
 
         if ($this->moduleConfig->aclRule) {
-            $this->factory()->acl()->secureUrlRecursive($this->urlPrefix, $this->moduleConfig->aclRule, $this->moduleConfig->title, $this->id . '::Pages\Acl\LoginPage');
+            $this->factory()->acl()->secureUrlRecursive(
+                $this->urlPrefix,
+                $this->moduleConfig->aclRule,
+                $this->moduleConfig->title,
+                $this->id . '::Pages\Acl\LoginPage'
+            );
         }
 
         foreach ($this->moduleConfig->plugins as $plugin) {
