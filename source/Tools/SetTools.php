@@ -1,7 +1,6 @@
 <?php
 namespace Grout\Cyantree\ManagedModule\Tools;
 
-use Cyantree\Grout\Filter\ArrayFilter;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
 use Grout\Cyantree\ManagedModule\Types\RegisterSetConfig;
 
@@ -78,7 +77,7 @@ class SetTools
             $config->editPageAccess = $this->factory->module->moduleConfig->aclRule;
         }
         if ($config->editPage || $config->editPageAccess) {
-            $page = $config->editPage ? $config->editPage : 'Pages\Sets\EditSetsPage';
+            $page = $config->editPage ? $config->editPage : 'Pages\Sets\EditSetPage';
             $route = $this->factory->module->addRoute(
                 'edit-set/' . $id . '/',
                 $page,
@@ -100,7 +99,7 @@ class SetTools
             $config->addPageAccess = $this->factory->module->moduleConfig->aclRule;
         }
         if ($config->addPage || $config->addPageAccess) {
-            $page = $config->addPage ? $config->addPage : 'Pages\Sets\AddSetsPage';
+            $page = $config->addPage ? $config->addPage : 'Pages\Sets\EditSetPage';
             $route = $this->factory->module->addRoute(
                 'add-set/' . $id . '/',
                 $page,
@@ -122,7 +121,7 @@ class SetTools
             $config->deletePageAccess = $this->factory->module->moduleConfig->aclRule;
         }
         if ($config->deletePage || $config->deletePageAccess) {
-            $page = $config->deletePage ? $config->deletePage : 'Pages\Sets\DeleteSetsPage';
+            $page = $config->deletePage ? $config->deletePage : 'Pages\Sets\DeleteSetPage';
             $route = $this->factory->module->addRoute(
                 'delete-set/' . $id . '/',
                 $page,
