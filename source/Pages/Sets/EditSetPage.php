@@ -41,6 +41,8 @@ class EditSetPage extends ManagedPage
             return;
         }
 
+        $this->task->vars->set('menu', $type . '-sets');
+
         $q = ManagedFactory::get($this->app)->quick();
 
         if ($this->request()->post->get('save')) {
