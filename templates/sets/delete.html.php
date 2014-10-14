@@ -24,7 +24,7 @@ if ($page->deleted) {
 <?= $ui->formStart($page->submitUrl, 'post') ?>
     <div class="item"><label></label>
 
-        <div class="content"><h3><?= $q->e($set->config->get('title')) ?></h3></div>
+        <div class="content"><h2><?= $q->e($set->config->get('title')) ?></h2></div>
     </div>
 
     <div class="item">
