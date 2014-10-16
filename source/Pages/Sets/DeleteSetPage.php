@@ -31,7 +31,6 @@ class DeleteSetPage extends ManagedPage
             return;
         }
 
-        $this->status = new StatusContainer();
         $this->type = $type;
         $this->id = $this->task->request->post->get('id', $this->task->vars->get('id'));
 
@@ -49,11 +48,35 @@ class DeleteSetPage extends ManagedPage
                 $this->deleted = true;
 
                 if (!$this->set->status->hasSuccessMessage('success')) {
-                    $this->set->postSuccess('success', $q->t('Der Inhalt wurde erfolgreich gelöscht.'));
+                    $this->set->postSuccess('success', _('Der Inhalt wurde erfolgreich gelöscht.'));
                 }
             } else {
                 if (!$this->set->status->hasError('error')) {
-                    $this->set->postError('error', $q->t('Der Inhalt konnte nicht gelöscht werden.'));
+                    $this->set->postError('error', _('Der Inhalt konnte nicht gelöscht werden.'));
+                }
+            }
+        }
+
+        // >> Translate status
+        if ($this->set->status->hasSuccessMessages) {
+            foreach ($this->set->status->successMessages as $message) {
+                if ($message) {
+                    $message->message = $q->t($message->message);
+                }
+            }
+        }
+
+        if ($this->set->status->hasErrorMessages) {
+            foreach ($this->set->status->errors as $message) {
+                if ($message) {
+                    $message->message = $q->t($message->message);
+                }
+            }
+        }
+        if ($this->set->status->hasInfoMessages) {
+            foreach ($this->set->status->infoMessages as $message) {
+                if ($message) {
+                    $message->message = $q->t($message->message);
                 }
             }
         }

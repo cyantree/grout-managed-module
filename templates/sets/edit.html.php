@@ -12,7 +12,6 @@ $ui = ManagedFactory::get($this->app)->ui();
 $page = $this->task->page;
 $set = $page->set;
 
-echo $ui->status($page->status);
 echo $ui->status($set->status);
 ?>
 

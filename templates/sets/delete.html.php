@@ -1,10 +1,9 @@
 <?php
-
-/** @var $this TemplateContext */
-
 use Cyantree\Grout\App\Generators\Template\TemplateContext;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
 use Grout\Cyantree\ManagedModule\Pages\Sets\DeleteSetPage;
+
+/** @var $this TemplateContext */
 
 $q = ManagedFactory::get($this->app)->quick();
 $ui = ManagedFactory::get($this->app)->ui();
@@ -13,7 +12,6 @@ $ui = ManagedFactory::get($this->app)->ui();
 $page = $this->task->page;
 $set = $page->set;
 
-echo $ui->status($page->status);
 echo $ui->status($set->status);
 
 if ($page->deleted) {

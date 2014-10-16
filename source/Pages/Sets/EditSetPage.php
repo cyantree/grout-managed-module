@@ -15,9 +15,6 @@ class EditSetPage extends ManagedPage
     /** @var Set */
     public $set;
 
-    /** @var StatusContainer */
-    public $status;
-
     public $id;
     public $mode;
 
@@ -34,7 +31,6 @@ class EditSetPage extends ManagedPage
 
         $this->type = $type;
         $this->id = $this->task->request->post->get('set_id', $this->task->vars->get('id'));
-        $this->status = new StatusContainer();
 
         if (!$this->loadSet()) {
             $this->parseError(ResponseCode::CODE_404);
@@ -54,13 +50,11 @@ class EditSetPage extends ManagedPage
 
             if (!$this->set->status->error) {
                 if (!$this->set->status->hasSuccessMessage('success')) {
-                    $this->set->postSuccess('success', $q->t('Der Inhalt wurde erfolgreich gespeichert.'));
+                    $this->set->postSuccess('success', _('Der Inhalt wurde erfolgreich gespeichert.'));
                 }
                 $this->set->save();
             }
 
-        } else {
-            $this->status = new StatusContainer();
         }
 
         if (!$this->set->getId()) {
@@ -78,22 +72,23 @@ class EditSetPage extends ManagedPage
         }
 
         // >> Translate status
-        if ($this->status->hasSuccessMessages) {
-            foreach ($this->status->successMessages as $message) {
+        if ($this->set->status->hasSuccessMessages) {
+            foreach ($this->set->status->successMessages as $message) {
                 if ($message) {
                     $message->message = $q->t($message->message);
                 }
             }
         }
-        if ($this->status->hasErrorMessages) {
-            foreach ($this->status->errors as $message) {
+
+        if ($this->set->status->hasErrorMessages) {
+            foreach ($this->set->status->errors as $message) {
                 if ($message) {
                     $message->message = $q->t($message->message);
                 }
             }
         }
-        if ($this->status->hasInfoMessages) {
-            foreach ($this->status->infoMessages as $message) {
+        if ($this->set->status->hasInfoMessages) {
+            foreach ($this->set->status->infoMessages as $message) {
                 if ($message) {
                     $message->message = $q->t($message->message);
                 }
