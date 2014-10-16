@@ -39,7 +39,7 @@ class ManagedFactory extends AppFactory
     /** @return TemplateGenerator */
     public function templates()
     {
-        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+        if (!($tool = $this->retrieveTool(__FUNCTION__))) {
             $tool = new TemplateGenerator();
             $tool->defaultModule = $this->module;
             $tool->app = $this->app;
@@ -53,7 +53,7 @@ class ManagedFactory extends AppFactory
     /** @deprecated */
     public function module()
     {
-        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+        if (!($tool = $this->retrieveTool(__FUNCTION__))) {
             /** @var ManagedModule $tool */
             $tool = $this->module;
 
@@ -66,7 +66,7 @@ class ManagedFactory extends AppFactory
     /** @return ManagedQuick */
     public function quick()
     {
-        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+        if (!($tool = $this->retrieveTool(__FUNCTION__))) {
             $tool = new ManagedQuick($this->app);
 
             $tool->translator = $this->translator();
@@ -81,7 +81,7 @@ class ManagedFactory extends AppFactory
     /** @return ManagedConfig */
     public function config()
     {
-        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+        if (!($tool = $this->retrieveTool(__FUNCTION__))) {
             /** @var ManagedConfig $tool */
             $tool = $this->app->configs->getConfig($this->module->id);
 
@@ -94,7 +94,7 @@ class ManagedFactory extends AppFactory
     /** @return Translator */
     public function translator()
     {
-        if (!($tool = $this->getTool(__FUNCTION__, false, true))) {
+        if (!($tool = $this->retrieveTool(__FUNCTION__, true))) {
             $tool = new DummyTranslator();
 
             $this->setTool(__FUNCTION__, $tool);
@@ -106,7 +106,7 @@ class ManagedFactory extends AppFactory
     /** @return SetTools */
     public function setTools()
     {
-        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+        if (!($tool = $this->retrieveTool(__FUNCTION__))) {
             $tool = new SetTools($this);
 
             $this->setTool(__FUNCTION__, $tool);
@@ -118,7 +118,7 @@ class ManagedFactory extends AppFactory
     /** @return MenuTools */
     public function menuTools()
     {
-        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+        if (!($tool = $this->retrieveTool(__FUNCTION__))) {
             $tool = new MenuTools($this);
 
             $this->setTool(__FUNCTION__, $tool);
@@ -130,7 +130,7 @@ class ManagedFactory extends AppFactory
     /** @return AclModule */
     public function acl()
     {
-        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+        if (!($tool = $this->retrieveTool(__FUNCTION__))) {
             $tool = $this->app->getModuleById($this->config()->aclModuleId, true);
 
             $this->setTool(__FUNCTION__, $tool);
