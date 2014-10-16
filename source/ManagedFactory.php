@@ -94,7 +94,7 @@ class ManagedFactory extends AppFactory
     /** @return Translator */
     public function translator()
     {
-        if (!($tool = $this->getTool(__FUNCTION__, false))) {
+        if (!($tool = $this->getTool(__FUNCTION__, false, true))) {
             $tool = new DummyTranslator();
 
             $this->setTool(__FUNCTION__, $tool);
