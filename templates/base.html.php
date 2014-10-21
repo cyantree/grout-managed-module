@@ -35,45 +35,52 @@ $c = $f->config();
     <?php
     if (!$f->acl()->factory()->acl()->getAccount()->role->isGuest) {
         ?><div class="menu">
-            <a href="<?= $q->er('logout') ?>"><?= $q->t('Abmelden') ?></a>
+        <a href="<?= $q->er('logout') ?>"><?= $q->t('Abmelden') ?></a>
         </div>
     <?php
     }
     ?>
 </div>
 <div id="page">
-    <div id="menu">
-        <ul>
-            <?php
-            /** @var AclTool $acl */
-            $acl = AclFactory::get()->acl();
+    <?php
+    if ($m->menuLinks) {
+        ?>
+        <div id="menu">
+            <ul>
+                <?php
+                /** @var AclTool $acl */
+                $acl = AclFactory::get()->acl();
 
-            $activeMenu = $this->task->vars->get('menu');
-            $filter = new ArrayFilter();
-            $menuLinks = $m->menuLinks;
-            foreach ($menuLinks as $menuLink) {
-                $filter->setData($menuLink);
+                $activeMenu = $this->task->vars->get('menu');
+                $filter = new ArrayFilter();
+                $menuLinks = $m->menuLinks;
+                foreach ($menuLinks as $menuLink) {
+                    $filter->setData($menuLink);
 
-                /** @var AclRule $access */
-                $access = $filter->get('access');
+                    /** @var AclRule $access */
+                    $access = $filter->get('access');
 
-                if ($access) {
-                    if (!$acl->satisfies($access)) {
-                        continue;
+                    if ($access) {
+                        if (!$acl->satisfies($access)) {
+                            continue;
+                        }
                     }
+
+                    $id = $filter->get('id');
+                    $url = $menuLink['url'];
+                    $active = ($id !== null && $id === $activeMenu) || $filter->get('route') == $this->task->route;
+
+                    $c = '<li' . ($active ? ' class="active"' : '') . '><a href="' . $q->e($url) . '">'
+                        . $q->e($filter->get('title')) . '</a></li>';
+
+                    echo $c;
                 }
-
-                $id = $filter->get('id');
-                $url = $menuLink['url'];
-                $active = ($id !== null && $id === $activeMenu) || $filter->get('route') == $this->task->route;
-
-                $c = '<li' . ($active ? ' class="active"' : '') . '><a href="' . $q->e($url) . '">'
-                    . $q->e($filter->get('title')) . '</a></li>';
-
-                echo $c;
-            }?>
-        </ul>
-    </div>
+                ?>
+            </ul>
+        </div>
+        <?php
+    }
+    ?>
     <div id="content">
         <?=$this->in->get('content')?>
     </div>
