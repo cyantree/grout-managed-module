@@ -21,9 +21,6 @@ class ListSetsPage extends ManagedPage
     public $sortBy;
     public $sortDirection;
 
-    /** @var StatusContainer */
-    public $status;
-
     public $pageUrl;
 
     /** @var Set */
@@ -78,7 +75,6 @@ class ListSetsPage extends ManagedPage
         }
 
         $this->type = $type;
-        $this->status = new StatusContainer();
 
         $this->task->vars->set('menu', $type . '-sets');
 
