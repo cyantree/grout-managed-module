@@ -3,6 +3,7 @@ namespace Grout\Cyantree\ManagedModule\Pages\Sets;
 
 use Cyantree\Grout\App\Types\ResponseCode;
 use Cyantree\Grout\Set\Set;
+use Cyantree\Grout\Set\SetMessage;
 use Cyantree\Grout\StatusContainer;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
 use Grout\Cyantree\ManagedModule\Pages\ManagedPage;
@@ -60,7 +61,7 @@ class DeleteSetPage extends ManagedPage
         // >> Translate status
         if ($this->set->status->hasSuccessMessages) {
             foreach ($this->set->status->successMessages as $message) {
-                if ($message) {
+                if ($message instanceof SetMessage) {
                     $message->message = $q->t($message->message);
                 }
             }
@@ -68,14 +69,14 @@ class DeleteSetPage extends ManagedPage
 
         if ($this->set->status->hasErrorMessages) {
             foreach ($this->set->status->errors as $message) {
-                if ($message) {
+                if ($message instanceof SetMessage) {
                     $message->message = $q->t($message->message);
                 }
             }
         }
         if ($this->set->status->hasInfoMessages) {
             foreach ($this->set->status->infoMessages as $message) {
-                if ($message) {
+                if ($message instanceof SetMessage) {
                     $message->message = $q->t($message->message);
                 }
             }

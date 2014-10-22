@@ -16,8 +16,10 @@ echo $ui->status($set->status);
 ?>
 
 <?= $ui->formStart($page->submitUrl, 'file') ?>
-    <div class="item"><label></label>
+    <div class="item">
+        <div class="label">
 
+        </div>
         <div class="content"><h2><?= $q->e($set->config->get('title')) ?></h2></div>
     </div>
 <?php

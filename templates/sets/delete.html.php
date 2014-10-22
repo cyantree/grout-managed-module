@@ -20,13 +20,17 @@ if ($page->deleted) {
 ?>
 
 <?= $ui->formStart($page->submitUrl, 'post') ?>
-    <div class="item"><label></label>
+    <div class="item">
+        <div class="label">
 
+        </div>
         <div class="content"><h2><?= $q->e($set->config->get('title')) ?></h2></div>
     </div>
 
     <div class="item">
-        <label></label>
+        <div class="label">
+
+        </div>
         <span><?=$q->t('Soll der Inhalt wirklich gelöscht werden?')?></span>
     </div>
 
@@ -41,8 +45,9 @@ do {
     $label = $content->config->get('label');
     ?>
     <div class="item" id="content_<?= $q->e($content->name) ?>">
-        <label><?= $label != '' ? $q->e($label) . ':' : '' ?></label>
-
+        <div class="label">
+            <label><?= $label != '' ? $q->e($label) . ':' : '' ?></label>
+        </div>
         <div class="content">
             <?= $set->render($content) ?>
         </div>
@@ -51,8 +56,12 @@ do {
 } while ($content = $content->nextContent);
 ?>
     <div class="item">
-        <label></label>
-        <input type="submit" name="delete" value="<?=$q->t('Löschen')?>"/>
+        <div class="label">
+
+        </div>
+        <div class="content">
+            <input type="submit" name="delete" value="<?=$q->t('Löschen')?>"/>
+        </div>
     </div>
 
 <?= $ui->hiddenInput('class', get_class($set)) ?>
