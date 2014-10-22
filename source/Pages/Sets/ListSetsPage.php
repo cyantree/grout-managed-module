@@ -5,7 +5,6 @@ use Cyantree\Grout\App\Types\ResponseCode;
 use Cyantree\Grout\Csv\CsvWriter;
 use Cyantree\Grout\Set\Set;
 use Cyantree\Grout\Set\SetListResult;
-use Cyantree\Grout\StatusContainer;
 use Grout\Cyantree\ManagedModule\Pages\ManagedPage;
 use Grout\Cyantree\ManagedModule\Types\ListSetsPageFilters\ListSetsPageListFilter;
 
@@ -57,6 +56,7 @@ class ListSetsPage extends ManagedPage
 
         // Retrieve current set class
         $this->set = new $setClass();
+        $this->set->status->setTranslator($this->factory()->translator());
         $this->set->config->setAsFilter('ListPage', array('setsPerPage' => 20));
         
         $acl = $this->factory()->acl()->factory()->acl();

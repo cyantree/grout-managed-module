@@ -3,10 +3,7 @@ namespace Grout\Cyantree\ManagedModule\Pages\Sets;
 
 use Cyantree\Grout\App\Types\ResponseCode;
 use Cyantree\Grout\Set\Set;
-use Cyantree\Grout\Set\SetMessage;
-use Cyantree\Grout\StatusContainer;
 use Cyantree\Grout\Types\FileUpload;
-use Grout\Cyantree\ManagedModule\ManagedFactory;
 use Grout\Cyantree\ManagedModule\Pages\ManagedPage;
 
 class EditSetPage extends ManagedPage
@@ -38,9 +35,9 @@ class EditSetPage extends ManagedPage
             return;
         }
 
-        $this->task->vars->set('menu', $type . '-sets');
+        $this->set->status->setTranslator($this->factory()->translator());
 
-        $q = ManagedFactory::get($this->app)->quick();
+        $this->task->vars->set('menu', $type . '-sets');
 
         $resetOnSuccess = false;
         $doSave = false;
@@ -60,8 +57,8 @@ class EditSetPage extends ManagedPage
             );
             $this->set->check();
 
-            if (!$this->set->status->error) {
-                if (!$this->set->status->hasSuccessMessage('success')) {
+            if (!$this->set->status->error->hasStatuses) {
+                if (!$this->set->status->success->has('success')) {
                     $this->set->postSuccess('success', _('Der Inhalt wurde erfolgreich gespeichert.'));
                 }
                 $this->set->save();
@@ -83,31 +80,7 @@ class EditSetPage extends ManagedPage
             );
         }
 
-        // >> Translate status
-        if ($this->set->status->hasSuccessMessages) {
-            foreach ($this->set->status->successMessages as $message) {
-                if ($message instanceof SetMessage) {
-                    $message->message = $q->t($message->message);
-                }
-            }
-        }
-
-        if ($this->set->status->hasErrorMessages) {
-            foreach ($this->set->status->errors as $message) {
-                if ($message instanceof SetMessage) {
-                    $message->message = $q->t($message->message);
-                }
-            }
-        }
-        if ($this->set->status->hasInfoMessages) {
-            foreach ($this->set->status->infoMessages as $message) {
-                if ($message instanceof SetMessage) {
-                    $message->message = $q->t($message->message);
-                }
-            }
-        }
-
-        if ($isNew && $resetOnSuccess && $this->set->status->success) {
+        if ($isNew && $resetOnSuccess && $this->set->status->success->hasStatuses) {
             $this->set->createNew();
         }
 

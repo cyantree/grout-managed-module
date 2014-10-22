@@ -3,20 +3,13 @@ namespace Grout\Cyantree\ManagedModule\Pages\Sets;
 
 use Cyantree\Grout\App\Types\ResponseCode;
 use Cyantree\Grout\Set\Set;
-use Cyantree\Grout\Set\SetMessage;
-use Cyantree\Grout\StatusContainer;
-use Grout\Cyantree\ManagedModule\ManagedFactory;
 use Grout\Cyantree\ManagedModule\Pages\ManagedPage;
-use Grout\Cyantree\ManagedModule\Pages\RestrictedPage;
 
 class DeleteSetPage extends ManagedPage
 {
     public $type;
     /** @var Set */
     public $set;
-
-    /** @var StatusContainer */
-    public $status;
 
     public $id;
 
@@ -40,44 +33,20 @@ class DeleteSetPage extends ManagedPage
             return;
         }
 
-        $this->task->vars->set('menu', $type . '-sets');
+        $this->set->status->setTranslator($this->factory()->translator());
 
-        $q = ManagedFactory::get($this->app)->quick();
+        $this->task->vars->set('menu', $type . '-sets');
 
         if ($this->request()->post->get('delete')) {
             if ($this->set->delete()) {
                 $this->deleted = true;
 
-                if (!$this->set->status->hasSuccessMessage('success')) {
+                if (!$this->set->status->success->has('success')) {
                     $this->set->postSuccess('success', _('Der Inhalt wurde erfolgreich gelöscht.'));
                 }
             } else {
-                if (!$this->set->status->hasError('error')) {
+                if (!$this->set->status->success->has('error')) {
                     $this->set->postError('error', _('Der Inhalt konnte nicht gelöscht werden.'));
-                }
-            }
-        }
-
-        // >> Translate status
-        if ($this->set->status->hasSuccessMessages) {
-            foreach ($this->set->status->successMessages as $message) {
-                if ($message instanceof SetMessage) {
-                    $message->message = $q->t($message->message);
-                }
-            }
-        }
-
-        if ($this->set->status->hasErrorMessages) {
-            foreach ($this->set->status->errors as $message) {
-                if ($message instanceof SetMessage) {
-                    $message->message = $q->t($message->message);
-                }
-            }
-        }
-        if ($this->set->status->hasInfoMessages) {
-            foreach ($this->set->status->infoMessages as $message) {
-                if ($message instanceof SetMessage) {
-                    $message->message = $q->t($message->message);
                 }
             }
         }
