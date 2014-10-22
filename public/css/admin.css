@@ -556,18 +556,19 @@ div.GroutStatusBox p {
 }
 div.GroutStatusBox div.status {
   padding: 20px;
+  margin: 10px 0;
 }
 div.GroutStatusBox div.status.success {
-  background: #8f8;
-  color: #040;
+  background: #af9;
 }
 div.GroutStatusBox div.status.error {
-  background: #f88;
-  color: #400;
+  background: #fba;
 }
 div.GroutStatusBox div.status.info {
-  background: #88f;
-  color: #004;
+  background: #bdf;
+}
+div.GroutStatusBox div.status.warning {
+  background: #ffb;
 }
 div.CT_Layer div.GroutPageSelector span.pageGap {
   margin: 0 3px;
