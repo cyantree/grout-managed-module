@@ -42,7 +42,18 @@ class EditSetPage extends ManagedPage
 
         $q = ManagedFactory::get($this->app)->quick();
 
-        if ($this->request()->post->get('save')) {
+        $resetOnSuccess = false;
+        $doSave = false;
+        $isNew = !$this->set->getId();
+
+        if ($this->request()->post->get('saveAndNew')) {
+            $resetOnSuccess = $doSave = true;
+
+        } elseif ($this->request()->post->get('save')) {
+            $doSave = true;
+        }
+
+        if ($doSave) {
             $this->set->populate(
                 $this->request()->post->data,
                 FileUpload::fromMultiplePhpFileUploads($this->request()->files->data)
@@ -58,7 +69,7 @@ class EditSetPage extends ManagedPage
 
         }
 
-        if (!$this->set->getId()) {
+        if ($isNew) {
             $this->submitUrl = $this->factory()->module->getRouteUrl('add-set', array('type' => $type));
 
         } else {
@@ -94,6 +105,10 @@ class EditSetPage extends ManagedPage
                     $message->message = $q->t($message->message);
                 }
             }
+        }
+
+        if ($isNew && $resetOnSuccess && $this->set->status->success) {
+            $this->set->createNew();
         }
 
         $this->setResult($this->factory()->templates()->load('sets/edit.html'));

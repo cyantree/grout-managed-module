@@ -58,6 +58,15 @@ do {
         </div>
         <div class="content">
             <input type="submit" name="save" value="<?=$q->t('Speichern')?>"/>
+
+            <?php
+            if (!$set->getId()) {
+                ?>
+                <input type="submit" name="saveAndNew" value="<?=$q->t('Speichern und weiter')?>"/>
+                <?php
+            }
+            ?>
+
             <?php
             if ($set->getId() && $set->allowDelete) {
                 ?>
