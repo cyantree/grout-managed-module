@@ -32,7 +32,16 @@ do {
     $label = $content->config->get('label');
     ?>
     <div class="item" id="content_<?= $q->e($content->name) ?>">
-        <label><?= $q->e($label != '' ? $label . ($content->required ? '*' : '') . ':' : '') ?></label>
+        <div class="label">
+            <label><?= $q->e($label != '' ? $label . ($content->required ? '*' : '') . ':' : '') ?></label>
+            <?php
+            if ($content->config->get('note')) {
+                ?>
+                <p><?= $q->e($content->config->get('note')) ?></p>
+            <?php
+            }
+            ?>
+        </div>
 
         <div class="content">
             <?= $set->render($content) ?>
@@ -42,15 +51,19 @@ do {
 } while ($content = $content->nextContent);
 ?>
     <div class="item">
-        <label></label>
-        <input type="submit" name="save" value="<?=$q->t('Speichern')?>"/>
-        <?php
-        if ($set->getId() && $set->allowDelete) {
-            ?>
-            <a href="<?= $q->e($page->deleteUrl) ?>" class="button"><?=$q->t('Löschen')?></a>
+        <div class="label">
+
+        </div>
+        <div class="content">
+            <input type="submit" name="save" value="<?=$q->t('Speichern')?>"/>
             <?php
-        }
-        ?>
+            if ($set->getId() && $set->allowDelete) {
+                ?>
+                <a href="<?= $q->e($page->deleteUrl) ?>" class="button"><?=$q->t('Löschen')?></a>
+            <?php
+            }
+            ?>
+        </div>
     </div>
 
 <?= $ui->hiddenInput('set_id', $set->getId()) ?>

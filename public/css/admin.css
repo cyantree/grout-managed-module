@@ -484,11 +484,16 @@ form div.item {
 form div.item div.content {
   display: inline-block;
 }
-form div.item > label {
+form div.item div.label {
   display: inline-block;
-  width: 150px;
-  font-weight: bold;
+  width: 200px;
   vertical-align: top;
+}
+form div.item div.label label {
+  font-weight: bold;
+}
+form div.item div.label p {
+  font-size: 14px;
 }
 form input[type="text"],
 form input[type="password"],
