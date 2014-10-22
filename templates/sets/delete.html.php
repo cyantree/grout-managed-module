@@ -34,7 +34,7 @@ if ($page->deleted) {
 <?php
 $content = $set->firstContent;
 do {
-    if (!$content->config->get('visible')) {
+    if (!$content->visible) {
         continue;
     }
 

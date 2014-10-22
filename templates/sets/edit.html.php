@@ -25,9 +25,10 @@ echo $ui->status($set->status);
 $content = $set->firstContent;
 
 do {
-    if (!$content->config->get('visible')) {
+    if (!$content->visible) {
         continue;
     }
+
     $label = $content->config->get('label');
     ?>
     <div class="item" id="content_<?= $q->e($content->name) ?>">

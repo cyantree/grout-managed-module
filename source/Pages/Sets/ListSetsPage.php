@@ -183,6 +183,10 @@ class ListSetsPage extends ManagedPage
         if ($this->set->getCapabilities()->search && $this->searchAvailable) {
             $searchable = false;
             foreach ($this->set->contents as $content) {
+                if (!$content->visible) {
+                    continue;
+                }
+
                 if ($content->searchable) {
                     $searchable = true;
                     break;
@@ -310,9 +314,11 @@ class ListSetsPage extends ManagedPage
 
         $fields = array();
         do {
-            if ($content->config->get('visible')) {
-                $fields[] = $content->config->get('label');
+            if (!$content->visible) {
+                continue;
             }
+
+            $fields[] = $content->config->get('label');
 
         } while ($content = $content->nextContent);
 
@@ -326,9 +332,11 @@ class ListSetsPage extends ManagedPage
             $content = $this->set->firstContent;
 
             do {
-                if ($content->config->get('visible')) {
-                    $fields[] = $content->render(Set::MODE_EXPORT);
+                if (!$content->visible) {
+                    continue;
                 }
+
+                $fields[] = $content->render(Set::MODE_EXPORT);
             } while ($content = $content->nextContent);
 
             $csv->append($fields);
@@ -391,27 +399,29 @@ class ListSetsPage extends ManagedPage
 
         $content = $this->set->firstContent;
         do {
-            if ($content->config->get('visible')) {
-                $c = $content->config->get('label');
-                if ($content->config->get('escapeLabel', true)) {
-                    $c = $q->e($c);
-                }
-                if ($capabilities->sort && $content->sortable) {
-                    $arguments = $this->getUrlArguments('sort');
-                    $arguments['sortBy'] = $content->name;
-
-                    if ($this->sortBy == $content->name && $this->sortDirection == 'desc') {
-                        $arguments['sortDirection'] = 'asc';
-                    } else {
-                        $arguments['sortDirection'] = 'desc';
-                    }
-
-                    $url = $this->pageUrl . $this->encodeArgs($arguments);
-
-                    $c = '<a href="' . $q->e($url) . '">' . $c . '</a>';
-                }
-                $table .= '<td>' . $c . '</td>';
+            if (!$content->visible) {
+                continue;
             }
+
+            $c = $content->config->get('label');
+            if ($content->config->get('escapeLabel', true)) {
+                $c = $q->e($c);
+            }
+            if ($capabilities->sort && $content->sortable) {
+                $arguments = $this->getUrlArguments('sort');
+                $arguments['sortBy'] = $content->name;
+
+                if ($this->sortBy == $content->name && $this->sortDirection == 'desc') {
+                    $arguments['sortDirection'] = 'asc';
+                } else {
+                    $arguments['sortDirection'] = 'desc';
+                }
+
+                $url = $this->pageUrl . $this->encodeArgs($arguments);
+
+                $c = '<a href="' . $q->e($url) . '">' . $c . '</a>';
+            }
+            $table .= '<td>' . $c . '</td>';
         } while ($content = $content->nextContent);
 
         if ($globalEdit) {
@@ -430,9 +440,11 @@ class ListSetsPage extends ManagedPage
 
             $table .= '<tr>';
             do {
-                if ($content->config->get('visible')) {
-                    $table .= '<td>' . $content->render('list');
+                if (!$content->visible) {
+                    continue;
                 }
+
+                $table .= '<td>' . $content->render('list');
             } while ($content = $content->nextContent);
 
             if ($globalEdit) {
