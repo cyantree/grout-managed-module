@@ -67,6 +67,7 @@ $ui = ManagedFactory::get($this->app)->ui();
 <?php
 echo $page->renderHeader();
 echo $ui->status($page->status);
+echo $ui->status($page->set->status);
 echo $page->renderFormStart();
 echo $page->renderNavigationBar();
 echo $page->renderAboveList();
