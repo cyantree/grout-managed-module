@@ -23,6 +23,10 @@ class MenuTools
 
     public function addUrlLink($title, $url, AclRule $accessRule = null, $config = array())
     {
+        if (!$accessRule) {
+            $accessRule = $this->factory->config()->aclRule;
+        }
+
         $this->links[] = array_merge(array(
             'type' => 'url',
             'url' => $url,
@@ -93,6 +97,10 @@ class MenuTools
 
     public function addRouteLink($title, Route $route, $arguments = null, AclRule $accessRule = null, $config = array())
     {
+        if (!$accessRule) {
+            $accessRule = $this->factory->config()->aclRule;
+        }
+
         $this->links[] = array_merge(array(
             'type' => 'url',
             'route' => $route,
