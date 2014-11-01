@@ -18,10 +18,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Grout\\Cyantree\\ManagedModule\\": [
-                "",
-                "source/"
-            ]
+            "Grout\\Cyantree\\ManagedModule\\": ""
         }
     },
     "require": {
