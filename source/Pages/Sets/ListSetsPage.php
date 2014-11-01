@@ -126,7 +126,9 @@ class ListSetsPage extends ManagedPage
         }
 
         foreach ($this->filters as $filter) {
-            $data[$filter->name] = $filter->value;
+            if ($filter->value != $filter->defaultValue) {
+                $data[$filter->name] = $filter->value;
+            }
         }
 
         return $data;
