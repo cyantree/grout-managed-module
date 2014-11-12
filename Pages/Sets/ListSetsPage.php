@@ -147,7 +147,7 @@ class ListSetsPage extends ManagedPage
             $c .= '&nbsp;' . $filter->render();
         }
 
-        $c .= $this->renderPagination()
+        $c .= $this->renderPagination() . $this->renderSetCount()
                 . $this->renderNavigationBarRightContent($this->renderExportButton() . $this->renderAddButton());
 
         return $c;
@@ -524,6 +524,15 @@ class ListSetsPage extends ManagedPage
             $this->pageUrl . $this->encodeArgs($pagerArgs),
             array('pagePlaceholder' => '__page__')
         );
+    }
+
+    public function renderSetCount()
+    {
+        $q = $this->factory()->quick();
+
+        $entries = $this->sets->countAll == 1 ? '1 Eintrag' : sprintf($q->t('%d Einträge'), $this->sets->countAll);
+
+        return '<span class="countEntities">(' . $q->e($entries) . ')</span>';
     }
 
     public function renderAddButton()
