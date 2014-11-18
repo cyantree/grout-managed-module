@@ -181,7 +181,7 @@ class ListSetsPage extends ManagedPage
         if ($this->set->getCapabilities()->search && $this->searchAvailable) {
             $searchable = false;
             foreach ($this->set->contents as $content) {
-                if (!$content->visible) {
+                if (!$content->enabled) {
                     continue;
                 }
 
@@ -312,7 +312,7 @@ class ListSetsPage extends ManagedPage
 
         $fields = array();
         do {
-            if (!$content->visible) {
+            if (!$content->enabled) {
                 continue;
             }
 
@@ -330,7 +330,7 @@ class ListSetsPage extends ManagedPage
             $content = $this->set->firstContent;
 
             do {
-                if (!$content->visible) {
+                if (!$content->enabled) {
                     continue;
                 }
 
@@ -397,7 +397,7 @@ class ListSetsPage extends ManagedPage
 
         $content = $this->set->firstContent;
         do {
-            if (!$content->visible) {
+            if (!$content->enabled) {
                 continue;
             }
 
@@ -438,7 +438,7 @@ class ListSetsPage extends ManagedPage
 
             $table .= '<tr>';
             do {
-                if (!$content->visible) {
+                if (!$content->enabled) {
                     continue;
                 }
 

@@ -27,7 +27,7 @@ echo $ui->status($set->status);
 $content = $set->firstContent;
 
 do {
-    if (!$content->visible) {
+    if (!$content->enabled) {
         continue;
     }
 
