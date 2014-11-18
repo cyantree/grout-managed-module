@@ -312,7 +312,7 @@ class ListSetsPage extends ManagedPage
 
         $fields = array();
         do {
-            if (!$content->enabled) {
+            if (!$content->enabled || !$content->render) {
                 continue;
             }
 
@@ -330,7 +330,7 @@ class ListSetsPage extends ManagedPage
             $content = $this->set->firstContent;
 
             do {
-                if (!$content->enabled) {
+                if (!$content->enabled || !$content->render) {
                     continue;
                 }
 
@@ -397,7 +397,7 @@ class ListSetsPage extends ManagedPage
 
         $content = $this->set->firstContent;
         do {
-            if (!$content->enabled) {
+            if (!$content->enabled || !$content->render) {
                 continue;
             }
 
@@ -438,7 +438,7 @@ class ListSetsPage extends ManagedPage
 
             $table .= '<tr>';
             do {
-                if (!$content->enabled) {
+                if (!$content->enabled || !$content->render) {
                     continue;
                 }
 

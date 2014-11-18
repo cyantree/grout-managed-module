@@ -38,7 +38,7 @@ if ($page->deleted) {
 <?php
 $content = $set->firstContent;
 do {
-    if (!$content->enabled) {
+    if (!$content->enabled || !$content->render) {
         continue;
     }
 
