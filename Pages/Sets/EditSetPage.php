@@ -106,8 +106,6 @@ class EditSetPage extends ManagedPage
         $set->allowExport = $setConfig->exportAccess ? $acl->satisfies($setConfig->exportAccess) : true;
         $set->allowList = $setConfig->listPageAccess ? $acl->satisfies($setConfig->listPageAccess) : true;
 
-        $set->init();
-
         if ($this->id) {
             $this->mode = Set::MODE_EDIT;
 
@@ -123,7 +121,7 @@ class EditSetPage extends ManagedPage
             }
         }
 
-        $set->prepareRendering($this->mode);
+        $set->init($this->mode, Set::FORMAT_HTML, $this->module->id . ':' . $this->module->type);
 
         if ($this->id) {
             $set->loadById($this->id);

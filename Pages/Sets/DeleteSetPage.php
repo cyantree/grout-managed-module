@@ -75,9 +75,7 @@ class DeleteSetPage extends ManagedPage
         $set->allowExport = $setConfig->exportAccess ? $acl->satisfies($setConfig->exportAccess) : true;
         $set->allowList = $setConfig->listPageAccess ? $acl->satisfies($setConfig->listPageAccess) : true;
 
-        $set->init();
-
-        $set->prepareRendering(Set::MODE_DELETE);
+        $set->init(Set::MODE_DELETE, Set::FORMAT_HTML, $this->module->id . ':' . $this->module->type);
 
         if (!$set->allowDelete) {
             return false;

@@ -32,6 +32,7 @@ class ListSetsPage extends ManagedPage
 
     public $template = 'CyantreeManagedModule::sets/list.html';
 
+    public $format;
     public $mode;
 
     /** @var ListSetsPageListFilter[] */
@@ -67,7 +68,16 @@ class ListSetsPage extends ManagedPage
         $this->set->allowExport = $setConfig->exportAccess ? $acl->satisfies($setConfig->exportAccess) : true;
         $this->set->allowList = $setConfig->listPageAccess ? $acl->satisfies($setConfig->listPageAccess) : true;
 
-        $this->set->init();
+        if ($this->task->vars->get('mode') == 'export') {
+            $this->format = Set::FORMAT_PLAIN;
+            $this->mode = Set::MODE_EXPORT;
+
+        } else {
+            $this->format = Set::FORMAT_HTML;
+            $this->mode = Set::MODE_LIST;
+        }
+
+        $this->set->init($this->mode, $this->format, $this->module->id . ':' . $this->module->type);
 
         if (!$this->set->allowList) {
             $this->parseError(ResponseCode::CODE_404);
@@ -77,13 +87,6 @@ class ListSetsPage extends ManagedPage
         $this->type = $type;
 
         $this->task->vars->set('menu', $type . '-sets');
-
-        if ($this->task->vars->get('mode') == 'export') {
-            $this->mode = Set::MODE_EXPORT;
-
-        } else {
-            $this->mode = Set::MODE_LIST;
-        }
 
         $this->init();
         $this->prepare();
@@ -169,9 +172,6 @@ class ListSetsPage extends ManagedPage
     public function init()
     {
         $this->pageUrl = $this->task->module->getRouteUrl('list-sets', array('type' => $this->type)) . '?';
-
-        // Prepare rendering
-        $this->set->prepareRendering($this->mode);
 
         if (!$this->entitiesPerPage) {
             $this->entitiesPerPage = $this->set->config->asFilter('ListPage')->get('setsPerPage', 20);
