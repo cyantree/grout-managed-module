@@ -45,7 +45,7 @@ class DeleteSetPage extends ManagedPage
                     $this->set->postSuccess('success', _('Der Inhalt wurde erfolgreich gelöscht.'));
                 }
             } else {
-                if (!$this->set->status->success->has('error')) {
+                if (!$this->set->status->error->has('error')) {
                     $this->set->postError('error', _('Der Inhalt konnte nicht gelöscht werden.'));
                 }
             }
