@@ -6,6 +6,7 @@ use Cyantree\Grout\Csv\CsvWriter;
 use Cyantree\Grout\Set\Set;
 use Cyantree\Grout\Set\SetListResult;
 use Grout\Cyantree\ManagedModule\Pages\ManagedPage;
+use Grout\Cyantree\ManagedModule\Types\ListSetsPageConfig;
 use Grout\Cyantree\ManagedModule\Types\ListSetsPageFilters\ListSetsPageListFilter;
 
 class ListSetsPage extends ManagedPage
@@ -14,7 +15,6 @@ class ListSetsPage extends ManagedPage
 
     public $search;
     public $page;
-    public $entitiesPerPage;
     public $countPages;
 
     public $sortBy;
@@ -28,12 +28,11 @@ class ListSetsPage extends ManagedPage
     /** @var SetListResult */
     public $sets;
 
-    public $searchAvailable = true;
-
-    public $template = 'CyantreeManagedModule::sets/list.html';
-
     public $format;
     public $mode;
+
+    /** @var ListSetsPageConfig */
+    public $config;
 
     /** @var ListSetsPageListFilter[] */
     private $filters = array();
@@ -56,9 +55,11 @@ class ListSetsPage extends ManagedPage
         }
 
         // Retrieve current set class
+        $this->config = new ListSetsPageConfig();
+
         $this->set = new $setClass();
         $this->set->status->setTranslator($this->factory()->translator());
-        $this->set->config->setAsFilter('ListPage', array('setsPerPage' => 20));
+        $this->set->config->setAsFilter('ListSetsPage', $this->config);
         
         $acl = $this->factory()->acl()->factory()->acl();
         $setConfig = $this->factory()->setTools()->getConfig($type);
@@ -92,7 +93,7 @@ class ListSetsPage extends ManagedPage
         $this->prepare();
 
         if ($this->mode == Set::MODE_EXPORT) {
-            $this->entitiesPerPage = 0;
+            $this->config->setsPerPage = 0;
             $this->loadSets();
             $this->generateExport($this->task->vars->get('format'));
             return;
@@ -106,7 +107,7 @@ class ListSetsPage extends ManagedPage
         $this->prepareRendering();
 
         if ($this->renderPage()) {
-            $this->setResult($this->factory()->templates()->load($this->template));
+            $this->setResult($this->factory()->templates()->load($this->config->template));
         }
     }
 
@@ -160,7 +161,7 @@ class ListSetsPage extends ManagedPage
     {
         $f = $this->task->request->get;
         $this->page = $f->asInt('page')->limit(1, 999999)->value;
-        $this->search = $f->asString('search')->asInput(64)->value;
+        $this->search = $this->config->searchEnabled ? $f->asString('search')->asInput(64)->value : null;
         $this->sortBy = $f->asString('sortBy')->asInput(64)->value;
         $this->sortDirection = $f->asList('sortDirection')->match(array('asc', 'desc'), 'desc')->value;
 
@@ -173,12 +174,8 @@ class ListSetsPage extends ManagedPage
     {
         $this->pageUrl = $this->task->module->getRouteUrl('list-sets', array('type' => $this->type)) . '?';
 
-        if (!$this->entitiesPerPage) {
-            $this->entitiesPerPage = $this->set->config->asFilter('ListPage')->get('setsPerPage', 20);
-        }
-
         // Check whether search is available
-        if ($this->set->getCapabilities()->search && $this->searchAvailable) {
+        if ($this->set->getCapabilities()->search && $this->config->searchEnabled) {
             $searchable = false;
             foreach ($this->set->contents as $content) {
                 if (!$content->enabled) {
@@ -190,20 +187,20 @@ class ListSetsPage extends ManagedPage
                     break;
                 }
             }
-            if ($this->searchAvailable && !$searchable) {
-                $this->searchAvailable = false;
+            if ($this->config->searchEnabled && !$searchable) {
+                $this->config->searchEnabled = false;
             }
 
         } else {
-            $this->searchAvailable = false;
+            $this->config->searchEnabled = false;
         }
     }
 
     protected function prepareLoadSetsOptions()
     {
         $options = array(
-            'offset' => $this->entitiesPerPage ? ($this->page - 1) * $this->entitiesPerPage : 0,
-            'count' => $this->entitiesPerPage,
+            'offset' => $this->config->setsPerPage ? ($this->page - 1) * $this->config->setsPerPage : 0,
+            'count' => $this->config->setsPerPage,
             'search' => $this->search,
             'sort' => array('field' => $this->sortBy, 'direction' => $this->sortDirection)
         );
@@ -218,7 +215,7 @@ class ListSetsPage extends ManagedPage
     protected function loadSets()
     {
         $this->sets = $this->set->listSets($this->prepareLoadSetsOptions());
-        $this->countPages = $this->entitiesPerPage ? ceil($this->sets->countAll / $this->entitiesPerPage) : 1;
+        $this->countPages = $this->config->setsPerPage ? ceil($this->sets->countAll / $this->config->setsPerPage) : 1;
     }
 
     public function getEditUrl($id, $type = null)
@@ -498,7 +495,7 @@ class ListSetsPage extends ManagedPage
 
     public function renderSearchInput()
     {
-        if (!$this->searchAvailable) {
+        if (!$this->config->searchEnabled) {
             return '';
         }
 
