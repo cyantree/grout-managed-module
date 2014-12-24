@@ -7,14 +7,13 @@ use Cyantree\Grout\App\GroutFactory;
 use Cyantree\Grout\Translation\DummyTranslator;
 use Cyantree\Grout\Translation\Translator;
 use Cyantree\Grout\Ui\Ui;
-use Grout\AppModule\AppFactory;
 use Grout\Cyantree\AclModule\AclModule;
 use Grout\Cyantree\ManagedModule\Tools\MenuTools;
 use Grout\Cyantree\ManagedModule\Tools\SetTools;
 use Grout\Cyantree\ManagedModule\Types\ManagedConfig;
 use Grout\Cyantree\ManagedModule\Types\ManagedQuick;
 
-class ManagedFactory extends AppFactory
+class ManagedFactory extends GroutFactory
 {
     /** @var ManagedModule */
     public $module;
@@ -33,13 +32,11 @@ class ManagedFactory extends AppFactory
         return $factory;
     }
 
-    /** @return TemplateGenerator */
-    public function templates()
+    /** @return Ui */
+    public function ui()
     {
         if (!($tool = $this->retrieveTool(__FUNCTION__))) {
-            $tool = new TemplateGenerator();
-            $tool->defaultModule = $this->module;
-            $tool->app = $this->app;
+            $tool = new Ui();
 
             $this->setTool(__FUNCTION__, $tool);
         }
@@ -47,12 +44,13 @@ class ManagedFactory extends AppFactory
         return $tool;
     }
 
-    /** @deprecated */
-    public function module()
+    /** @return TemplateGenerator */
+    public function templates()
     {
         if (!($tool = $this->retrieveTool(__FUNCTION__))) {
-            /** @var ManagedModule $tool */
-            $tool = $this->module;
+            $tool = new TemplateGenerator();
+            $tool->defaultModule = $this->module;
+            $tool->app = $this->app;
 
             $this->setTool(__FUNCTION__, $tool);
         }
