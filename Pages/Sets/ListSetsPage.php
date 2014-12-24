@@ -107,7 +107,7 @@ class ListSetsPage extends ManagedPage
         $this->prepareRendering();
 
         if ($this->renderPage()) {
-            $this->setResult($this->factory()->templates()->load($this->config->template));
+            $this->setTemplateResult($this->config->template);
         }
     }
 

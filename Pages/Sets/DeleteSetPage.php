@@ -53,7 +53,7 @@ class DeleteSetPage extends ManagedPage
 
         $this->submitUrl = $this->factory()->module->getRouteUrl('delete-set', array('type' => $type, 'id' => $this->set->getId()));
 
-        $this->setResult($this->factory()->templates()->load('sets/delete.html'));
+        $this->setTemplateResult('sets/delete.html');
     }
 
     private function loadSet()

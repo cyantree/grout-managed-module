@@ -84,7 +84,7 @@ class EditSetPage extends ManagedPage
             $this->set->createNew();
         }
 
-        $this->setResult($this->factory()->templates()->load('sets/edit.html'));
+        $this->setTemplateResult('sets/edit.html');
     }
 
     private function loadSet()

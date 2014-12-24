@@ -9,6 +9,6 @@ class LogoutPage extends ManagedPage
     {
         $this->factory()->acl()->factory()->sessionData()->logout();
 
-        $this->setResult($this->factory()->templates()->load('acl/logout.html'));
+        $this->setTemplateResult('acl/logout.html');
     }
 }

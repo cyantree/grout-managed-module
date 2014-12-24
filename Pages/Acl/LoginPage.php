@@ -7,6 +7,6 @@ class LoginPage extends ManagedPage
 {
     public function parseTask()
     {
-        $this->setResult($this->factory()->templates()->load('acl/login.html'));
+        $this->setTemplateResult('acl/login.html');
     }
 }
