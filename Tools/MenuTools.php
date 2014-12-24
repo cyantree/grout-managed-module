@@ -2,10 +2,8 @@
 namespace Grout\Cyantree\ManagedModule\Tools;
 
 use Cyantree\Grout\App\Route;
-use Grout\Cyantree\AclModule\AclFactory;
 use Grout\Cyantree\AclModule\Types\AclRule;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
-use Grout\Cyantree\ManagedModule\Types\AccessRule;
 
 class MenuTools
 {

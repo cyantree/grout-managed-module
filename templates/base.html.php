@@ -2,7 +2,6 @@
 /** @var $this \Cyantree\Grout\App\Generators\Template\TemplateContext */
 use Cyantree\Grout\Filter\ArrayFilter;
 use Grout\Cyantree\AclModule\AclFactory;
-use Grout\Cyantree\AclModule\AclModule;
 use Grout\Cyantree\AclModule\Tools\AclTool;
 use Grout\Cyantree\AclModule\Types\AclRule;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
