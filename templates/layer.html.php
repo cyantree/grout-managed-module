@@ -1,15 +1,16 @@
 <?php
-/** @var $this AppTemplateContext */
+use Cyantree\Grout\App\Generators\Template\TemplateContext;
+use Grout\Cyantree\ManagedModule\ManagedFactory;
 
-use Grout\AppModule\Types\AppTemplateContext;
+/** @var $this TemplateContext */
 
 $m = $this->task->module;
-$q = $this->factory()->quick();
+$q = ManagedFactory::get($this->app, $this->task->module->id)->quick();
 ?>
 <div class="title">
-    <span class="title"><?=$q->e($this->in->get('title'))?></span>
+    <span class="title"><?= $q->e($this->in->get('title')) ?></span>
     <span class="close">&times;</span>
 </div>
 <div class="content">
-    <?=$this->in->get('content')?>
+    <?= $this->in->get('content') ?>
 </div>
