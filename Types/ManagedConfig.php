@@ -12,4 +12,6 @@ class ManagedConfig
     public $aclRule;
 
     public $plugins = array();
+
+    // TODO: Configurable context for sets
 }
