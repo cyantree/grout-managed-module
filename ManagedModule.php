@@ -43,6 +43,7 @@ class ManagedModule extends Module
         $this->setTypeConfigs = new ArrayFilter();
 
         $config = new ManagedConfig();
+        $config->setContext = $this->id;
 
         $this->app->configs->setDefaultConfig($this->id, $config);
         $this->moduleConfig = $this->app->configs->getConfig($this->id);

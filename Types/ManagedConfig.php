@@ -13,5 +13,5 @@ class ManagedConfig
 
     public $plugins = array();
 
-    // TODO: Configurable context for sets
+    public $setContext;
 }

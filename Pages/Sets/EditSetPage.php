@@ -139,7 +139,7 @@ class EditSetPage extends ManagedPage
             }
         }
 
-        $set->init($this->mode, Set::FORMAT_HTML, $this->module->id . ':' . $this->module->type);
+        $set->init($this->mode, Set::FORMAT_HTML, $this->factory()->config()->setContext);
 
         $this->init();
         $this->prepare();

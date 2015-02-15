@@ -111,7 +111,7 @@ class ListSetsPage extends ManagedPage
         $this->set->allowExport = $setConfig->exportAccess ? $acl->satisfies($setConfig->exportAccess) : true;
         $this->set->allowList = $setConfig->listPageAccess ? $acl->satisfies($setConfig->listPageAccess) : true;
 
-        $this->set->init($this->mode, $this->format, $this->module->id . ':' . $this->module->type);
+        $this->set->init($this->mode, $this->format, $this->factory()->config()->setContext);
     }
 
     public function addFilter(ListSetsPageListFilter $filter)
