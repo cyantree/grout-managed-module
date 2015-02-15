@@ -49,8 +49,11 @@ class DeleteSetPage extends ManagedPage
             }
         }
 
-        $this->submitUrl = $this->factory()->module->getRouteUrl('delete-set', array('type' => $type, 'id' => $this->set->getId()));
+        $this->renderPage();
+    }
 
+    public function renderPage()
+    {
         $this->setTemplateResult('sets/delete.html');
     }
 
@@ -71,7 +74,7 @@ class DeleteSetPage extends ManagedPage
         }
 
         /** @var $set Set */
-        $set = new $class($this->task);
+        $this->set = $set = new $class($this->task);
 
         $acl = $this->factory()->acl()->factory()->acl();
         $setConfig = $this->factory()->setTools()->getConfig($this->type);
@@ -83,17 +86,29 @@ class DeleteSetPage extends ManagedPage
 
         $set->init(Set::MODE_DELETE, Set::FORMAT_HTML, $this->module->id . ':' . $this->module->type);
 
+        $this->init();
+        $this->prepare();
+
         if (!$set->allowDelete) {
             return false;
         }
 
         $set->loadById($this->id);
-        $this->set = $set;
 
         if (!$set->getId() || !$set->allowDelete) {
             return false;
         }
 
         return true;
+    }
+
+    public function init()
+    {
+
+    }
+
+    public function prepare()
+    {
+
     }
 }
