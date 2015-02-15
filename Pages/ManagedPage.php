@@ -24,26 +24,6 @@ class ManagedPage extends Page
         return $this->factory;
     }
 
-    public function parseError($code, $data = null)
-    {
-        if ($code == ResponseCode::CODE_404) {
-            $this->setResult(
-                $this->factory()->templates()->load('CyantreeManagedModule:404.html'),
-                ContentType::TYPE_HTML_UTF8,
-                ResponseCode::CODE_404
-            );
-
-        } else {
-            $this->setResult(
-                $this->factory()->templates()->load('CyantreeManagedModule:500.html'),
-                ContentType::TYPE_HTML_UTF8,
-                ResponseCode::CODE_500
-            );
-        }
-
-        parent::parseError($code, $data);
-    }
-
     public function parseTask()
     {
         $this->setTemplateResult($this->task->vars->get('template'), $this->task->vars->get('templateData'), array(

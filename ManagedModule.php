@@ -60,7 +60,10 @@ class ManagedModule extends Module
         $this->addNamedRoute('add-set', 'add-set/%%type%%/', 'Pages\Sets\EditSetPage');
         $this->addNamedRoute('edit-set', 'edit-set/%%type%%/%%id%%/', 'Pages\Sets\EditSetPage');
         $this->addNamedRoute('delete-set', 'delete-set/%%type%%/%%id%%/', 'Pages\Sets\DeleteSetPage');
-        $this->addNamedRoute('404', '%%any,.*%%', null, array('template' => '404.html', 'responseCode' => ResponseCode::CODE_404), -1);
+
+        $this->addErrorRoute(ResponseCode::CODE_403, 'Pages\ManagedPage', array('template' => '403.html'));
+        $this->addErrorRoute(ResponseCode::CODE_404, 'Pages\ManagedPage', array('template' => '404.html'));
+        $this->addErrorRoute(ResponseCode::CODE_500, 'Pages\ManagedPage', array('template' => '500.html'));
 
         // Acl pages
         $this->addNamedRoute('logout', 'logout/', 'Pages\Acl\LogoutPage');
