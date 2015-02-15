@@ -15,7 +15,7 @@ $set = $page->set;
 echo $ui->status($set->status);
 ?>
 
-<?= $ui->formStart($page->submitUrl, 'file') ?>
+<?= $ui->formStart($page->getSubmitUrl(), 'file') ?>
     <div class="item">
         <div class="label">
 
@@ -70,7 +70,7 @@ do {
             <?php
             if ($set->getId() && $set->allowDelete) {
                 ?>
-                <a href="<?= $q->e($page->deleteUrl) ?>" class="button"><?=$q->t('Löschen')?></a>
+                <a href="<?= $q->e($page->getDeleteUrl()) ?>" class="button"><?=$q->t('Löschen')?></a>
             <?php
             }
             ?>

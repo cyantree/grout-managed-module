@@ -16,9 +16,6 @@ class EditSetPage extends ManagedPage
     public $id;
     public $mode;
 
-    public $submitUrl;
-    public $deleteUrl;
-
     public function parseTask()
     {
         $type = $this->task->vars->get('type');
@@ -66,25 +63,41 @@ class EditSetPage extends ManagedPage
 
         }
 
-        if ($isNew) {
-            $this->submitUrl = $this->factory()->module->getRouteUrl('add-set', array('type' => $type));
-
-        } else {
-            $this->submitUrl = $this->factory()->module->getRouteUrl(
-                'edit-set',
-                array('type' => $type, 'id' => $this->set->getId())
-            );
-            $this->deleteUrl = $this->factory()->module->getRouteUrl(
-                'delete-set',
-                array('type' => $type, 'id' => $this->set->getId())
-            );
-        }
-
         if ($isNew && $resetOnSuccess && $this->set->status->success->hasStatuses) {
             $this->set->createNew();
         }
 
         $this->setTemplateResult('sets/edit.html');
+    }
+
+    public function getSubmitUrl()
+    {
+        $id = $this->set->getId();
+
+        if ($id) {
+            return $this->factory()->module->getRouteUrl(
+                    'edit-set',
+                    array('type' => $this->type, 'id' => $this->set->getId())
+            );
+
+        } else {
+            return $this->factory()->module->getRouteUrl('add-set', array('type' => $this->type));
+        }
+    }
+
+    public function getDeleteUrl()
+    {
+        $id = $this->set->getId();
+
+        if ($id) {
+            return $this->factory()->module->getRouteUrl(
+                    'delete-set',
+                    array('type' => $this->type, 'id' => $id)
+            );
+
+        } else {
+            return null;
+        }
     }
 
     private function loadSet()
