@@ -5,6 +5,7 @@ use Cyantree\Grout\App\Types\ResponseCode;
 use Cyantree\Grout\Csv\CsvWriter;
 use Cyantree\Grout\Set\Set;
 use Cyantree\Grout\Set\SetListResult;
+use Grout\Cyantree\ManagedModule\Contents\SetRouteLinkContent;
 use Grout\Cyantree\ManagedModule\Pages\ManagedPage;
 use Grout\Cyantree\ManagedModule\Types\ListSetsPageConfig;
 use Grout\Cyantree\ManagedModule\Types\ListSetsPageFilters\ListSetsPageListFilter;
@@ -172,6 +173,32 @@ class ListSetsPage extends ManagedPage
 
     public function init()
     {
+        if ($this->format == Set::FORMAT_HTML && $this->mode == Set::MODE_LIST) {
+            $q = $this->factory()->quick();
+
+            if ($this->set->allowEdit) {
+                $c = new SetRouteLinkContent();
+                $c->name = '__edit';
+                $c->config->set('label', $q->t('Bearbeiten'));
+                $c->linkLabel = $q->t('Bearbeiten');
+                $c->route = $this->factory()->module->getRoute('edit-set');
+                $c->routeParameters = array('type' => $this->type);
+                $c->setIdField = 'id';
+                $this->set->appendContent($c);
+            }
+
+            if ($this->set->allowDelete) {
+                $c = new SetRouteLinkContent();
+                $c->name = '__delete';
+                $c->config->set('label', $q->t('Löschen'));
+                $c->linkLabel = $q->t('Löschen');
+                $c->route = $this->factory()->module->getRoute('delete-set');
+                $c->routeParameters = array('type' => $this->type);
+                $c->setIdField = 'id';
+                $this->set->appendContent($c);
+            }
+        }
+
         $this->pageUrl = $this->task->module->getRouteUrl('list-sets', array('type' => $this->type)) . '?';
 
         // Check whether search is available
@@ -383,10 +410,6 @@ class ListSetsPage extends ManagedPage
     public function renderTable()
     {
         $q = $this->factory()->quick();
-        $u = $this->factory()->ui();
-
-        $globalDelete = $this->set->allowDelete;
-        $globalEdit = $this->set->allowEdit;
 
         $table = '<table><thead><tr>';
 
@@ -419,13 +442,6 @@ class ListSetsPage extends ManagedPage
             $table .= '<td>' . $c . '</td>';
         } while ($content = $content->nextContent);
 
-        if ($globalEdit) {
-            $table .= '<td>' . $q->t('Bearbeiten') . '</td>';
-        }
-        if ($globalDelete) {
-            $table .= '<td>' . $q->t('Löschen') . '</td>';
-        }
-
         $table .= '</tr></thead><tbody>';
 
         while ($set = $this->sets->getNext()) {
@@ -441,22 +457,6 @@ class ListSetsPage extends ManagedPage
 
                 $table .= '<td>' . $content->render('list');
             } while ($content = $content->nextContent);
-
-            if ($globalEdit) {
-                if ($this->set->allowEdit) {
-                    $table .= '<td>' . $u->link($this->getEditUrl($this->set->getId()), $q->t('Bearbeiten')) . '</td>';
-                } else {
-                    $table .= '<td></td>';
-                }
-            }
-
-            if ($globalDelete) {
-                if ($this->set->allowDelete) {
-                    $table .= '<td>' . $u->link($this->getDeleteUrl($this->set->getId()), $q->t('Löschen')) . '</td>';
-                } else {
-                    $table .= '<td></td>';
-                }
-            }
 
             $table .= '</tr>';
         }
