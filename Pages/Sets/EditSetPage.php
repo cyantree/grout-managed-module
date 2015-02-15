@@ -49,8 +49,8 @@ class EditSetPage extends ManagedPage
 
         if ($doSave) {
             $this->set->populate(
-                $this->request()->post->data,
-                FileUpload::fromMultiplePhpFileUploads($this->request()->files->data)
+                $this->request()->post->getData(),
+                FileUpload::fromMultiplePhpFileUploads($this->request()->files->getData())
             );
             $this->set->check();
 
@@ -67,6 +67,11 @@ class EditSetPage extends ManagedPage
             $this->set->createNew();
         }
 
+        $this->renderPage();
+    }
+
+    public function renderPage()
+    {
         $this->setTemplateResult('sets/edit.html');
     }
 
@@ -109,7 +114,7 @@ class EditSetPage extends ManagedPage
         }
 
         /** @var $set Set */
-        $set = new $class($this->task);
+        $this->set = $set = new $class($this->task);
 
         $acl = $this->factory()->acl()->factory()->acl();
         $setConfig = $this->factory()->setTools()->getConfig($this->type);
@@ -136,6 +141,9 @@ class EditSetPage extends ManagedPage
 
         $set->init($this->mode, Set::FORMAT_HTML, $this->module->id . ':' . $this->module->type);
 
+        $this->init();
+        $this->prepare();
+
         if ($this->id) {
             $set->loadById($this->id);
 
@@ -147,8 +155,16 @@ class EditSetPage extends ManagedPage
             $set->createNew();
         }
 
-        $this->set = $set;
-
         return true;
+    }
+
+    public function init()
+    {
+
+    }
+
+    public function prepare()
+    {
+
     }
 }
