@@ -19,7 +19,7 @@ if ($page->deleted) {
 }
 ?>
 
-<?= $ui->formStart($page->submitUrl, 'post') ?>
+<?= $ui->formStart($page->getSubmitUrl(), 'post') ?>
     <div class="item">
         <div class="label">
 

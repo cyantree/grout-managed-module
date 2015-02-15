@@ -13,8 +13,6 @@ class DeleteSetPage extends ManagedPage
 
     public $id;
 
-    public $submitUrl;
-
     public $deleted = false;
 
     public function parseTask()
@@ -54,6 +52,14 @@ class DeleteSetPage extends ManagedPage
         $this->submitUrl = $this->factory()->module->getRouteUrl('delete-set', array('type' => $type, 'id' => $this->set->getId()));
 
         $this->setTemplateResult('sets/delete.html');
+    }
+
+    public function getSubmitUrl()
+    {
+        return $this->factory()->module->getRouteUrl(
+                'delete-set',
+                array('type' => $this->type, 'id' => $this->set->getId())
+        );
     }
 
     private function loadSet()
