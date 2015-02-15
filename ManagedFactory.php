@@ -12,6 +12,7 @@ use Grout\Cyantree\ManagedModule\Tools\MenuTools;
 use Grout\Cyantree\ManagedModule\Tools\SetTools;
 use Grout\Cyantree\ManagedModule\Types\ManagedConfig;
 use Grout\Cyantree\ManagedModule\Types\ManagedQuick;
+use Grout\Cyantree\ManagedModule\Types\TaskData;
 
 class ManagedFactory extends GroutFactory
 {
@@ -132,5 +133,18 @@ class ManagedFactory extends GroutFactory
         }
 
         return $tool;
+    }
+
+    /** @return TaskData */
+    public function taskData()
+    {
+        $taskData = $this->app->currentTask->data->get($this->module->id . '.taskData');
+
+        if ($taskData === null) {
+            $taskData = new TaskData();
+            $this->app->currentTask->data->set($this->module->id . '.taskData', $taskData);
+        }
+
+        return $taskData;
     }
 }
