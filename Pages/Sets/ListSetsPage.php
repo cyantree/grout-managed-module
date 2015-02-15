@@ -47,29 +47,6 @@ class ListSetsPage extends ManagedPage
             return;
         }
 
-        $setClass = $this->factory()->module->setTypes->get($type);
-
-        // Is no valid set type
-        if (!$setClass) {
-            $this->parseError(ResponseCode::CODE_404);
-            return;
-        }
-
-        // Retrieve current set class
-        $this->config = new ListSetsPageConfig();
-
-        $this->set = new $setClass();
-        $this->set->status->setTranslator($this->factory()->translator());
-        $this->set->config->setAsFilter('ListSetsPage', $this->config);
-        
-        $acl = $this->factory()->acl()->factory()->acl();
-        $setConfig = $this->factory()->setTools()->getConfig($type);
-        $this->set->allowAdd = $setConfig->addPageAccess ? $acl->satisfies($setConfig->addPageAccess) : true;
-        $this->set->allowEdit = $setConfig->editPageAccess ? $acl->satisfies($setConfig->editPageAccess) : true;
-        $this->set->allowDelete = $setConfig->deletePageAccess ? $acl->satisfies($setConfig->deletePageAccess) : true;
-        $this->set->allowExport = $setConfig->exportAccess ? $acl->satisfies($setConfig->exportAccess) : true;
-        $this->set->allowList = $setConfig->listPageAccess ? $acl->satisfies($setConfig->listPageAccess) : true;
-
         if ($this->task->vars->get('mode') == 'export') {
             $this->format = Set::FORMAT_PLAIN;
             $this->mode = Set::MODE_EXPORT;
@@ -79,9 +56,19 @@ class ListSetsPage extends ManagedPage
             $this->mode = Set::MODE_LIST;
         }
 
-        $this->set->init($this->mode, $this->format, $this->module->id . ':' . $this->module->type);
+        $this->config = new ListSetsPageConfig();
 
-        if (!$this->set->allowList) {
+        $setClass = $this->factory()->module->setTypes->get($type);
+
+        // Is no valid set type
+        if (!$setClass) {
+            $this->parseError(ResponseCode::CODE_404);
+            return;
+        }
+
+        $this->initSet($type, $setClass);
+
+        if (!$this->set || !$this->set->allowList) {
             $this->parseError(ResponseCode::CODE_404);
             return;
         }
@@ -107,9 +94,24 @@ class ListSetsPage extends ManagedPage
         $this->loadSets();
         $this->prepareRendering();
 
-        if ($this->renderPage()) {
-            $this->setTemplateResult($this->config->template);
-        }
+        $this->renderPage();
+    }
+
+    protected function initSet($type, $setClass)
+    {
+        $this->set = new $setClass();
+        $this->set->status->setTranslator($this->factory()->translator());
+        $this->set->config->setAsFilter('ListSetsPage', $this->config);
+
+        $acl = $this->factory()->acl()->factory()->acl();
+        $setConfig = $this->factory()->setTools()->getConfig($type);
+        $this->set->allowAdd = $setConfig->addPageAccess ? $acl->satisfies($setConfig->addPageAccess) : true;
+        $this->set->allowEdit = $setConfig->editPageAccess ? $acl->satisfies($setConfig->editPageAccess) : true;
+        $this->set->allowDelete = $setConfig->deletePageAccess ? $acl->satisfies($setConfig->deletePageAccess) : true;
+        $this->set->allowExport = $setConfig->exportAccess ? $acl->satisfies($setConfig->exportAccess) : true;
+        $this->set->allowList = $setConfig->listPageAccess ? $acl->satisfies($setConfig->listPageAccess) : true;
+
+        $this->set->init($this->mode, $this->format, $this->module->id . ':' . $this->module->type);
     }
 
     public function addFilter(ListSetsPageListFilter $filter)
@@ -153,7 +155,7 @@ class ListSetsPage extends ManagedPage
         }
 
         $c .= $this->renderPagination() . $this->renderSetCount()
-                . $this->renderNavigationBarRightContent($this->renderExportButton() . $this->renderAddButton());
+                . $this->renderNavigationBarRight();
 
         return $c;
     }
@@ -374,7 +376,7 @@ class ListSetsPage extends ManagedPage
 
     public function renderPage()
     {
-        return true;
+        $this->setTemplateResult($this->config->template);
     }
 
     public function renderScripts()
@@ -488,9 +490,14 @@ class ListSetsPage extends ManagedPage
         return '<div class="container">' . $this->renderNavigationBarContent() . '</div>';
     }
 
-    public function renderNavigationBarRightContent($content)
+    public function renderNavigationBarRight()
     {
-        return '<div class="absoluteRight">' . $content . '</div>';
+        return '<div class="absoluteRight">' . $this->renderNavigationBarRightContent() . '</div>';
+    }
+
+    public function renderNavigationBarRightContent()
+    {
+        return $this->renderExportButton() . $this->renderAddButton();
     }
 
     public function renderSearchInput()
