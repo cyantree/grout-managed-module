@@ -12,7 +12,7 @@ class ManagedPage extends Page
     /** @var ManagedFactory */
     private $factory;
 
-    public $baseTemplate = 'CyantreeManagedModule:base.html';
+    public $baseTemplate = '.Cyantree\ManagedModule::base.html';
 
     /** @return ManagedFactory */
     public function factory()

@@ -50,7 +50,7 @@ class ManagedModule extends Module
 
         $this->plugins = array();
 
-        $this->defaultPageType = 'Module::Pages\ManagedPage';
+        $this->defaultPageType = $this->generateContextString('Pages\ManagedPage');
         $this->addNamedRoute('index', '', null, array('template' => 'index.html'));
 
         $this->addNamedRoute('service', 'service/', 'Pages\ServicePage');
