@@ -457,7 +457,7 @@ class ListSetsPage extends ManagedPage
                     continue;
                 }
 
-                $table .= '<td>' . $content->render('list');
+                $table .= '<td>' . $content->render() . '</td>';
             } while ($content = $content->nextContent);
 
             $table .= '</tr>';
