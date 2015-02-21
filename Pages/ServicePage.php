@@ -14,7 +14,7 @@ class ServicePage extends Page
     public function parseTask()
     {
         $this->driver = new JsonDriver();
-        $this->driver->commandNamespaces[] = $this->task->module->namespace . 'Commands\\';
+        $this->driver->commandNamespaces[] = $this->task->module->definition->namespace . 'Commands\\';
 
         /** @var ManagedModule $m */
         $m = $this->task->module;
