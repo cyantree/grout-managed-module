@@ -20,7 +20,7 @@ class ServicePage extends Page
         $m = $this->task->module;
         foreach ($m->plugins as $plugin) {
             if ($plugin->extendsService) {
-                $this->driver->commandNamespaces[] = $plugin->namespace . 'Commands\\';
+                $this->driver->commandNamespaces[] = $plugin->definition->namespace . 'Commands\\';
             }
         }
 
