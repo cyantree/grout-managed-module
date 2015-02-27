@@ -2,6 +2,7 @@
 namespace Grout\Cyantree\ManagedModule;
 
 use Cyantree\Grout\App\Module;
+use Cyantree\Grout\App\Task;
 use Cyantree\Grout\App\Types\ResponseCode;
 use Cyantree\Grout\Filter\ArrayFilter;
 use Grout\Cyantree\ManagedModule\Types\ManagedConfig;
@@ -83,7 +84,7 @@ class ManagedModule extends Module
         }
     }
 
-    public function initTask($task)
+    public function initTask(Task $task)
     {
         foreach ($this->plugins as $plugin) {
             $plugin->initTask($task);
@@ -91,14 +92,14 @@ class ManagedModule extends Module
     }
 
 
-    public function beforeParsing($task)
+    public function beforeParsing(Task $task)
     {
         if ($task->plugin) {
             $task->plugin->beforeParsing($task);
         }
     }
 
-    public function afterParsing($task)
+    public function afterParsing(Task $task)
     {
         if ($task->plugin) {
             $task->plugin->afterParsing($task);
