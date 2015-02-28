@@ -20,14 +20,14 @@ $taskData = $f->taskData();
     <base href="<?=$q->e($this->task->app->url)?>"/>
     <meta charset="utf-8"/>
     <meta name="generator" content="cyantree grout"/>
-    <script src="<?=$q->e($q->a('js/lib.js'))?>"></script>
-    <script src="<?=$q->e($q->a('js/app.js'))?>"></script>
+    <script src="<?=$q->e($q->a('#::js/lib.js'))?>"></script>
+    <script src="<?=$q->e($q->a('#::js/app.js'))?>"></script>
     <?php
     foreach ($taskData->scripts as $script) {
         echo sprintf('<script src="%s"></script>', $q->e($script));
     }
     ?>
-    <link rel="stylesheet" href="<?=$q->e($q->a('css/admin.css'))?>"/>
+    <link rel="stylesheet" href="<?=$q->e($q->a('#::css/admin.css'))?>"/>
     <?php
     foreach ($taskData->stylesheets as $stylesheet) {
         echo sprintf('<link rel="stylesheet" href="%s" />', $q->e($stylesheet));
