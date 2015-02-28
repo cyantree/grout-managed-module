@@ -75,7 +75,7 @@ class ManagedModule extends Module
                 $this->urlPrefix,
                 $this->moduleConfig->aclRule,
                 $this->moduleConfig->title,
-                $this->id . '::Pages\Acl\LoginPage'
+                $this->generateContextString('Pages\Acl\LoginPage')
             );
         }
 
