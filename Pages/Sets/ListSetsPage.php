@@ -244,7 +244,7 @@ class ListSetsPage extends ManagedPage
     protected function loadSets()
     {
         $this->sets = $this->set->listSets($this->prepareLoadSetsOptions());
-        $this->countPages = $this->config->setsPerPage ? ceil($this->sets->countAll / $this->config->setsPerPage) : 1;
+        $this->countPages = $this->config->setsPerPage ? ceil($this->sets->getCountAll() / $this->config->setsPerPage) : 1;
     }
 
     public function getEditUrl($id, $type = null)
@@ -534,7 +534,7 @@ class ListSetsPage extends ManagedPage
     {
         $q = $this->factory()->quick();
 
-        $entries = $this->sets->countAll == 1 ? '1 Eintrag' : sprintf($q->t('%d Einträge'), $this->sets->countAll);
+        $entries = $this->sets->getCountAll() == 1 ? '1 Eintrag' : sprintf($q->t('%d Einträge'), $this->sets->getCountAll());
 
         return '<span class="countEntities">(' . $q->e($entries) . ')</span>';
     }
