@@ -8,7 +8,7 @@ use Cyantree\Grout\Set\SetListResult;
 use Grout\Cyantree\ManagedModule\Contents\SetRouteLinkContent;
 use Grout\Cyantree\ManagedModule\Pages\ManagedPage;
 use Grout\Cyantree\ManagedModule\Types\ListSetsPageConfig;
-use Grout\Cyantree\ManagedModule\Types\ListSetsPageFilters\ListSetsPageListFilter;
+use Grout\Cyantree\ManagedModule\Types\ListSetsPageFilters\ListSetsPageFilter;
 
 class ListSetsPage extends ManagedPage
 {
@@ -35,7 +35,7 @@ class ListSetsPage extends ManagedPage
     /** @var ListSetsPageConfig */
     public $config;
 
-    /** @var ListSetsPageListFilter[] */
+    /** @var ListSetsPageFilter[] */
     private $filters = array();
 
     public function parseTask()
@@ -114,7 +114,7 @@ class ListSetsPage extends ManagedPage
         $this->set->init($this->mode, $this->format, $this->factory()->config()->setContext);
     }
 
-    public function addFilter(ListSetsPageListFilter $filter)
+    public function addFilter(ListSetsPageFilter $filter)
     {
         $filter->init($this->factory());
         $this->filters[] = $filter;
