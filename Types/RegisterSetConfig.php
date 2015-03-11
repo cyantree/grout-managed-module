@@ -10,6 +10,7 @@ class RegisterSetConfig
     public $editPage;
     public $addPage;
     public $deletePage;
+    public $exportPage;
 
     /** @var AclRule */
     public $listPageAccess;

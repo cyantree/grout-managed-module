@@ -54,8 +54,8 @@ class SetTools
         if (!$config->exportPageAccess) {
             $config->exportPageAccess = $this->factory->module->moduleConfig->aclRule;
         }
-        if ($config->listPage || $config->exportPageAccess) {
-            $page = $config->listPage ? $config->listPage : 'Pages\Sets\ListSetsPage';
+        if ($config->exportPage || $config->exportPageAccess) {
+            $page = $config->exportPage ? $config->exportPage : 'Pages\Sets\ListSetsPage';
             $route = $this->factory->module->addRoute(
                 'export-sets/' . $id . '/export.%%format%%',
                 $page,
