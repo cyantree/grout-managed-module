@@ -331,8 +331,13 @@ class ListSetsPage extends ManagedPage
             return;
         }
 
+        $this->response()->asDownload($this->getExportFilename($format));
+        $this->response()->postHeaders();
+        // Post BOM
+        echo chr(239) . chr(187) . chr(191);
+
         $csv = new CsvWriter();
-        $csv->open();
+        $csv->open('php://output');
 
         $content = $this->set->firstContent;
 
@@ -353,6 +358,8 @@ class ListSetsPage extends ManagedPage
 
             $this->onRenderTableSetChanged();
 
+            set_time_limit(10);
+
             $content = $this->set->firstContent;
 
             do {
@@ -366,12 +373,10 @@ class ListSetsPage extends ManagedPage
             $csv->append($fields);
         }
 
-        $data = chr(239) . chr(187) . chr(191) . $csv->getContents();
         $csv->close();
 
-        $res = $this->response();
-        $res->asDownload($this->getExportFilename($format));
-        $res->postContent($data);
+        $this->app->destroy();
+        exit;
     }
 
     public function renderPage()
