@@ -22,6 +22,11 @@ abstract class ListSetsPageFilter
         $this->value = $data->get($this->name, $this->defaultValue);
     }
 
+    public function getStringValue()
+    {
+        return $this->value;
+    }
+
     public function init(ManagedFactory $factory)
     {
         $this->factory = $factory;
