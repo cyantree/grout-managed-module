@@ -15,7 +15,7 @@ class RegisterSetConfig
     public $listPageAccess;
 
     /** @var AclRule */
-    public $exportAccess;
+    public $exportPageAccess;
 
     /** @var AclRule */
     public $editPageAccess;
@@ -28,6 +28,6 @@ class RegisterSetConfig
 
     public function setAllAccessRules(AclRule $rule)
     {
-        $this->listPageAccess = $this->exportAccess = $this->editPageAccess = $this->addPageAccess = $this->deletePageAccess = $rule;
+        $this->listPageAccess = $this->exportPageAccess = $this->editPageAccess = $this->addPageAccess = $this->deletePageAccess = $rule;
     }
 }

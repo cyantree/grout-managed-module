@@ -108,7 +108,7 @@ class ListSetsPage extends ManagedPage
         $this->set->allowAdd = $setConfig->addPageAccess ? $acl->satisfies($setConfig->addPageAccess) : true;
         $this->set->allowEdit = $setConfig->editPageAccess ? $acl->satisfies($setConfig->editPageAccess) : true;
         $this->set->allowDelete = $setConfig->deletePageAccess ? $acl->satisfies($setConfig->deletePageAccess) : true;
-        $this->set->allowExport = $setConfig->exportAccess ? $acl->satisfies($setConfig->exportAccess) : true;
+        $this->set->allowExport = $setConfig->exportPageAccess ? $acl->satisfies($setConfig->exportPageAccess) : true;
         $this->set->allowList = $setConfig->listPageAccess ? $acl->satisfies($setConfig->listPageAccess) : true;
 
         $this->set->init($this->mode, $this->format, $this->factory()->config()->setContext);

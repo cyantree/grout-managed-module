@@ -51,10 +51,10 @@ class SetTools
             }
         }
 
-        if (!$config->exportAccess) {
-            $config->exportAccess = $this->factory->module->moduleConfig->aclRule;
+        if (!$config->exportPageAccess) {
+            $config->exportPageAccess = $this->factory->module->moduleConfig->aclRule;
         }
-        if ($config->listPage || $config->exportAccess) {
+        if ($config->listPage || $config->exportPageAccess) {
             $page = $config->listPage ? $config->listPage : 'Pages\Sets\ListSetsPage';
             $route = $this->factory->module->addRoute(
                 'export-sets/' . $id . '/export.%%format%%',
@@ -63,10 +63,10 @@ class SetTools
                 1
             );
 
-            if ($config->exportAccess) {
+            if ($config->exportPageAccess) {
                 $this->factory->acl()->secureRoute(
                     $route,
-                    $config->exportAccess,
+                    $config->exportPageAccess,
                     $this->factory->config()->title,
                     $this->factory->module->id . '::Pages\Acl\LoginPage'
                 );
