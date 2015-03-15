@@ -105,7 +105,7 @@ class EditSetPage extends ManagedPage
         }
     }
 
-    private function loadSet()
+    protected function loadSet()
     {
         $class = $this->factory()->module->setTypes->get($this->type);
 
