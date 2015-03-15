@@ -18,13 +18,7 @@ class EditSetPage extends ManagedPage
 
     public function parseTask()
     {
-        $type = $this->task->vars->get('type');
-        if (!$this->factory()->module->setTypes->has($type)) {
-            $this->parseError(ResponseCode::CODE_404);
-            return;
-        }
-
-        $this->type = $type;
+        $this->type = $this->task->vars->get('type');
         $this->id = $this->task->request->post->get('set_id', $this->task->vars->get('id'));
 
         if (!$this->loadSet()) {
@@ -34,7 +28,7 @@ class EditSetPage extends ManagedPage
 
         $this->set->status->setTranslator($this->factory()->translator());
 
-        $this->task->vars->set('menu', $type . '-sets');
+        $this->task->vars->set('menu', $this->type . '-sets');
 
         $resetOnSuccess = false;
         $doSave = false;
@@ -105,9 +99,14 @@ class EditSetPage extends ManagedPage
         }
     }
 
+    protected function getSetClass()
+    {
+        return $this->factory()->module->setTypes->get($this->type);
+    }
+
     protected function loadSet()
     {
-        $class = $this->factory()->module->setTypes->get($this->type);
+        $class = $this->getSetClass();
 
         if (!$class) {
             return false;
@@ -116,13 +115,7 @@ class EditSetPage extends ManagedPage
         /** @var $set Set */
         $this->set = $set = new $class($this->task);
 
-        $acl = $this->factory()->acl()->factory()->acl();
-        $setConfig = $this->factory()->setTools()->getConfig($this->type);
-        $set->allowAdd = $setConfig->addPageAccess ? $acl->satisfies($setConfig->addPageAccess) : true;
-        $set->allowEdit = $setConfig->editPageAccess ? $acl->satisfies($setConfig->editPageAccess) : true;
-        $set->allowDelete = $setConfig->deletePageAccess ? $acl->satisfies($setConfig->deletePageAccess) : true;
-        $set->allowExport = $setConfig->exportPageAccess ? $acl->satisfies($setConfig->exportPageAccess) : true;
-        $set->allowList = $setConfig->listPageAccess ? $acl->satisfies($setConfig->listPageAccess) : true;
+        $this->configureSet();
 
         if ($this->id) {
             $this->mode = Set::MODE_EDIT;
@@ -166,5 +159,16 @@ class EditSetPage extends ManagedPage
     public function prepare()
     {
 
+    }
+
+    protected function configureSet()
+    {
+        $acl = $this->factory()->acl()->factory()->acl();
+        $setConfig = $this->factory()->setTools()->getConfig($this->type);
+        $this->set->allowAdd = $setConfig->addPageAccess ? $acl->satisfies($setConfig->addPageAccess) : true;
+        $this->set->allowEdit = $setConfig->editPageAccess ? $acl->satisfies($setConfig->editPageAccess) : true;
+        $this->set->allowDelete = $setConfig->deletePageAccess ? $acl->satisfies($setConfig->deletePageAccess) : true;
+        $this->set->allowExport = $setConfig->exportPageAccess ? $acl->satisfies($setConfig->exportPageAccess) : true;
+        $this->set->allowList = $setConfig->listPageAccess ? $acl->satisfies($setConfig->listPageAccess) : true;
     }
 }
