@@ -69,13 +69,14 @@ class ManagedModule extends Module
 
         // Acl pages
         $this->addNamedRoute('logout', 'logout/', 'Pages\Acl\LogoutPage');
+        $loginRoute = $this->addRoute(null, 'Pages\Acl\LoginPage', null, 0, false);
 
         if ($this->moduleConfig->aclRule) {
             $this->factory()->acl()->secureUrlRecursive(
                 $this->urlPrefix,
                 $this->moduleConfig->aclRule,
                 $this->moduleConfig->title,
-                $this->generateContextString('Pages\Acl\LoginPage')
+                $loginRoute
             );
         }
 
