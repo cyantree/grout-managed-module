@@ -3,7 +3,6 @@ namespace Grout\Cyantree\ManagedModule;
 
 use Cyantree\Grout\App\Module;
 use Cyantree\Grout\App\Task;
-use Cyantree\Grout\App\Types\ResponseCode;
 use Cyantree\Grout\Filter\ArrayFilter;
 use Grout\Cyantree\ManagedModule\Types\ManagedConfig;
 use Grout\Cyantree\ManagedModule\Types\ManagedPlugin;
@@ -63,9 +62,9 @@ class ManagedModule extends Module
         $this->addNamedRoute('edit-set', 'edit-set/%%type%%/%%id%%/', 'Pages\Sets\EditSetPage');
         $this->addNamedRoute('delete-set', 'delete-set/%%type%%/%%id%%/', 'Pages\Sets\DeleteSetPage');
 
-        $this->addErrorRoute(ResponseCode::CODE_403, 'Pages\ManagedPage', array('template' => '403.html'));
-        $this->addErrorRoute(ResponseCode::CODE_404, 'Pages\ManagedPage', array('template' => '404.html'));
-        $this->addErrorRoute(ResponseCode::CODE_500, 'Pages\ManagedPage', array('template' => '500.html'));
+        $this->addErrorRoute(403, 'Pages\ManagedPage', array('template' => '403.html'));
+        $this->addErrorRoute(404, 'Pages\ManagedPage', array('template' => '404.html'));
+        $this->addErrorRoute(500, 'Pages\ManagedPage', array('template' => '500.html'));
 
         // Acl pages
         $this->addNamedRoute('logout', 'logout/', 'Pages\Acl\LogoutPage');

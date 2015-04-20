@@ -1,7 +1,6 @@
 <?php
 namespace Grout\Cyantree\ManagedModule\Pages\Sets;
 
-use Cyantree\Grout\App\Types\ResponseCode;
 use Cyantree\Grout\Csv\CsvWriter;
 use Cyantree\Grout\Set\Set;
 use Cyantree\Grout\Set\SetListResult;
@@ -43,7 +42,7 @@ class ListSetsPage extends ManagedPage
         $type = $this->task->vars->get('type');
 
         if (!$this->factory()->module->setTypes->has($type)) {
-            $this->parseError(ResponseCode::CODE_404);
+            $this->parseError(404);
             return;
         }
 
@@ -62,14 +61,14 @@ class ListSetsPage extends ManagedPage
 
         // Is no valid set type
         if (!$setClass) {
-            $this->parseError(ResponseCode::CODE_404);
+            $this->parseError(404);
             return;
         }
 
         $this->initSet($type, $setClass);
 
         if (!$this->set || !$this->set->allowList) {
-            $this->parseError(ResponseCode::CODE_404);
+            $this->parseError(404);
             return;
         }
 
@@ -327,7 +326,7 @@ class ListSetsPage extends ManagedPage
     protected function generateExport($format)
     {
         if ($format != 'csv') {
-            $this->parseError(ResponseCode::CODE_404);
+            $this->parseError(404);
             return;
         }
 

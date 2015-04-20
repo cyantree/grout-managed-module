@@ -1,7 +1,6 @@
 <?php
 namespace Grout\Cyantree\ManagedModule\Pages\Sets;
 
-use Cyantree\Grout\App\Types\ResponseCode;
 use Cyantree\Grout\Set\Set;
 use Grout\Cyantree\ManagedModule\Pages\ManagedPage;
 
@@ -19,7 +18,7 @@ class DeleteSetPage extends ManagedPage
     {
         $type = $this->task->vars->get('type');
         if (!$this->factory()->module->setTypes->has($type)) {
-            $this->parseError(ResponseCode::CODE_404);
+            $this->parseError(404);
             return;
         }
 
@@ -27,7 +26,7 @@ class DeleteSetPage extends ManagedPage
         $this->id = $this->task->request->post->get('id', $this->task->vars->get('id'));
 
         if (!$this->loadSet()) {
-            $this->parseError(ResponseCode::CODE_404);
+            $this->parseError(404);
             return;
         }
 

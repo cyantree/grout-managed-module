@@ -3,7 +3,6 @@ namespace Grout\Cyantree\ManagedModule\Pages;
 
 use Cyantree\Grout\App\Page;
 use Cyantree\Grout\App\Types\ContentType;
-use Cyantree\Grout\App\Types\ResponseCode;
 use Cyantree\Grout\Filter\ArrayFilter;
 use Grout\Cyantree\ManagedModule\ManagedFactory;
 
