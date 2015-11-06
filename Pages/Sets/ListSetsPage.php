@@ -100,7 +100,7 @@ class ListSetsPage extends ManagedPage
     {
         $this->set = new $setClass();
         $this->set->status->setTranslator($this->factory()->translator());
-        $this->set->config->setAsFilter('ListSetsPage', $this->config);
+        $this->set->config->set('ListSetsPage', $this->config);
 
         $acl = $this->factory()->acl()->factory()->acl();
         $setConfig = $this->factory()->setTools()->getConfig($type);
